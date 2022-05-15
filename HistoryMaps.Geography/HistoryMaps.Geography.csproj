@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Geography.Abstractions\HistoryMaps.Geography.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps\HistoryMaps.csproj" />
+  </ItemGroup>
+
 </Project>
