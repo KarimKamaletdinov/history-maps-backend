@@ -1,19 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <RootNamespace>HistoryMaps</RootNamespace>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>HistoryMaps</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\" />
-    <Folder Include="Serializers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HistoryMaps.Stl.Abstractions\HistoryMaps.Stl.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Stl\HistoryMaps.Stl.csproj" />
   </ItemGroup>
 
 </Project>

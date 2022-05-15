@@ -11,4 +11,13 @@
     <PackageReference Include="IxMilia.Stl" Version="0.1.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
 </Project>

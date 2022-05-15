@@ -18,6 +18,13 @@ public struct Color
 	/// </summary>
 	public byte B { get; set; }
 
+    public Color(byte r, byte g, byte b)
+    {
+        R = r;
+		G = g;
+		B = b;
+    }
+
 	/// <summary>
 	/// Приводит к строке rgb-цвета для css
 	/// </summary>
