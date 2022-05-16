@@ -3,7 +3,7 @@
 /// <summary>
 /// Цвет (RGB)
 /// </summary>
-public struct Color
+public struct Colour
 {
 	/// <summary>
 	/// Красный
@@ -18,7 +18,7 @@ public struct Color
 	/// </summary>
 	public byte B { get; set; }
 
-    public Color(byte r, byte g, byte b)
+    public Colour(byte r, byte g, byte b)
     {
         R = r;
 		G = g;
