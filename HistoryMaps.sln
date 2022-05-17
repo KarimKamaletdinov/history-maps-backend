@@ -5,6 +5,7 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2140B986-6086-472D-B4CA-F5A7705A6261}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -40,15 +41,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maps", "Maps", "{6D34F7F6-1B45-44F4-8EDE-62392FBEF07C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Maps", "HistoryMaps.Maps\HistoryMaps.Maps.csproj", "{4FEA3022-FEAE-4088-897E-5747FBE1EF8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Maps", "HistoryMaps.Maps\HistoryMaps.Maps.csproj", "{4FEA3022-FEAE-4088-897E-5747FBE1EF8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Maps.Abstractions", "HistoryMaps.Maps.Abstractions\HistoryMaps.Maps.Abstractions.csproj", "{9D068CA4-B8D8-4E4F-9005-E0F61CD9C129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Maps.Abstractions", "HistoryMaps.Maps.Abstractions\HistoryMaps.Maps.Abstractions.csproj", "{9D068CA4-B8D8-4E4F-9005-E0F61CD9C129}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bmp", "Bmp", "{472066B6-B1BE-4E26-B0FB-FFA8546B9610}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Bmp.Abstractions", "HistoryMaps.Bmp.Abstractions\HistoryMaps.Bmp.Abstractions.csproj", "{44CD7C08-B59B-4193-B120-316E3255C401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Bmp.Abstractions", "HistoryMaps.Bmp.Abstractions\HistoryMaps.Bmp.Abstractions.csproj", "{44CD7C08-B59B-4193-B120-316E3255C401}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Bmp", "HistoryMaps.Bmp\HistoryMaps.Bmp.csproj", "{757A9E94-0451-48D7-B53C-C92946203C02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Bmp", "HistoryMaps.Bmp\HistoryMaps.Bmp.csproj", "{757A9E94-0451-48D7-B53C-C92946203C02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

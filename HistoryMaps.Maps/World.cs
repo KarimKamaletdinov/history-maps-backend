@@ -11,7 +11,7 @@ public class World
 
     public IReadOnlyCollection<Area> Countries => _countries;
 
-    public World(Guid id,Area water, IReadOnlyCollection<Area> countries)
+    public World(Guid id, Area water, IReadOnlyCollection<Area> countries)
     {
         Id = id;
         Water = water;
@@ -28,12 +28,12 @@ public class World
     {
         if (!Countries.Contains(country))
             throw new DomainException("Нет такой страны");
-        if (Water.Points[latitude, longitude])
+        if (Water.GetPixel(latitude, longitude))
             throw new DomainException("Нельзя задать стране пиксель, явлиющийся водой");
-        if(country.Points[latitude, longitude])
+        if(country.GetPixel(latitude, longitude))
             throw new DomainException("Пиксель уже относится к этой стране");
         foreach (var c in Countries)
-            c.Points[latitude, longitude] = false;
-        country.Points[latitude, longitude] = true;
+            c.SetPixel(latitude, longitude, false);
+        country.SetPixel(latitude, longitude, true);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace HistoryMaps;
+﻿using System.Drawing;
+
+namespace HistoryMaps;
 
 /// <summary>
 /// Область на карте
@@ -6,14 +8,14 @@
 public class Area
 {
     /// <summary>
-    /// Id
-    /// </summary>
-    public Guid Id { get; }
-
-    /// <summary>
     /// Название области
     /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// Цвет области
+    /// </summary>
+    public Color Color { get; set; }
 
     /// <summary>
     /// Точки [широта, долгота].
@@ -22,9 +24,19 @@ public class Area
     /// </summary>
     public bool[,] Points = new bool[181, 361];
 
-    public Area(Guid id, string name)
+    public Area(string name, Color color)
     {
-        Id = id;
         Name = name;
+        Color = color;
+    }
+
+    public void SetPixel(int latitude, int longitude, bool value)
+    {
+        Points[latitude + 90, longitude + 180] = value;
+    }
+
+    public bool GetPixel(int latitude, int longitude)
+    {
+        return Points[latitude + 90, longitude + 180];
     }
 }

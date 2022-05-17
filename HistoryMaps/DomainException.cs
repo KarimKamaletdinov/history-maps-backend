@@ -7,3 +7,19 @@ public class DomainException : Exception
 
     }
 }
+
+public class AlreadyExistsException : Exception
+{
+    public AlreadyExistsException(string text) : base(text)
+    {
+
+    }
+}
+
+public class DoesNotExistException : Exception
+{
+    public DoesNotExistException(string text) : base(text)
+    {
+
+    }
+}
