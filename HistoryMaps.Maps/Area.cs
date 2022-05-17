@@ -8,7 +8,7 @@ public class Area
     /// <summary>
     /// Id
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid Id { get; }
 
     /// <summary>
     /// Название области
@@ -21,4 +21,10 @@ public class Area
     /// Долгот 361: 180 западных + 1 экватор + 180 восточных.
     /// </summary>
     public bool[,] Points = new bool[181, 361];
+
+    public Area(Guid id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
 }

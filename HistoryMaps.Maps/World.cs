@@ -4,15 +4,19 @@ public class World
 {
     private readonly List<Area> _countries;
 
-    public World(Area water, IReadOnlyCollection<Area> countries)
-    {
-        Water = water;
-        _countries = countries.ToList();
-    }
+
+    public Guid Id { get; set; }
 
     public Area Water { get; }
 
     public IReadOnlyCollection<Area> Countries => _countries;
+
+    public World(Guid id,Area water, IReadOnlyCollection<Area> countries)
+    {
+        Id = id;
+        Water = water;
+        _countries = countries.ToList();
+    }
 
     /// <summary>
     /// Задать пиксель стране

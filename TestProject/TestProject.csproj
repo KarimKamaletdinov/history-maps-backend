@@ -13,4 +13,14 @@
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="data\base_image.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
