@@ -2,23 +2,23 @@
 
 namespace HistoryMaps;
 
-public class WorldRepository : IWorldRepository
+public class WorldBmpRepository : IWorldBmpRepository
 {
     private readonly IRootFolderProvider _rootFolder;
 
-    public WorldRepository(IRootFolderProvider rootFolder)
+    public WorldBmpRepository(IRootFolderProvider rootFolder)
     {
         _rootFolder = rootFolder;
     }
 
     public void Insert(World world)
     {
-        var path = _rootFolder.GetPath("worlds" + Path.DirectorySeparatorChar + world.Id);
+        var path = GenPath(world.Id);
+
         if (File.Exists(path))
             throw new AlreadyExistsException($"File \"{path}\" already exists!");
 
-        using var image = (Bitmap)Image.FromFile(_rootFolder.GetPath(
-            "constants" + Path.DirectorySeparatorChar + "base_image.bmp"));
+        using var image = new Bitmap(361, 181);
         
         for (var x = 0; x < 361; x++)
         {
@@ -42,11 +42,11 @@ public class WorldRepository : IWorldRepository
 
     public void Update(World world)
     {
-        var path = "worlds" + Path.PathSeparator + world.Id;
+        var path = GenPath(world.Id);
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
 
-        using var image = (Bitmap)Image.FromFile("constants" + Path.PathSeparator + "base_image.bmp");
+        using var image = new Bitmap(361, 181);
         
         for (var x = 0; x < 361; x++)
         {
@@ -70,7 +70,7 @@ public class WorldRepository : IWorldRepository
 
     public void Delete(Guid worldId)
     {
-        var path = "worlds" + Path.PathSeparator + worldId;
+        var path = GenPath(worldId);
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
         File.Delete(path);
@@ -78,33 +78,34 @@ public class WorldRepository : IWorldRepository
 
     public World Get(Guid worldId, Dictionary<string, Color> colorDictionary)
     {
-        var path = "worlds" + Path.PathSeparator + worldId;
+        var path = GenPath(worldId);
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
-
-        using var image = (Bitmap)Image.FromFile("constants" + Path.PathSeparator + "base_image.bmp");
         
-        var water = new Area("water", colorDictionary["water"]);
-        var countries = new List<Area>();
-
+        using var image = (Bitmap)Image.FromFile(path);
+        
+        var water = new Area(colorDictionary["water"]);
+        var countries = new List<Country>();
+        var p = image.GetPixel(360, 180);
         for (var x = 0; x < 361; x++)
         {
             for (var y = 0; y < 181; y++)
             {
+                var pixel = image.GetPixel(x, y);
                 foreach (var (name, color) in colorDictionary)
                 {
-                    if (color == image.GetPixel(x, y))
+                    if (color.R == pixel.R && color.G == pixel.G && color.B == pixel.B)
                     {
                         if (name == "water")
-                            water.Points[x, y] = true;
+                            water.Points[y, x] = true;
                         else
                         {
-                            if (countries.Any(x => x.Color == color))
-                                countries.Find(x => x.Color == color).Points[x, y] = true;
+                            if (countries.Any(c => c.Color == color))
+                                countries.Find(c => c.Color == color)!.Points[y, x] = true;
                             else
                             {
-                                var country = new Area(name, color);
-                                country.Points[x, y] = true;
+                                var country = new Country(name, color);
+                                country.Points[y, x] = true;
                                 countries.Add(country);
                             }
                         }
@@ -114,5 +115,10 @@ public class WorldRepository : IWorldRepository
         }
 
         return new World(worldId, water, countries);
+    }
+
+    private string GenPath(Guid worldId)
+    {
+        return _rootFolder.GetPath("worlds" + Path.DirectorySeparatorChar + worldId + ".bmp");
     }
 }

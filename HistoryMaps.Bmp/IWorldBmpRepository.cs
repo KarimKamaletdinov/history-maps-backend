@@ -2,7 +2,7 @@
 
 namespace HistoryMaps;
 
-public interface IWorldRepository
+public interface IWorldBmpRepository
 {
     void Insert(World world);
     void Update(World world);

@@ -8,11 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\" />
-    <Folder Include="Serializers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Maps\HistoryMaps.Maps.csproj" />
     <ProjectReference Include="..\HistoryMaps.Stl.Abstractions\HistoryMaps.Stl.Abstractions.csproj" />
   </ItemGroup>
 

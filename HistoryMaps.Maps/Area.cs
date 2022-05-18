@@ -8,11 +8,6 @@ namespace HistoryMaps;
 public class Area
 {
     /// <summary>
-    /// Название области
-    /// </summary>
-    public string Name { get; set; }
-
-    /// <summary>
     /// Цвет области
     /// </summary>
     public Color Color { get; set; }
@@ -24,9 +19,8 @@ public class Area
     /// </summary>
     public bool[,] Points = new bool[181, 361];
 
-    public Area(string name, Color color)
+    public Area(Color color)
     {
-        Name = name;
         Color = color;
     }
 
