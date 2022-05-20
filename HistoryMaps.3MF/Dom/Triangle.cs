@@ -1,0 +1,9 @@
+﻿namespace HistoryMaps;
+
+public struct Triangle
+{
+    public int V1 { get; set; }
+    public int V2 { get; set; }
+    public int V3 { get; set; }
+    public int Color { get; set; }
+}

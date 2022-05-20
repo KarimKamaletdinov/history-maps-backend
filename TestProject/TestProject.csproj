@@ -9,16 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EasyBitmap" Version="0.3.1-alpha" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.3MF\HistoryMaps.3MF.csproj" />
     <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Stl\HistoryMaps.Stl.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="data\constants\base_image.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\constants\template.3mf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\temp\init.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data\worlds\init.txt">

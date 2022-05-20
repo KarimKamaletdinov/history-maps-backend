@@ -15,4 +15,8 @@ public static class RootFolderProviderExtensions
     {
         return rootFolder.GetRootFolder() + path;
     }
+    public static string GetPath(this IRootFolderProvider rootFolder, params string[] path)
+    {
+        return rootFolder.GetPath(string.Join(Path.DirectorySeparatorChar, path));
+    }
 }

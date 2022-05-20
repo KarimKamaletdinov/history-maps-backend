@@ -1,14 +1,11 @@
 ﻿using System.Drawing;
+using System.Runtime.CompilerServices;
 using HistoryMaps;
 
-var r = new WorldBmpRepository(new RootFolderProvider());
-//var world = new World(Guid.NewGuid(), new Area(Color.Blue), Array.Empty<Country>());
-//world.Water.SetPixel(0,0, true);
-//r.Insert(world);
-var w = r.Get(Guid.Parse("96d68a4e-f97f-4823-89c9-b34f93020c5e"), new Dictionary<string, Color>{{"water", Color.Black}});
-for (var i0 = 0; i0 < w.Water.Points.GetLength(0); i0++)
-for (var i1 = 0; i1 < w.Water.Points.GetLength(1); i1++)
+new ThreeMfRepository(new RootFolderProvider()).Insert(new Document
 {
-    var point = w.Water.Points[i0, i1];
-    Console.WriteLine($"{i0}, {i1}: {(point ? "water" : "dry")}");
-}
+    Colors = new List<Color> {Color.Blue},
+    Metadata = "",
+    Triangles = new List<Triangle>{new (){Color = 0, V1 = 0, V2=1, V3=2}},
+    Vertices = new List<Vertex>{new(){X=-1, Y=-1, Z=0}, new(){X=1, Y= 0, Z=0}, new(){X=0, Y=0, Z= 0}}
+}, Guid.NewGuid());

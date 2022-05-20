@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IxMilia.Stl" Version="0.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HistoryMaps.Maps\HistoryMaps.Maps.csproj" />
     <ProjectReference Include="..\HistoryMaps.Stl.Abstractions\HistoryMaps.Stl.Abstractions.csproj" />
   </ItemGroup>
