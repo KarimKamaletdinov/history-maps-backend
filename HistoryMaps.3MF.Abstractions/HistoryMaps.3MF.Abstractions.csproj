@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>HistoryMaps._3MF.Abstractions</RootNamespace>
+    <RootNamespace>HistoryMaps</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Maps.Abstractions\HistoryMaps.Maps.Abstractions.csproj" />
+  </ItemGroup>
 
 </Project>

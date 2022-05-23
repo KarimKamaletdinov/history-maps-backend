@@ -18,11 +18,11 @@ public class WorldBmpRepository : IWorldBmpRepository
         if (File.Exists(path))
             throw new AlreadyExistsException($"File \"{path}\" already exists!");
 
-        using var image = new Bitmap(361, 181);
+        using var image = new Bitmap(720, 361);
         
-        for (var x = 0; x < 361; x++)
+        for (var x = 0; x < 720; x++)
         {
-            for (var y = 0; y < 181; y++)
+            for (var y = 0; y < 361; y++)
             {
                 if (world.Water.Points[y, x])
                     image.SetPixel(x, y, world.Water.Color);
@@ -46,11 +46,11 @@ public class WorldBmpRepository : IWorldBmpRepository
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
 
-        using var image = new Bitmap(361, 181);
+        using var image = new Bitmap(720, 361);
         
-        for (var x = 0; x < 361; x++)
+        for (var x = 0; x < 720; x++)
         {
-            for (var y = 0; y < 181; y++)
+            for (var y = 0; y < 361; y++)
             {
                 if (world.Water.Points[x, y])
                     image.SetPixel(x, y, world.Water.Color);
@@ -86,10 +86,10 @@ public class WorldBmpRepository : IWorldBmpRepository
         
         var water = new Area(colorDictionary["water"]);
         var countries = new List<Country>();
-        var p = image.GetPixel(360, 180);
-        for (var x = 0; x < 361; x++)
+        var p = image.GetPixel(361, 180);
+        for (var x = 0; x < 720; x++)
         {
-            for (var y = 0; y < 181; y++)
+            for (var y = 0; y < 361; y++)
             {
                 var pixel = image.GetPixel(x, y);
                 foreach (var (name, color) in colorDictionary)

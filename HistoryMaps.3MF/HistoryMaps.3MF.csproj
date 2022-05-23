@@ -8,11 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.3MF.Abstractions\HistoryMaps.3MF.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Xml\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

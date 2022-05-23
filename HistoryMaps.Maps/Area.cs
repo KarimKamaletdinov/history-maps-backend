@@ -14,23 +14,23 @@ public class Area
 
     /// <summary>
     /// Точки [широта, долгота].
-    /// Широт 181 = 90 северных + 1 экватор + 90 южных.
-    /// Долгот 361: 180 западных + 1 экватор + 180 восточных.
+    /// Широт 361 = 180 северных + 1 экватор + 180 южных.
+    /// Долгот 720: 360 западных + 360 восточных.
     /// </summary>
-    public bool[,] Points = new bool[181, 361];
+    public bool[,] Points = new bool[361, 720];
 
     public Area(Color color)
     {
         Color = color;
     }
 
-    public void SetPixel(int latitude, int longitude, bool value)
+    public void SetPixel(float latitude, float longitude, bool value)
     {
-        Points[latitude + 90, longitude + 180] = value;
+        Points[(int)(latitude * 2 + 180), (int)(longitude * 2 + 360)] = value;
     }
 
-    public bool GetPixel(int latitude, int longitude)
+    public bool GetPixel(float latitude, float longitude)
     {
-        return Points[latitude + 90, longitude + 180];
+        return Points[(int)(latitude * 2 + 180), (int)(longitude * 2 + 360)];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace HistoryMaps;
 
-public class ThreeMfRepository
+public class ThreeMfRepository : IThreeMfRepository
 {
     private readonly IRootFolderProvider _rootFolder;
 
@@ -13,8 +13,11 @@ public class ThreeMfRepository
 
     public void Insert(Document document, Guid id)
     {
+        var tempFolderPath = _rootFolder.GetPath("temp", id.ToString());
+        if(Directory.Exists(tempFolderPath))
+            Directory.Delete(tempFolderPath, true);
         ZipFile.ExtractToDirectory(_rootFolder.GetPath("constants", "template.3mf"), 
-            _rootFolder.GetPath("temp", id.ToString()));
+            tempFolderPath);
         var tPath = _rootFolder.GetPath("temp", id.ToString(), "3D", "3dmodel.model");
         var template = File.ReadAllText(tPath);
         var data = template
