@@ -8,8 +8,8 @@ public static class Mapper
     {
         var stlFile = new StlFile();
 
-        for (var longitude = 0; longitude < 720; longitude++)
-            for (var latitude = 0; latitude < 361; latitude++)
+        for (var longitude = 0; longitude < 1080; longitude++)
+            for (var latitude = 0; latitude < 541; latitude++)
                 if (area.Points[latitude, longitude])
                     stlFile.Triangles.Add(CreateTriangle(latitude, longitude));
         return stlFile;
@@ -55,7 +55,7 @@ public static class Mapper
 
     private static StlVertex CreateVertex(float latitude, float longitude)
     {
-        var vertex = new StlVertex(200, 0, 0).RotateZ(latitude / 361 * MathF.PI).RotateY(longitude / 180.5f * MathF.PI);
+        var vertex = new StlVertex(200, 0, 0).RotateZ(latitude / 541 * MathF.PI).RotateY(longitude / 180.5f * MathF.PI);
         return vertex;
     }
 }
