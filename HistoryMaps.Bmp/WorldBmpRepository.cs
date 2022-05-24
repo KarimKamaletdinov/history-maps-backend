@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HistoryMaps;
 
@@ -76,8 +78,9 @@ public class WorldBmpRepository : IWorldBmpRepository
         File.Delete(path);
     }
 
-    public World Get(Guid worldId, Dictionary<string, Color> colorDictionary)
+    public World Get(Guid worldId)
     {
+        var colorDictionary = GetColors(worldId);
         var path = GenPath(worldId);
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
@@ -117,8 +120,20 @@ public class WorldBmpRepository : IWorldBmpRepository
         return new World(worldId, water, countries);
     }
 
+    private Dictionary<string, Color> GetColors(Guid worldId)
+    {
+        var json = File.ReadAllText(_rootFolder.GetPath("worlds", worldId + ".mtd"));
+        var dictionary = JsonSerializer.Deserialize<Dictionary<string, Rgb>>(json) ?? 
+                          throw new DomainException("Invalid colors format");
+        return new Dictionary<string, Color>(dictionary.Select(x => 
+            new KeyValuePair<string, Color>(x.Key, Color.FromArgb(x.Value.R, x.Value.G, x.Value.B))));
+    }
+
     private string GenPath(Guid worldId)
     {
         return _rootFolder.GetPath("worlds" + Path.DirectorySeparatorChar + worldId + ".bmp");
     }
+
+
+    private record Rgb(byte R, byte G, byte B);
 }

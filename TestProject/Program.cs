@@ -4,8 +4,7 @@ using HistoryMaps;
 
 var folderProvider = new RootFolderProvider();
 
-var world = new WorldBmpRepository(folderProvider).Get(Guid.Parse("96d68a4e-f97f-4823-89c9-b34f93020c5e"),
-    new Dictionary<string, Color> {{"water", Color.FromArgb(0, 162, 232)}});
+var world = new WorldBmpRepository(folderProvider).Get(Guid.Parse("96d68a4e-f97f-4823-89c9-b34f93020c5e"));
 
 if (File.Exists(folderProvider.GetPath("worlds",
         world.Id + ".3mf")))
