@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace HistoryMaps;
+﻿namespace HistoryMaps;
 
 public class World
 {
@@ -52,5 +50,10 @@ public class World
             throw new DomainException("Нельзя задать стране пиксель, явлиющийся водой");
         foreach (var c in Countries)
             c.SetPixel(latitude, longitude, false);
+    }
+
+    public WorldDto ToDto()
+    {
+        return new(Id, Water.ToDto(), Countries.Select(x => x.ToDto()).ToArray());
     }
 }

@@ -12,7 +12,6 @@
     <ProjectReference Include="..\HistoryMaps.3MF\HistoryMaps.3MF.csproj" />
     <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
-    <ProjectReference Include="..\HistoryMaps.Stl\HistoryMaps.Stl.csproj" />
   </ItemGroup>
 
   <ItemGroup>

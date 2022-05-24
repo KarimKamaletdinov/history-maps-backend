@@ -57,21 +57,13 @@ public static class To3MfConverter
         if (latitude < 0)
             latitude = 0;
         if (longitude < 0)
-            longitude = indices.GetLength(0) + longitude;
+            longitude = indices.GetLength(1) + longitude;
         if(latitude >= indices.GetLength(0))
             latitude = indices.GetLength(0) - 1;
         if(longitude >= indices.GetLength(1))
             longitude -= indices.GetLength(1);
         return indices[latitude, longitude];
     }
-
-    //private static void CreateTriangle(Document document, Vertex v1, Vertex v2, Vertex v3, int color)
-    //{
-    //    var id1 = document.AddVertex(v1);
-    //    var id2 = document.AddVertex(v2);
-    //    var id3 = document.AddVertex(v3);
-    //    document.AddTriangle(new Triangle(id1, id2, id3, color));
-    //}
 
     private static Vertex CreateVertex(float latitude, float longitude)
     {

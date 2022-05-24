@@ -10,4 +10,9 @@ public class Country : Area
     {
         Name = name;
     }
+
+    public new CountryDto ToDto()
+    {
+        return new(Name, Points, Color);
+    }
 }

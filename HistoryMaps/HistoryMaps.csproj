@@ -11,4 +11,9 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Common\HistoryMaps.Common.csproj" />
+  </ItemGroup>
+
 </Project>

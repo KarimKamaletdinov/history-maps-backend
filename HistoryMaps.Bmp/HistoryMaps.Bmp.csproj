@@ -13,7 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
-    <ProjectReference Include="..\HistoryMaps.Maps\HistoryMaps.Maps.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Common\HistoryMaps.Common.csproj" />
+    <ProjectReference Include="..\HistoryMaps\HistoryMaps.csproj" />
   </ItemGroup>
 
 </Project>

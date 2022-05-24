@@ -33,4 +33,9 @@ public class Area
     {
         return Points[(int)(latitude * 2 + 180), (int)(longitude * 2 + 360)];
     }
+
+    public AreaDto ToDto()
+    {
+        return new(Points, Color);
+    }
 }
