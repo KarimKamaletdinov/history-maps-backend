@@ -2,17 +2,8 @@
 using HistoryMaps;
 
 
-var folderProvider = new RootFolderProvider();
+var rootFolder = new RootFolderProvider();
 
-var world = new WorldBmpRepository(folderProvider).Get(Guid.Parse("96d68a4e-f97f-4823-89c9-b34f93020c5e"));
-
-if (File.Exists(folderProvider.GetPath("worlds",
-        world.Id + ".3mf")))
-    File.Delete(folderProvider.GetPath("worlds",
-        world.Id + ".3mf"));
-
-new Create3DWorldCommandHandler(new ThreeMfRepository(folderProvider)).Execute(
-    new Create3DWorld(world.ToDto()));
-
-File.Copy(folderProvider.GetPath("worlds",
-    world.Id + ".3mf"), "c:\\Users\\Karim\\Coding\\WebProjects\\render-test\\template.3mf", true);
+new SynchronizeWorldCommandHandler(new GetWorldCommandHandler(new WorldBmpRepository(rootFolder)),
+    new Create3DWorldCommandHandler(new ThreeMfRepository(rootFolder)), rootFolder)
+    .Execute(new SynchronizeWorld(Guid.Parse("96d68a4e-f97f-4823-89c9-b34f93020c5e")));
