@@ -35,15 +35,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.3MF.Abstraction
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Common", ".Common", "{55B28FAF-C521-479D-88D4-7147E3B78527}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Common.Abstractions", "HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj", "{A7CB72D3-89F1-49A5-BF8E-A2793DF1CFC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Common.Abstractions", "HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj", "{A7CB72D3-89F1-49A5-BF8E-A2793DF1CFC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Common", "HistoryMaps.Common\HistoryMaps.Common.csproj", "{4380DAD4-934D-4824-8796-E501388C1100}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Common", "HistoryMaps.Common\HistoryMaps.Common.csproj", "{4380DAD4-934D-4824-8796-E501388C1100}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UseCases", "UseCases", "{95504C7F-F265-4244-B1F2-4202394743D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.UseCases.Abstractions", "HistoryMaps.UseCases.Abstractions\HistoryMaps.UseCases.Abstractions.csproj", "{F4619444-6B66-4965-9CAF-8BD6F918D7BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.UseCases.Abstractions", "HistoryMaps.UseCases.Abstractions\HistoryMaps.UseCases.Abstractions.csproj", "{F4619444-6B66-4965-9CAF-8BD6F918D7BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.UseCases", "HistoryMaps.UseCases\HistoryMaps.UseCases.csproj", "{08E33D0D-A14B-466C-B24D-806E58DF9D25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.UseCases", "HistoryMaps.UseCases\HistoryMaps.UseCases.csproj", "{08E33D0D-A14B-466C-B24D-806E58DF9D25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.ConsoleApp", "HistoryMaps.ConsoleApp\HistoryMaps.ConsoleApp.csproj", "{E783C8C9-23FF-46C3-AA45-C04182464AF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{08E33D0D-A14B-466C-B24D-806E58DF9D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08E33D0D-A14B-466C-B24D-806E58DF9D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08E33D0D-A14B-466C-B24D-806E58DF9D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E783C8C9-23FF-46C3-AA45-C04182464AF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E783C8C9-23FF-46C3-AA45-C04182464AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E783C8C9-23FF-46C3-AA45-C04182464AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E783C8C9-23FF-46C3-AA45-C04182464AF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{95504C7F-F265-4244-B1F2-4202394743D9} = {C641F6A3-D0E8-426A-8AE8-3CE115B18131}
 		{F4619444-6B66-4965-9CAF-8BD6F918D7BE} = {95504C7F-F265-4244-B1F2-4202394743D9}
 		{08E33D0D-A14B-466C-B24D-806E58DF9D25} = {95504C7F-F265-4244-B1F2-4202394743D9}
+		{E783C8C9-23FF-46C3-AA45-C04182464AF0} = {B4C622A6-A7AD-4F31-BEB1-C66B958BCD19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA9D9C62-C04D-4AD0-B7B3-7DE7F816F8D0}
