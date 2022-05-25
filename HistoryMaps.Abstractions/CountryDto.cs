@@ -2,4 +2,4 @@
 
 namespace HistoryMaps;
 
-public record CountryDto(string Name, bool[,] Points, Color Color):AreaDto(Points, Color);
+public record CountryDto(string Name, Color Color):AreaDto(Color);

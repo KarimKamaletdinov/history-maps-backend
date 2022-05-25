@@ -2,12 +2,14 @@
 
 namespace HistoryMaps;
 
-/// <summary>
-/// Область на карте
-/// </summary>
-/// <param name="Points">
-/// Точки [широта, долгота].
-/// Широт 541 = 90 северных + 1 экватор + 90 южных.
-/// Долгот 1080: 180 западных + 1 экватор + 180 восточных.
-/// </param>
-public record AreaDto(bool[,] Points, Color Color);
+public record AreaDto(Color Color)
+{
+    private readonly bool[,] _points = new bool[1080, 541];
+
+    public bool[,] Points
+    {
+        get => _points;
+        init => _points = value.GetLength(0) == 1080 && value.GetLength(1) == 541 ?
+            value : throw new DomainException("Points should be bool[1080, 541]");
+    }
+}

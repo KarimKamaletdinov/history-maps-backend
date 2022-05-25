@@ -13,6 +13,6 @@ public class Country : Area
 
     public new CountryDto ToDto()
     {
-        return new(Name, Points, Color);
+        return new(Name, Color) { Points = Points };
     }
 }
