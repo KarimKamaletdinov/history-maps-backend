@@ -61,7 +61,7 @@ public static class To3MfConverter
         if(y >= Map.Height)
             y = Map.Height - 1;
         if(x >= Map.Width)
-            x -= Map.Height;
+            x -= Map.Width;
         return indices[x, y];
     }
 

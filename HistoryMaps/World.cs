@@ -17,6 +17,13 @@ public class World
         _countries = countries.ToList();
     }
 
+    public World(WorldDto dto)
+    {
+        Id = dto.Id;
+        Water = new Area(dto.Water);
+        _countries = dto.Countries.Select(x => new Country(x)).ToList();
+    }
+
     public WorldDto ToDto()
     {
         return new(Id, Water.ToDto(), Countries.Select(x => x.ToDto()).ToArray());

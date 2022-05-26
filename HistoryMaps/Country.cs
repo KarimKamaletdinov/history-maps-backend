@@ -11,6 +11,11 @@ public class Country : Area
         Name = name;
     }
 
+    public Country(CountryDto dto) : base(dto)
+    {
+        Name = dto.Name;
+    }
+
     public new CountryDto ToDto()
     {
         return new(Name, Color) { Points = Points };
