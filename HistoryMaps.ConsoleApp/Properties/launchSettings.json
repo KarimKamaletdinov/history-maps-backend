@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HistoryMaps.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "sync --id sss"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 ﻿namespace HistoryMaps;
 
 /// <summary>
-/// Мир размером 1080x541 пиксель
+/// Мир размером Map.WidthxMap.Height пиксель
 /// </summary>
 /// <param name="Id">Id</param>
 /// <param name="Water">Область, занимаемая водой</param>

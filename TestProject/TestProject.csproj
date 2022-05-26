@@ -25,6 +25,12 @@
     <None Update="data\temp\init.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\worlds\96d68a4e-f97f-4823-89c9-b34f93020c5e.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\worlds\96d68a4e-f97f-4823-89c9-b34f93020c5e.mtd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\worlds\init.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

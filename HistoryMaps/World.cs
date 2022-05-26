@@ -21,4 +21,20 @@ public class World
     {
         return new(Id, Water.ToDto(), Countries.Select(x => x.ToDto()).ToArray());
     }
+
+    public void SetPoint(int x, int y, Country? country)
+    {
+        if (Water.Points[x, y])
+            throw new DomainException("Can't set a point filled by water");
+        foreach (var c in Countries)
+            if (c.Points[x, y])
+                c.Points[x, y] = false;
+        if (country != null)
+        {
+            if (country.Points[x, y])
+                throw new DomainException("The country you are setting to " +
+                                          "already owns this point");
+            country.Points[x, y] = true;
+        }
+    }
 }

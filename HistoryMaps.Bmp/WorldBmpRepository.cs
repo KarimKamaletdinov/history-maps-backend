@@ -20,19 +20,19 @@ public class WorldBmpRepository : IWorldBmpRepository
         if (File.Exists(path))
             throw new AlreadyExistsException($"File \"{path}\" already exists!");
 
-        using var image = new Bitmap(1080, 541);
+        using var image = new Bitmap(Map.Width, Map.Height);
         
-        for (var x = 0; x < 1080; x++)
+        for (var x = 0; x < Map.Width; x++)
         {
-            for (var y = 0; y < 541; y++)
+            for (var y = 0; y < Map.Height; y++)
             {
-                if (world.Water.Points[y, x])
+                if (world.Water.Points[x, y])
                     image.SetPixel(x, y, world.Water.Color);
                 else
                 {
                     foreach (var country in world.Countries)
                     {
-                        if (country.Points[y, x])
+                        if (country.Points[x, y])
                             image.SetPixel(x, y, country.Color);
                     }
                 }
@@ -48,11 +48,11 @@ public class WorldBmpRepository : IWorldBmpRepository
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
 
-        using var image = new Bitmap(1080, 541);
+        using var image = new Bitmap(Map.Width, Map.Height);
         
-        for (var x = 0; x < 1080; x++)
+        for (var x = 0; x < Map.Width; x++)
         {
-            for (var y = 0; y < 541; y++)
+            for (var y = 0; y < Map.Height; y++)
             {
                 if (world.Water.Points[x, y])
                     image.SetPixel(x, y, world.Water.Color);
@@ -89,10 +89,10 @@ public class WorldBmpRepository : IWorldBmpRepository
         
         var water = new Area(colorDictionary["water"]);
         var countries = new List<Country>();
-        var p = image.GetPixel(541, 180);
-        for (var x = 0; x < 1080; x++)
+        var p = image.GetPixel(Map.Height, 180);
+        for (var x = 0; x < Map.Width; x++)
         {
-            for (var y = 0; y < 541; y++)
+            for (var y = 0; y < Map.Height; y++)
             {
                 var pixel = image.GetPixel(x, y);
                 foreach (var (name, color) in colorDictionary)
@@ -100,15 +100,15 @@ public class WorldBmpRepository : IWorldBmpRepository
                     if (color.R == pixel.R && color.G == pixel.G && color.B == pixel.B)
                     {
                         if (name == "water")
-                            water.Points[y, x] = true;
+                            water.Points[x, y] = true;
                         else
                         {
                             if (countries.Any(c => c.Color == color))
-                                countries.Find(c => c.Color == color)!.Points[y, x] = true;
+                                countries.Find(c => c.Color == color)!.Points[x, y] = true;
                             else
                             {
                                 var country = new Country(name, color);
-                                country.Points[y, x] = true;
+                                country.Points[x, y] = true;
                                 countries.Add(country);
                             }
                         }

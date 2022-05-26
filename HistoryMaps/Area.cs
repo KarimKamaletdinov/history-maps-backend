@@ -12,7 +12,7 @@ public class Area
     /// </summary>
     public Color Color { get; set; }
 
-    public bool[,] Points { get; } = new bool[1080, 540];
+    public bool[,] Points { get; } = new bool[Map.Width, Map.Height];
 
     public Area(Color color)
     {
@@ -21,6 +21,6 @@ public class Area
 
     public AreaDto ToDto()
     {
-        return new(Points, Color);
+        return new(Color){Points = Points};
     }
 }
