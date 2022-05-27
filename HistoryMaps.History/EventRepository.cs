@@ -22,14 +22,14 @@ public class EventRepository : IEventRepository
     public IReadOnlyCollection<Event> GetAllEvents()
     {
         using var connection = _connectionFactory.CreateConnection();
-        var events = connection.GetAll<DbEvent>();
+        var events = connection.GetAll<DbEvent>().ToArray();
         var result = new List<Event>();
-        for (var i = 0; i < events.Count(); i++)
+        for (var i = 0; i < events.Length; i++)
         {
             var e = events.ElementAt(i);
             var changes = connection.Query<DbChange>(
                 $"SELECT * FROM {ChangesTableName} WHERE event_id='{e.id}'" +
-                $"ORDER BY id");
+                "ORDER BY id");
             if (i == 0)
             {
                 var baseWorld = _worldBmpRepository.GetBaseWorld();
@@ -76,7 +76,7 @@ public class EventRepository : IEventRepository
     {
         [ExplicitKey]
         public Guid id { get; set; }
-        public string name { get; set; }
+        public string name { get; set; } = "";
         public int year { get; set; }
         public Guid world_id { get; set; }
     }
@@ -89,8 +89,9 @@ public class EventRepository : IEventRepository
         public Guid event_id { get; set; }
         [ExplicitKey]
         public int id { get; set; }
-        public string type { get; set; }
-        public string country_name { get; set; }
+        public string type { get; set; } = "";
+        public string country1_name { get; set; } = "";
+        public string country2_name { get; set; } = "";
         public Guid area_id { get; set; }
     }
     
