@@ -2,26 +2,24 @@
 
 public class World
 {
-    private readonly List<Country> _countries;
-
     public Guid Id { get; set; }
 
     public MapArea Water { get; }
 
-    public IReadOnlyCollection<Country> Countries => _countries;
+    public List<Country> Countries;
 
     public World(Guid id, MapArea water, IEnumerable<Country> countries)
     {
         Id = id;
         Water = water;
-        _countries = countries.ToList();
+        Countries = countries.ToList();
     }
 
     public World(WorldDto dto)
     {
         Id = dto.Id;
         Water = new MapArea(dto.Water);
-        _countries = dto.Countries.Select(x => new Country(x)).ToList();
+        Countries = dto.Countries.Select(x => new Country(x)).ToList();
     }
 
     public void SetPoint(int x, int y, Country? country)

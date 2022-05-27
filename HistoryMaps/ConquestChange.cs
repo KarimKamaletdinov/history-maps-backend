@@ -62,6 +62,6 @@ public class ConquestChange : IChange
 
     public ChangeDto ToDto()
     {
-        return new();
+        throw new NotImplementedException();
     }
 }

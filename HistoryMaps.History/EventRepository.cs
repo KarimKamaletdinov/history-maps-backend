@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
@@ -72,6 +73,10 @@ public class EventRepository : IEventRepository
                     world.Countries.First(x => x.Name == change.country1_name),
                     conquered,
                     area);
+            case "new":
+                return new CreateCountryChange(
+                    new Country(GetPoints((Guid)change.area_id), change.country1_name, 
+                        Color.FromArgb(change.id)));
             default:
                 throw new DomainException($"Invalid change type: {change.type}");
         }
@@ -100,6 +105,7 @@ public class EventRepository : IEventRepository
         public string? country1_name { get; set; }
         public string? country2_name { get; set; }
         public Guid? area_id { get; set; }
+        public int? color { get; set; }
     }
     
     [Table(PointsTableName)]
