@@ -16,7 +16,7 @@ public static class To3MfConverter
             AddArea(doc, country, arr);
         }
 
-        var blankArea = new AreaDto(Color.White);
+        var blankArea = new MapAreaDto(new bool[Map.Width,Map.Height],Color.White);
         for (var x = 0; x < Map.Width; x++)
             for (var y = 0; y < Map.Height; y++)
                 if (!world.Water.Points[x, y] && !world.Countries.Any(c => c.Points[x, y]))
@@ -25,12 +25,12 @@ public static class To3MfConverter
         return (doc, world.Id);
     }
 
-    private static void AddArea(Document doc, AreaDto area, int[,] indices)
+    private static void AddArea(Document doc, MapAreaDto mapArea, int[,] indices)
     {
-        var colorId = doc.AddColor(area.Color);
+        var colorId = doc.AddColor(mapArea.Color);
         for (var x = 0; x < Map.Width; x++)
             for (var y = 0; y < Map.Height; y++)
-                if (area.Points[x, y])
+                if (mapArea.Points[x, y])
                     CreateTriangle(doc, x, y, colorId, indices);
 
     }

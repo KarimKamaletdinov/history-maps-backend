@@ -1,36 +1,33 @@
-﻿using System.Drawing;
+﻿namespace HistoryMaps;
 
-namespace HistoryMaps;
-
-/// <summary>
-/// Область на карте
-/// </summary>
 public class Area
 {
-    /// <summary>
-    /// Цвет области
-    /// </summary>
-    public Color Color { get; set; }
+    private readonly bool[,] _points = new bool[Map.Width, Map.Height];
 
-    public bool[,] Points { get; } = new bool[Map.Width, Map.Height];
-
-    public Area(Color color)
+    public bool[,] Points
     {
-        Color = color;
+        get => _points;
+        init
+        {
+            if(value.GetLength(0) != Map.Width || value.GetLength(1) != Map.Height)
+                throw new ValidationException("Area.Points", value,
+                    $"point[{Map.Width}, {Map.Height}]");
+            _points = value;
+        }
     }
 
-    public Area(AreaDto dto)
+    public Area(bool[,] points)
     {
-        if (dto.Points.GetLength(0) != Map.Width &&
-            dto.Points.GetLength(1) != Map.Height)
-            throw new ValidationException("Area.Points", dto.Points,
-                $"point[{Map.Width}, {Map.Height}]");
-        Color = dto.Color;
-        Points = dto.Points;
+        Points = points;
     }
 
-    public AreaDto ToDto()
+    public Area(AreaDto dto) : this(dto.Points)
     {
-        return new(Color){Points = Points};
+
+    }
+
+    public virtual AreaDto ToDto()
+    {
+        return new(Points);
     }
 }

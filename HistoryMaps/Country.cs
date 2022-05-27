@@ -2,22 +2,21 @@
 
 namespace HistoryMaps;
 
-public class Country : Area
+public class Country : MapArea
 {
     public string Name { get; set; }
 
-    public Country(string name, Color color) : base(color)
+    public Country(bool[,] points, string name, Color color) : base(points, color)
     {
         Name = name;
     }
 
-    public Country(CountryDto dto) : base(dto)
+    public Country(CountryDto dto) : this(dto.Points, dto.Name, dto.Color)
     {
-        Name = dto.Name;
     }
 
-    public new CountryDto ToDto()
+    public override CountryDto ToDto()
     {
-        return new(Name, Color) { Points = Points };
+        return new(Name, Points, Color);
     }
 }

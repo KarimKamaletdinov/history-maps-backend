@@ -78,6 +78,8 @@ public class WorldBmpRepository : IWorldBmpRepository
         File.Delete(path);
     }
 
+    public World GetBaseWorld() => Get(Guid.Empty);
+
     public World Get(Guid worldId)
     {
         var colorDictionary = GetColors(worldId);
@@ -87,7 +89,7 @@ public class WorldBmpRepository : IWorldBmpRepository
         
         using var image = (Bitmap)Image.FromFile(path);
         
-        var water = new Area(colorDictionary["water"]);
+        var water = new MapArea(new bool[Map.Width, Map.Height], colorDictionary["water"]);
         var countries = new List<Country>();
         var p = image.GetPixel(Map.Height, 180);
         for (var x = 0; x < Map.Width; x++)
@@ -107,7 +109,7 @@ public class WorldBmpRepository : IWorldBmpRepository
                                 countries.Find(c => c.Color == color)!.Points[x, y] = true;
                             else
                             {
-                                var country = new Country(name, color);
+                                var country = new Country(new bool[Map.Width, Map.Height], name, color);
                                 country.Points[x, y] = true;
                                 countries.Add(country);
                             }

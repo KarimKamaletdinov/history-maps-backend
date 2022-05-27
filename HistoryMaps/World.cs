@@ -6,11 +6,11 @@ public class World
 
     public Guid Id { get; set; }
 
-    public Area Water { get; }
+    public MapArea Water { get; }
 
     public IReadOnlyCollection<Country> Countries => _countries;
 
-    public World(Guid id, Area water, IEnumerable<Country> countries)
+    public World(Guid id, MapArea water, IEnumerable<Country> countries)
     {
         Id = id;
         Water = water;
@@ -20,7 +20,7 @@ public class World
     public World(WorldDto dto)
     {
         Id = dto.Id;
-        Water = new Area(dto.Water);
+        Water = new MapArea(dto.Water);
         _countries = dto.Countries.Select(x => new Country(x)).ToList();
     }
 
