@@ -9,9 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql" Version="7.0.0-preview.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HistoryMaps.3MF\HistoryMaps.3MF.csproj" />
     <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
+    <ProjectReference Include="..\HistoryMaps.History\HistoryMaps.History.csproj" />
     <ProjectReference Include="..\HistoryMaps.UseCases\HistoryMaps.UseCases.csproj" />
   </ItemGroup>
 

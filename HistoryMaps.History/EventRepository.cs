@@ -62,9 +62,14 @@ public class EventRepository : IEventRepository
         switch (change.type)
         {
             case "conquest":
+                var conquered = 
+                    world.Countries.FirstOrDefault(x => x.Name == change.country2_name);
+                var area = change.area_id == null ? null 
+                : new Area(GetPoints((Guid)change.area_id));
                 return new ConquestChange(
-                    world.Countries.First(x => x.Name == change.country_name),
-                    new Area(GetPoints(change.area_id)));
+                    world.Countries.First(x => x.Name == change.country1_name),
+                    conquered,
+                    area);
             default:
                 throw new DomainException($"Invalid change type: {change.type}");
         }
@@ -90,9 +95,9 @@ public class EventRepository : IEventRepository
         [ExplicitKey]
         public int id { get; set; }
         public string type { get; set; } = "";
-        public string country1_name { get; set; } = "";
-        public string country2_name { get; set; } = "";
-        public Guid area_id { get; set; }
+        public string? country1_name { get; set; }
+        public string? country2_name { get; set; }
+        public Guid? area_id { get; set; }
     }
     
     [Table(PointsTableName)]
