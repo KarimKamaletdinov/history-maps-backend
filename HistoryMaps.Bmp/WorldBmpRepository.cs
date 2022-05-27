@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace HistoryMaps;
 
@@ -81,7 +80,47 @@ public class WorldBmpRepository : IWorldBmpRepository
         File.Delete(path);
     }
 
-    public World GetBaseWorld() => Get(Guid.Empty);
+    public World GetBaseWorld()
+    {
+        var colorDictionary = GetColors(
+            _rootFolder.GetPath("constants", "base_world", ".mtd"));
+        var path = _rootFolder.GetPath("constants", "base_world", ".bmp");
+        if (!File.Exists(path))
+            throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
+        
+        using var image = (Bitmap)Image.FromFile(path);
+        
+        var water = new MapArea(new bool[Map.Width, Map.Height], colorDictionary["water"]);
+        var countries = new List<Country>();
+        for (var x = 0; x < Map.Width; x++)
+        {
+            for (var y = 0; y < Map.Height; y++)
+            {
+                var pixel = image.GetPixel(x, y);
+                foreach (var (name, color) in colorDictionary)
+                {
+                    if (color.R == pixel.R && color.G == pixel.G && color.B == pixel.B)
+                    {
+                        if (name == "water")
+                            water.Points[x, y] = true;
+                        else
+                        {
+                            if (countries.Any(c => c.Color == color))
+                                countries.Find(c => c.Color == color)!.Points[x, y] = true;
+                            else
+                            {
+                                var country = new Country(new bool[Map.Width, Map.Height], name, color);
+                                country.Points[x, y] = true;
+                                countries.Add(country);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return new World(Guid.Empty, water, countries);
+    }
 
     public World Get(Guid worldId)
     {
@@ -94,7 +133,6 @@ public class WorldBmpRepository : IWorldBmpRepository
         
         var water = new MapArea(new bool[Map.Width, Map.Height], colorDictionary["water"]);
         var countries = new List<Country>();
-        var p = image.GetPixel(Map.Height, 180);
         for (var x = 0; x < Map.Width; x++)
         {
             for (var y = 0; y < Map.Height; y++)
@@ -126,10 +164,13 @@ public class WorldBmpRepository : IWorldBmpRepository
     }
 
     private Dictionary<string, Color> GetColors(Guid worldId)
+        => GetColors(_rootFolder.GetPath("worlds", worldId + ".mtd"));
+
+    private Dictionary<string, Color> GetColors(string path)
     {
-        var json = File.ReadAllText(_rootFolder.GetPath("worlds", worldId + ".mtd"));
+        var json = File.ReadAllText(path);
         var dictionary = JsonSerializer.Deserialize<Dictionary<string, Rgb>>(json) ?? 
-                          throw new DomainException("Invalid colors format");
+                         throw new DomainException("Invalid colors format");
         return new Dictionary<string, Color>(dictionary.Select(x => 
             new KeyValuePair<string, Color>(x.Key, Color.FromArgb(x.Value.R, x.Value.G, x.Value.B))));
     }
