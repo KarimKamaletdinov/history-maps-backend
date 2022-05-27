@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -40,6 +41,7 @@ public class WorldBmpRepository : IWorldBmpRepository
         }
 
         image.Save(path);
+        WriteColors(world.Id, CreateColors(world));
     }
 
     public void Update(World world)
@@ -68,6 +70,7 @@ public class WorldBmpRepository : IWorldBmpRepository
         }
 
         image.Save(path);
+        WriteColors(world.Id, CreateColors(world));
     }
 
     public void Delete(Guid worldId)
@@ -131,11 +134,40 @@ public class WorldBmpRepository : IWorldBmpRepository
             new KeyValuePair<string, Color>(x.Key, Color.FromArgb(x.Value.R, x.Value.G, x.Value.B))));
     }
 
+    private Dictionary<string, Color> CreateColors(World world)
+    {
+        var result = new Dictionary<string, Color>();
+        result.Add("water", world.Water.Color);
+        foreach (var country in world.Countries)
+        {
+            result.Add(country.Name, country.Color);
+        }
+        return result;
+    }
+
+    private void WriteColors(Guid worldId, Dictionary<string, Color> colors)
+    {
+        File.WriteAllText(_rootFolder.GetPath("worlds", worldId + ".mtd"),
+            SerializeDict(colors), Encoding.UTF8);
+    }
+
     private string GenPath(Guid worldId)
     {
         return _rootFolder.GetPath("worlds" + Path.DirectorySeparatorChar + worldId + ".bmp");
     }
 
+    private static string SerializeDict(Dictionary<string, Color> dict)
+    {
+        var result = "{\n";
+        foreach (var (name, color) in dict)
+        {
+            result += $"    \"{name}\": {{\"R\": {color.R}, \"G\": {color.G}," +
+                      $"\"B\": {color.B}}},\n";
+        }
+
+        result = result.Substring(0, result.Length - 2) + "\n}";
+        return result;
+    }
 
     private record Rgb(byte R, byte G, byte B);
 }

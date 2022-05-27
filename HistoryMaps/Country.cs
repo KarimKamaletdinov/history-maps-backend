@@ -19,4 +19,9 @@ public class Country : MapArea
     {
         return new(Name, Points, Color);
     }
+
+    public override Country Copy()
+    {
+        return new(Points, Name, Color);
+    }
 }

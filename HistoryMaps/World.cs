@@ -24,11 +24,6 @@ public class World
         _countries = dto.Countries.Select(x => new Country(x)).ToList();
     }
 
-    public WorldDto ToDto()
-    {
-        return new(Id, Water.ToDto(), Countries.Select(x => x.ToDto()).ToArray());
-    }
-
     public void SetPoint(int x, int y, Country? country)
     {
         if (Water.Points[x, y])
@@ -43,5 +38,15 @@ public class World
                                           "already owns this point");
             country.Points[x, y] = true;
         }
+    }
+
+    public WorldDto ToDto()
+    {
+        return new(Id, Water.ToDto(), Countries.Select(x => x.ToDto()).ToArray());
+    }
+
+    public World Copy(Guid newId)
+    {
+        return new World(newId, Water.Copy(), Countries.Select(x => x.Copy()));
     }
 }

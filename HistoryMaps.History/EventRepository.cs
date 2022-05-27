@@ -34,12 +34,14 @@ public class EventRepository : IEventRepository
             {
                 var baseWorld = _worldBmpRepository.GetBaseWorld();
                 result.Add(new Event(e.id, e.name, e.year,
-                    changes.Select(x => ParseChange(baseWorld, x)).ToList(), baseWorld));
+                    changes.Select(x => ParseChange(baseWorld, x)).ToList(), baseWorld,
+                    e.world_id));
             }
             else
             {
                 result.Add(new Event(e.id, e.name, e.year,
-                    changes.Select(x => ParseChange(result[i - 1].World, x)).ToList(), result[i - 1]));
+                    changes.Select(x => ParseChange(result[i - 1].World, x)).ToList(),
+                    result[i - 1], e.world_id));
             }
         }
         return result;

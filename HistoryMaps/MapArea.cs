@@ -20,4 +20,9 @@ public class MapArea : Area
     {
         return new(Points, Color);
     }
+
+    public override MapArea Copy()
+    {
+        return new(Points, Color);
+    }
 }

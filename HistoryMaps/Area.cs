@@ -30,4 +30,9 @@ public class Area
     {
         return new(Points);
     }
+
+    public virtual Area Copy()
+    {
+        return new(Points);
+    }
 }

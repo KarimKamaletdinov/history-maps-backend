@@ -7,13 +7,13 @@ public class Event
     public int Year { get; set; }
     public IReadOnlyCollection<IChange> Changes { get; }
     private readonly World _baseWorld;
+    private readonly Guid _worldId;
 
     public World World
     {
         get
         {
-            // copy world
-            var world = new World(_baseWorld.ToDto());
+            var world = _baseWorld.Copy(_worldId);
             foreach (var change in Changes)
             {
                 change.Apply(world);
@@ -23,22 +23,24 @@ public class Event
     }
 
     public Event(Guid id, string name, int year, IReadOnlyCollection<IChange> changes,
-        Event previous)
+        Event previous, Guid worldId)
     {
         Id = id;
         Name = name;
         Year = year;
         Changes = changes;
         _baseWorld = previous.World;
+        _worldId = worldId;
     }
 
     public Event(Guid id, string name, int year, IReadOnlyCollection<IChange> changes,
-        World baseWorld)
+        World baseWorld, Guid worldId)
     {
         Id = id;
         Name = name;
         Year = year;
         Changes = changes;
         _baseWorld = baseWorld;
+        _worldId = worldId;
     }
 }
