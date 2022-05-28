@@ -9,7 +9,7 @@ var events = new EventRepository(new PostgresqlConnectionFactory(), bmpRepo)
 foreach (var e in events)
 {
    bmpRepo.Insert(e.World); 
-   new SynchronizeWorldCommandHandler(new GetWorldCommandHandler(bmpRepo),
+   new SynchronizeWorldCommandHandler(new GetWorldQueryHandler(bmpRepo),
     new Create3DWorldCommandHandler(new ThreeMfRepository(rootFolder)), rootFolder)
     .Execute(new SynchronizeWorld(e.World.Id));
 }

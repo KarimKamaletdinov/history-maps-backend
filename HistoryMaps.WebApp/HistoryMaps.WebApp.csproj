@@ -5,10 +5,21 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>HistoryMaps</RootNamespace>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="data\constants\base_world.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="data\worlds\init.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="data\worlds\init.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -23,13 +34,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.3MF\HistoryMaps.3MF.csproj" />
     <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Controllers\HistoryMaps.Controllers.csproj" />
     <ProjectReference Include="..\HistoryMaps.History\HistoryMaps.History.csproj" />
+    <ProjectReference Include="..\HistoryMaps.UseCases\HistoryMaps.UseCases.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

@@ -8,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddApplicationPart(Assembly.Load("HistoryMaps.Controllers"));
 builder.Services.AddSwaggerGen();
 
+var exeFile = new Uri(Assembly.GetEntryAssembly().Location).AbsolutePath;
+var dir = Path.GetDirectoryName(exeFile);
+var rootPath = Path.GetFullPath(Path.Combine(dir, builder.Configuration["RootFolder"]));
+
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(Configure);
 
@@ -16,9 +20,6 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
 
-var exeFile = new Uri(Assembly.GetEntryAssembly().CodeBase).AbsolutePath;
-var dir = Path.GetDirectoryName(exeFile);
-var rootPath = Path.GetFullPath(Path.Combine(dir, builder.Configuration["RootFolder"]));
 app.UseStaticFiles(new StaticFileOptions
 {
     RequestPath = "/data",
@@ -31,12 +32,17 @@ void Configure(ContainerBuilder b)
     //factories
     b.RegisterType<PostgresqlConnectionFactory>().WithParameter("connectionString", 
         builder.Configuration["ConnectionString"]).AsImplementedInterfaces();
-    b.RegisterType<RootFolderProvider>().WithParameter("rootFolder",builder.Configuration["RootFolder"]).AsImplementedInterfaces();
+    b.RegisterType<RootFolderProvider>().WithParameter("rootFolder",rootPath).AsImplementedInterfaces();
 
     //repositories
     b.RegisterType<WorldBmpRepository>().AsImplementedInterfaces();
     b.RegisterType<EventRepository>().AsImplementedInterfaces();
+    b.RegisterType<ThreeMfRepository>().AsImplementedInterfaces();
 
     //services
     b.RegisterType<GetAllEventsQueryHandler>().AsImplementedInterfaces();
+    b.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
+    b.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
+    b.RegisterType<SynchronizeWorldCommandHandler>().AsImplementedInterfaces();
+    b.RegisterType<GenerateWorldsCommandHandler>().AsImplementedInterfaces();
 }

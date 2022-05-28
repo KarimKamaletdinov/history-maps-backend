@@ -80,6 +80,15 @@ public class WorldBmpRepository : IWorldBmpRepository
         File.Delete(path);
     }
 
+    public void ClearAll()
+    {
+        var files = Directory.GetFiles(_rootFolder.GetPath("worlds"));
+        foreach (var file in files)
+        {
+            File.Delete(file);
+        }
+    }
+
     public World GetBaseWorld()
     {
         var colorDictionary = GetColors(
