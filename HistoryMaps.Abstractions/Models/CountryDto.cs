@@ -3,4 +3,4 @@
 namespace HistoryMaps;
 
 public record CountryDto(string Name, bool[,] Points, Color Color)
-    :MapAreaDto(Points, Color);
+    : MapAreaDto(Points, Color);

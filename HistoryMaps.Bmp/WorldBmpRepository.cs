@@ -83,8 +83,8 @@ public class WorldBmpRepository : IWorldBmpRepository
     public World GetBaseWorld()
     {
         var colorDictionary = GetColors(
-            _rootFolder.GetPath("constants", "base_world", ".mtd"));
-        var path = _rootFolder.GetPath("constants", "base_world", ".bmp");
+            _rootFolder.GetPath("constants", "base_world.json"));
+        var path = _rootFolder.GetPath("constants", "base_world.bmp");
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
         
@@ -164,7 +164,7 @@ public class WorldBmpRepository : IWorldBmpRepository
     }
 
     private Dictionary<string, Color> GetColors(Guid worldId)
-        => GetColors(_rootFolder.GetPath("worlds", worldId + ".mtd"));
+        => GetColors(_rootFolder.GetPath("worlds", worldId + ".json"));
 
     private Dictionary<string, Color> GetColors(string path)
     {
@@ -188,7 +188,7 @@ public class WorldBmpRepository : IWorldBmpRepository
 
     private void WriteColors(Guid worldId, Dictionary<string, Color> colors)
     {
-        File.WriteAllText(_rootFolder.GetPath("worlds", worldId + ".mtd"),
+        File.WriteAllText(_rootFolder.GetPath("worlds", worldId + ".json"),
             SerializeDict(colors), Encoding.UTF8);
     }
 

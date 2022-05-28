@@ -43,4 +43,9 @@ public class Event
         _baseWorld = baseWorld;
         _worldId = worldId;
     }
+
+    public EventDto ToDto()
+    {
+        return new(Id, Name, Year, _worldId);
+    }
 }

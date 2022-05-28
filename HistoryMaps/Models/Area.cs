@@ -9,7 +9,7 @@ public class Area
         get => _points;
         init
         {
-            if(value.GetLength(0) != Map.Width || value.GetLength(1) != Map.Height)
+            if (value.GetLength(0) != Map.Width || value.GetLength(1) != Map.Height)
                 throw new ValidationException("Area.Points", value,
                     $"point[{Map.Width}, {Map.Height}]");
             _points = value;

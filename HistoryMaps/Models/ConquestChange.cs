@@ -17,16 +17,16 @@ public class ConquestChange : IChange
                 return;
             }
             for (var x = 0; x < Map.Width; x++)
-            for (var y = 0; y < Map.Height; y++)
-                if(value.Points[x, y])
-                {
-                    if (Conquered != null && !Conquered.Points[x, y])
-                        throw new DomainException("Conquered country doesn't contain" +
-                                                  $" the point ({x}, {y})");
-                    if (Conqueror.Points[x, y])
-                        throw new DomainException("Conqueror country already contains" +
-                                                  $" the point ({x}, {y})");
-                }
+                for (var y = 0; y < Map.Height; y++)
+                    if (value.Points[x, y])
+                    {
+                        if (Conquered != null && !Conquered.Points[x, y])
+                            throw new DomainException("Conquered country doesn't contain" +
+                                                      $" the point ({x}, {y})");
+                        if (Conqueror.Points[x, y])
+                            throw new DomainException("Conqueror country already contains" +
+                                                      $" the point ({x}, {y})");
+                    }
 
             _conqueredArea = value;
         }
@@ -47,16 +47,16 @@ public class ConquestChange : IChange
         if (ConqueredArea == null)
         {
             for (var x = 0; x < Map.Width; x++)
-            for (var y = 0; y < Map.Height; y++)
-                if (Conquered != null && Conquered.Points[x, y])
-                    world.SetPoint(x, y, Conqueror);
+                for (var y = 0; y < Map.Height; y++)
+                    if (Conquered != null && Conquered.Points[x, y])
+                        world.SetPoint(x, y, Conqueror);
         }
         else
         {
             for (var x = 0; x < Map.Width; x++)
-            for (var y = 0; y < Map.Height; y++)
-                if (ConqueredArea != null && ConqueredArea.Points[x, y])
-                    world.SetPoint(x, y, Conqueror);
+                for (var y = 0; y < Map.Height; y++)
+                    if (ConqueredArea != null && ConqueredArea.Points[x, y])
+                        world.SetPoint(x, y, Conqueror);
         }
     }
 

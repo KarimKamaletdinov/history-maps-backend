@@ -15,7 +15,12 @@
   <ItemGroup>
     <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
     <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.History.Abstractions\HistoryMaps.History.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps\HistoryMaps.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="QueryHandlers\" />
   </ItemGroup>
 
 </Project>

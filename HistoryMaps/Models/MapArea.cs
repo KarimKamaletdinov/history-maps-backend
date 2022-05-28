@@ -6,7 +6,7 @@ public class MapArea : Area
 {
     public Color Color { get; set; }
 
-    public MapArea(bool [,] points, Color color) : base(points)
+    public MapArea(bool[,] points, Color color) : base(points)
     {
         Color = color;
     }
