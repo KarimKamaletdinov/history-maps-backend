@@ -33,6 +33,9 @@
     <None Update="data\constants\template.3mf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\input\init.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\temp\init.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

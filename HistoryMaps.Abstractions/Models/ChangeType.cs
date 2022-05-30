@@ -3,5 +3,6 @@
 public enum ChangeType
 {
     NewCountry,
+    DropCountry,
     Conquest
 }

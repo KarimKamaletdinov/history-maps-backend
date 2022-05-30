@@ -2,61 +2,38 @@
 
 public class ConquestChange : IChange
 {
-    private readonly Area? _conqueredArea;
-    public Country Conqueror { get; set; }
-    public Country? Conquered { get; }
+    public string? ConquerorName { get; set; }
+    public string? ConqueredName { get; }
 
-    public Area? ConqueredArea
+    public Area? ConqueredArea { get; set; }
+
+    public ConquestChange(string? conquerorNameName, string? conqueredNameName, Area? conqueredArea)
     {
-        get => _conqueredArea;
-        private init
-        {
-            if (value == null)
-            {
-                _conqueredArea = value;
-                return;
-            }
-            for (var x = 0; x < Map.Width; x++)
-                for (var y = 0; y < Map.Height; y++)
-                    if (value.Points[x, y])
-                    {
-                        if (Conquered != null && !Conquered.Points[x, y])
-                            throw new DomainException("Conquered country doesn't contain" +
-                                                      $" the point ({x}, {y})");
-                        if (Conqueror.Points[x, y])
-                            throw new DomainException("Conqueror country already contains" +
-                                                      $" the point ({x}, {y})");
-                    }
-
-            _conqueredArea = value;
-        }
-    }
-
-    public ConquestChange(Country conqueror, Country? conquered, Area? conqueredArea)
-    {
-        if (conquered == null && conqueredArea == null)
+        if (conqueredNameName == null && conqueredArea == null)
             throw new DomainException("You must specify at least one of these:" +
-                                      $"{nameof(conquered)}, {nameof(conqueredArea)}");
-        Conqueror = conqueror;
-        Conquered = conquered;
+                                      $"{nameof(conqueredNameName)}, {nameof(conqueredArea)}");
+        ConquerorName = conquerorNameName;
+        ConqueredName = conqueredNameName;
         ConqueredArea = conqueredArea;
     }
 
     public void Apply(World world)
     {
+        var conqueror = world.Countries.FirstOrDefault(x => x.Name == ConquerorName);
+        var conquered = world.Countries.FirstOrDefault(x => x.Name == ConqueredName);
         if (ConqueredArea == null)
         {
             for (var x = 0; x < Map.Width; x++)
                 for (var y = 0; y < Map.Height; y++)
-                    if (Conquered != null && Conquered.Points[x, y])
-                        world.SetPoint(x, y, Conqueror);
+                    if (conquered != null && conquered.Points[x, y])
+                        world.SetPoint(x, y, conqueror);
         }
         else
         {
             for (var x = 0; x < Map.Width; x++)
                 for (var y = 0; y < Map.Height; y++)
                     if (ConqueredArea != null && ConqueredArea.Points[x, y])
-                        world.SetPoint(x, y, Conqueror);
+                        world.SetPoint(x, y, conqueror);
         }
     }
 

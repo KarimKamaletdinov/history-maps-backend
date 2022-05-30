@@ -26,9 +26,8 @@ public class World
     {
         if (Water.Points[x, y])
             throw new DomainException("Can't set a point filled by water");
-        foreach (var c in Countries)
-            if (c.Points[x, y])
-                c.Points[x, y] = false;
+        foreach (var c in Countries.Where(c => c.Points[x, y]))
+            c.Points[x, y] = false;
         if (country != null)
         {
             if (country.Points[x, y])
@@ -36,6 +35,11 @@ public class World
                                           "already owns this point");
             country.Points[x, y] = true;
         }
+    }
+
+    public Country? GetCountry(int x, int y)
+    {
+        return Countries.FirstOrDefault(country => country.Points[x, y]);
     }
 
     public WorldDto ToDto()

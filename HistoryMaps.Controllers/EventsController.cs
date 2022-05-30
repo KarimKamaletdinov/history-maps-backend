@@ -17,5 +17,5 @@ public class EventsController : ControllerBase
     public IEnumerable<EventDto> Get()
     {
         return _getAllEvents.Execute(new());
-    } 
+    }
 }
