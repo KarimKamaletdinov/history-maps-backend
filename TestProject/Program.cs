@@ -1,4 +1,5 @@
-﻿using HistoryMaps;
+﻿using System.Text.Json;
+using HistoryMaps;
 
 
 Console.WriteLine("Start");
@@ -10,6 +11,7 @@ new GenerateWorldsCommandHandler(bmpRepo, eventRepo,
         new Create3DWorldCommandHandler(new ThreeMfRepository(rootFolder)), rootFolder)).Execute(new GenerateWorlds());
 Console.WriteLine("History loaded");
     
+
 Console.WriteLine("Enter year:");
 var year = int.Parse(Console.ReadLine() ?? "");
 
@@ -37,3 +39,8 @@ Console.WriteLine("Changes inserted");
 new GenerateWorldsCommandHandler(bmpRepo, eventRepo,
     new SynchronizeWorldCommandHandler(new GetWorldQueryHandler(bmpRepo),
         new Create3DWorldCommandHandler(new ThreeMfRepository(rootFolder)), rootFolder)).Execute(new GenerateWorlds());
+
+File.WriteAllText(rootFolder.GetPath("events.json"), JsonSerializer.Serialize(eventRepo.GetAllEvents().Select(x => x.ToDto()), new JsonSerializerOptions()
+{
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+}));
