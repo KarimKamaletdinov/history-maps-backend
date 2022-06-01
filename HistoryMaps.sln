@@ -55,7 +55,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.WebApp", "Histo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controllers", "Controllers", "{CB3A5574-2E84-4DC6-826E-F2D18F9644FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Controllers", "HistoryMaps.Controllers\HistoryMaps.Controllers.csproj", "{F633960A-996C-4439-9118-6569460118DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Controllers", "HistoryMaps.Controllers\HistoryMaps.Controllers.csproj", "{F633960A-996C-4439-9118-6569460118DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{F168996C-1361-4A8B-AAD0-2D4734F3B40B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryMaps.Storage", "HistoryMaps.Storage\HistoryMaps.Storage.csproj", "{541D1045-A9A4-4540-982B-E3DFF927EF4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +127,10 @@ Global
 		{F633960A-996C-4439-9118-6569460118DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F633960A-996C-4439-9118-6569460118DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F633960A-996C-4439-9118-6569460118DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{541D1045-A9A4-4540-982B-E3DFF927EF4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{541D1045-A9A4-4540-982B-E3DFF927EF4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{541D1045-A9A4-4540-982B-E3DFF927EF4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{541D1045-A9A4-4540-982B-E3DFF927EF4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +158,8 @@ Global
 		{0C6C5DC8-D2DB-46FC-ACBF-140AD088C434} = {B4C622A6-A7AD-4F31-BEB1-C66B958BCD19}
 		{CB3A5574-2E84-4DC6-826E-F2D18F9644FA} = {C641F6A3-D0E8-426A-8AE8-3CE115B18131}
 		{F633960A-996C-4439-9118-6569460118DD} = {CB3A5574-2E84-4DC6-826E-F2D18F9644FA}
+		{F168996C-1361-4A8B-AAD0-2D4734F3B40B} = {C641F6A3-D0E8-426A-8AE8-3CE115B18131}
+		{541D1045-A9A4-4540-982B-E3DFF927EF4D} = {F168996C-1361-4A8B-AAD0-2D4734F3B40B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA9D9C62-C04D-4AD0-B7B3-7DE7F816F8D0}

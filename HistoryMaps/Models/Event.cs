@@ -5,18 +5,17 @@ namespace HistoryMaps;
 
 public class Event
 {
-    public Guid Id { get; }
-    public string Name { get; set; }
     public int Year { get; set; }
+    public string Name { get; set; }
     public IReadOnlyCollection<IChange> Changes { get; }
+    public Guid WorldId { get; }
     private readonly World _baseWorld;
-    private readonly Guid _worldId;
 
     public World World
     {
         get
         {
-            var world = _baseWorld.Copy(_worldId);
+            var world = _baseWorld.Copy(WorldId);
             foreach (var change in Changes)
             {
                 change.Apply(world);
@@ -25,26 +24,24 @@ public class Event
         }
     }
 
-    public Event(Guid id, string name, int year, IReadOnlyCollection<IChange> changes,
+    public Event(int year, string name, IReadOnlyCollection<IChange> changes,
         Event previous, Guid worldId)
     {
-        Id = id;
         Name = name;
         Year = year;
         Changes = changes;
         _baseWorld = previous.World;
-        _worldId = worldId;
+        WorldId = worldId;
     }
 
-    public Event(Guid id, string name, int year, IReadOnlyCollection<IChange> changes,
+    public Event(int year, string name, IReadOnlyCollection<IChange> changes,
         World baseWorld, Guid worldId)
     {
-        Id = id;
         Name = name;
         Year = year;
         Changes = changes;
         _baseWorld = baseWorld;
-        _worldId = worldId;
+        WorldId = worldId;
     }
 
     public static IEnumerable<IChange> ParseChanges(World baseWorld, World changedWorld)
@@ -61,14 +58,14 @@ public class Event
                 for (var x = 0; x < Map.Width; x++)
                     for (var y = 0; y < Map.Height; y++)
                         c.Points[x, y] = false;
-                createChanges.Add(new CreateCountryChange(c));
+                createChanges.Add(new (c));
             }
         }
         foreach (var country in baseWorld.Countries)
         {
             if (changedWorld.Countries.All(x => x != country))
             {
-                dropChanges.Add(new DropCountryChange(country.Name));
+                dropChanges.Add(new (country.Name));
             }
         }
         for (var x = 0; x < Map.Width; x++)
@@ -97,10 +94,10 @@ public class Event
                     }
                     var points = new bool[Map.Width, Map.Height];
                     points[x, y] = true;
-                        conquestChanges.Add(new ConquestChange(
+                        conquestChanges.Add(new (
                             newCountry?.Name,
                             oldCountry == null ? null : oldCountry.Name,
-                            new Area(points)));
+                            new (points)));
                 }
             }
 
@@ -129,6 +126,6 @@ public class Event
 
     public EventDto ToDto()
     {
-        return new(Id, Name, Year, _worldId);
+        return new (Year, Name, WorldId);
     }
 }

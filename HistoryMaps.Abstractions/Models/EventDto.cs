@@ -1,3 +1,3 @@
 ﻿namespace HistoryMaps;
 
-public record EventDto(Guid Id, string Name, int Year, Guid WorldId);
+public record EventDto(int Year, string Name, Guid WorldId);

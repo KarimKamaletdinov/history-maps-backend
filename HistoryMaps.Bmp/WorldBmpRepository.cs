@@ -180,7 +180,7 @@ public class WorldBmpRepository : IWorldBmpRepository
         var json = File.ReadAllText(path);
         var dictionary = JsonSerializer.Deserialize<Dictionary<string, Rgb>>(json) ?? 
                          throw new DomainException("Invalid colors format");
-        return new Dictionary<string, Color>(dictionary.Select(x => 
+        return new(dictionary.Select(x => 
             new KeyValuePair<string, Color>(x.Key, Color.FromArgb(x.Value.R, x.Value.G, x.Value.B))));
     }
 
