@@ -74,8 +74,13 @@ while (true)
         case "create":
             //Console.WriteLine("Start creating a web app");
             Console.WriteLine("Creating a web app is not implemented yet");
-
-            File.WriteAllText(rootFolder.GetPath("events.json"), JsonConvert.SerializeObject(eventRepo.GetAllEventDtos()), Encoding.UTF8);
+            new GenerateWorldsCommandHandler(bmpRepo, eventRepo,
+                new SynchronizeWorldCommandHandler(new GetWorldQueryHandler(bmpRepo),
+                    new Create3DWorldCommandHandler(new ThreeMfRepository(rootFolder)),
+                    rootFolder)).Execute(new ());
+            Console.WriteLine("Loaded history and generated .3MF files");
+            File.WriteAllText(rootFolder.GetPath("events.json"), JsonConvert.SerializeObject(eventRepo.GetAllEventDtos()),
+                Encoding.UTF8);
             Console.WriteLine("Events metadata saved");
             Console.WriteLine("Finished");
             break;
