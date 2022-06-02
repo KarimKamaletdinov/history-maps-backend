@@ -21,7 +21,7 @@ public class GenerateWorldsCommandHandler : ICommandHandler<GenerateWorlds>
         foreach (var e in events)
         {
             _bmpRepository.Insert(e.World);
-            _synchronizer.Execute(new SynchronizeWorld(e.World.Id));
+            _synchronizer.Execute(new (e.World.Id));
         }
     }
 }

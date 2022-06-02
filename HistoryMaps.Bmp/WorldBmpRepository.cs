@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HistoryMaps;
 
@@ -178,7 +179,7 @@ public class WorldBmpRepository : IWorldBmpRepository
     private Dictionary<string, Color> GetColors(string path)
     {
         var json = File.ReadAllText(path);
-        var dictionary = JsonSerializer.Deserialize<Dictionary<string, Rgb>>(json) ?? 
+        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Rgb>>(json) ?? 
                          throw new DomainException("Invalid colors format");
         return new(dictionary.Select(x => 
             new KeyValuePair<string, Color>(x.Key, Color.FromArgb(x.Value.R, x.Value.G, x.Value.B))));
@@ -198,26 +199,14 @@ public class WorldBmpRepository : IWorldBmpRepository
     private void WriteColors(Guid worldId, Dictionary<string, Color> colors)
     {
         File.WriteAllText(_rootFolder.GetPath("worlds", worldId + ".json"),
-            SerializeDict(colors), Encoding.UTF8);
+            JsonConvert.SerializeObject(new Dictionary<string, Rgb>(colors.Select(x => 
+                new KeyValuePair<string, Rgb>(x.Key, new (x.Value.R, x.Value.G, x.Value.B))))), Encoding.UTF8);
     }
 
     private string GenPath(Guid worldId)
     {
         return _rootFolder.GetPath("worlds" + Path.DirectorySeparatorChar + worldId + ".bmp");
     }
-
-    private static string SerializeDict(Dictionary<string, Color> dict)
-    {
-        var result = "{\n";
-        foreach (var (name, color) in dict)
-        {
-            result += $"    \"{name}\": {{\"R\": {color.R}, \"G\": {color.G}," +
-                      $"\"B\": {color.B}}},\n";
-        }
-
-        result = result.Substring(0, result.Length - 2) + "\n}";
-        return result;
-    }
-
+    
     private record Rgb(byte R, byte G, byte B);
 }
