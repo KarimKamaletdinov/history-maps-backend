@@ -9,7 +9,51 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <None Remove="data\input\init.txt" />
+    <None Remove="data\worlds\init.txt" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="data\input\init.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="data\worlds\init.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+	<ItemGroup>
+    <PackageReference Include="Autofac" Version="6.4.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\HistoryMaps.3MF\HistoryMaps.3MF.csproj" />
+	  <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
+	  <ProjectReference Include="..\HistoryMaps.History\HistoryMaps.History.csproj" />
+	  <ProjectReference Include="..\HistoryMaps.Storage\HistoryMaps.Storage.csproj" />
+	  <ProjectReference Include="..\HistoryMaps.UseCases.Abstractions\HistoryMaps.UseCases.Abstractions.csproj" />
+	  <ProjectReference Include="..\HistoryMaps.UseCases\HistoryMaps.UseCases.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="data\app\init.txt">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="data\constants\base_world.bmp">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="data\constants\base_world.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="data\constants\template.3mf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="data\temp\init.txt">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 </Project>

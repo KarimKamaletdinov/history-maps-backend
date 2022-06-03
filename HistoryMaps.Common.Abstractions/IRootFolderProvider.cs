@@ -2,12 +2,14 @@
 
 public interface IRootFolderProvider
 {
-    /// <summary>
-    /// Корневая папка для данных программы
-    /// </summary>
-    /// <returns>Путь к папке, заканчивающийся на разделитель (/ или \)</returns>
     public string GetRootFolder();
 }
+
+public interface IGitRemoteUrlProvider
+{
+    public string GetGitRemoteUrl();
+}
+
 
 public static class RootFolderProviderExtensions
 {

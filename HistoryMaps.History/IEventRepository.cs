@@ -2,5 +2,8 @@
 
 public interface IEventRepository
 {
-    public IReadOnlyCollection<Event> GetAllEvents();
+    void Insert(Event e);
+    IReadOnlyCollection<Event> GetAllEvents();
+    IReadOnlyCollection<EventDto> GetAllEventDtos();
+    EventDto? GetPrevious(int year, int? id);
 }

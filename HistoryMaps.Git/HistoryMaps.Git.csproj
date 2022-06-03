@@ -8,13 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HistoryMaps.3MF.Abstractions\HistoryMaps.3MF.Abstractions.csproj" />
-    <ProjectReference Include="..\HistoryMaps.Bmp.Abstractions\HistoryMaps.Bmp.Abstractions.csproj" />
-    <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
     <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Git.Abstractions\HistoryMaps.Git.Abstractions.csproj" />
-    <ProjectReference Include="..\HistoryMaps.History\HistoryMaps.History.csproj" />
-    <ProjectReference Include="..\HistoryMaps.UseCases.Abstractions\HistoryMaps.UseCases.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

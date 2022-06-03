@@ -1,11 +1,10 @@
 ﻿using System.Text;
-using System.Text.Json;
 using HistoryMaps;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
-var config = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText("appsettings.json"))
+var config = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("appsettings.json"))
              ?? throw new NullReferenceException();
+
 
 Console.WriteLine("Start");
 var rootFolder = new RootFolderProvider(config["RootFolder"]);
@@ -64,8 +63,7 @@ while (true)
             var changes = Event.ParseChanges(bw, nw);
             Console.WriteLine("Changes parsed");
             var e = new Event(year, name, changes.ToArray(), bw, nw.Id);
-            eventRepo
-                .Insert(e);
+            eventRepo.Insert(e);
             Console.WriteLine("Changes inserted");
             Console.WriteLine("Finished");
             break;
