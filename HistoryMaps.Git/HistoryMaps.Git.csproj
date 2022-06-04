@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <RootNamespace>HistoryMaps</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Git.Abstractions\HistoryMaps.Git.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

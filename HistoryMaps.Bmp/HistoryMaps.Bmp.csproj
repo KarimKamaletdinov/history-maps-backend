@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <RootNamespace>HistoryMaps</RootNamespace>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta1" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0-preview.4.22229.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Bmp.Abstractions\HistoryMaps.Bmp.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Common\HistoryMaps.Common.csproj" />
+    <ProjectReference Include="..\HistoryMaps\HistoryMaps.csproj" />
+  </ItemGroup>
+
+</Project>

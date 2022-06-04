@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Library</OutputType>
+    <RootNamespace>HistoryMaps</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.History.Abstractions\HistoryMaps.History.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.UseCases.Abstractions\HistoryMaps.UseCases.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
