@@ -12,6 +12,8 @@ builder.RegisterType<PostgresqlConnectionFactory>().WithParameter("connectionStr
     .AsImplementedInterfaces();
 builder.RegisterType<RootFolderProvider>().WithParameter("rootFolder", config["RootFolder"])
     .AsImplementedInterfaces();
+builder.RegisterType<GitRemoteUrlProvider>().WithParameter("url", config["GitRemoteUrl"])
+    .AsImplementedInterfaces();
 
 // repositories
 builder.RegisterType<WorldBmpRepository>().AsImplementedInterfaces();
@@ -24,6 +26,14 @@ builder.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
 builder.RegisterType<SynchronizeWorldCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GenerateWorldsCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<ExecuteGitCommandService>().AsSelf();
+builder.RegisterType<GitCloneCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<GitPullCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<GitCommitCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<GitPushCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<LoadGitRepoCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<CopyDataToWebAppCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<SaveChangesToGitRepoCommandHandler>().AsImplementedInterfaces();
 
 
 // views

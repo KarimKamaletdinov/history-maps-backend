@@ -4,18 +4,15 @@ namespace HistoryMaps;
 
 public class GitCloneCommandHandler : ICommandHandler<GitClone>
 {
-    private readonly IRootFolderProvider _rootFolder;
+    private readonly ExecuteGitCommandService _execute;
 
-    public GitCloneCommandHandler(IRootFolderProvider rootFolder)
+    public GitCloneCommandHandler(ExecuteGitCommandService execute)
     {
-        _rootFolder = rootFolder;
+        _execute = execute;
     }
 
     public void Execute(GitClone command)
     {
-        using var process = new Process();
-        process.StartInfo.FileName = "git";
-        process.StartInfo.Arguments = $"clone {command.Repository} {command.Directory}";
-        process.StartInfo.WorkingDirectory = _rootFolder.GetPath("temp", "app");
+        _execute.ExecuteGitCommand($"clone {command.Repository} {command.Directory}");
     }
 }
