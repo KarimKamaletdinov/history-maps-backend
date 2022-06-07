@@ -3,11 +3,11 @@
 public class SynchronizeWorldCommandHandler : ICommandHandler<SynchronizeWorld>
 {
     private readonly IQueryHandler<GetWorld, WorldDto> _getWorld;
-    private readonly ICommandHandler<Create3DWorld> _create3DWorld;
+    private readonly ICommandHandler<Create3DWorldSeparately> _create3DWorld;
     private readonly IRootFolderProvider _rootFolder;
 
     public SynchronizeWorldCommandHandler(IQueryHandler<GetWorld, WorldDto> getWorld,
-        ICommandHandler<Create3DWorld> create3DWorld, IRootFolderProvider rootFolder)
+        ICommandHandler<Create3DWorldSeparately> create3DWorld, IRootFolderProvider rootFolder)
     {
         _getWorld = getWorld;
         _create3DWorld = create3DWorld;
@@ -20,6 +20,7 @@ public class SynchronizeWorldCommandHandler : ICommandHandler<SynchronizeWorld>
                 command.WorldId + ".3mf")))
             File.Delete(_rootFolder.GetPath("worlds",
                 command.WorldId + ".3mf"));
-        _create3DWorld.Execute(new Create3DWorld(_getWorld.Execute(new GetWorld(command.WorldId))));
+        var world = _getWorld.Execute(new (command.WorldId));
+        _create3DWorld.Execute(new (world));
     }
 }

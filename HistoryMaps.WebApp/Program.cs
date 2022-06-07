@@ -38,7 +38,7 @@ void Configure(ContainerBuilder b)
     //repositories
     b.RegisterType<WorldBmpRepository>().AsImplementedInterfaces();
     b.RegisterType<EventRepository>().AsImplementedInterfaces();
-    b.RegisterType<ThreeMfRepository>().AsImplementedInterfaces();
+    b.RegisterType<World3MfRepository>().AsImplementedInterfaces();
 
     //services
     b.RegisterType<GetAllEventsQueryHandler>().AsImplementedInterfaces();

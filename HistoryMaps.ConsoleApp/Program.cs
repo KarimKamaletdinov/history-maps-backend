@@ -18,11 +18,12 @@ builder.RegisterType<GitRemoteUrlProvider>().WithParameter("url", config["GitRem
 // repositories
 builder.RegisterType<WorldBmpRepository>().AsImplementedInterfaces();
 builder.RegisterType<EventRepository>().AsImplementedInterfaces();
-builder.RegisterType<ThreeMfRepository>().AsImplementedInterfaces();
+builder.RegisterType<World3MfRepository>().AsImplementedInterfaces();
 
 
 //services
 builder.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<Create3DWorldSeparatelyCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
 builder.RegisterType<SynchronizeWorldCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GenerateWorldsCommandHandler>().AsImplementedInterfaces();

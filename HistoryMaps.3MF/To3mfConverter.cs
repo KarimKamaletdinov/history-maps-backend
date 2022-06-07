@@ -25,6 +25,40 @@ public static class To3MfConverter
         return (doc, world.Id);
     }
 
+    public static WorldData ConvertSeparately(WorldDto world)
+    {
+        var baseDocument = new Document();
+        var arr = new int[Map.Width, Map.Height];
+        AddAllVertices(baseDocument, arr);
+        AddArea(baseDocument, world.Water, arr);
+
+        var blankArea = new MapAreaDto(new bool[Map.Width,Map.Height], Color.White);
+        for (var x = 0; x < Map.Width; x++)
+        for (var y = 0; y < Map.Height; y++)
+            if (!world.Water.Points[x, y])
+                blankArea.Points[x, y] = true;
+        AddArea(baseDocument, blankArea, arr);
+
+        var countries = new List<Document>();
+
+        foreach (var c in world.Countries)
+        {
+            var country = new Document();
+            var a = new int[Map.Width, Map.Height];
+            AddAllVertices(country, a);
+            AddArea(country, c, a);
+            country.Metadata = c.Name;
+            countries.Add(country);
+        }
+
+        return new ()
+        {
+            Id = world.Id,
+            Base = baseDocument,
+            Countries = countries
+        };
+    }
+
     private static void AddArea(Document doc, MapAreaDto mapArea, int[,] indices)
     {
         var colorId = doc.AddColor(mapArea.Color);
