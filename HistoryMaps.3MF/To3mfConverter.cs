@@ -16,7 +16,7 @@ public static class To3MfConverter
             AddArea(doc, country, arr);
         }
 
-        var blankArea = new MapAreaDto(new bool[Map.Width,Map.Height],Color.White);
+        var blankArea = new MapAreaDto(new bool[Map.Width, Map.Height], Color.White);
         for (var x = 0; x < Map.Width; x++)
             for (var y = 0; y < Map.Height; y++)
                 if (!world.Water.Points[x, y] && !world.Countries.Any(c => c.Points[x, y]))
@@ -32,11 +32,11 @@ public static class To3MfConverter
         AddAllVertices(baseDocument, arr);
         AddArea(baseDocument, world.Water, arr);
 
-        var blankArea = new MapAreaDto(new bool[Map.Width,Map.Height], Color.White);
+        var blankArea = new MapAreaDto(new bool[Map.Width, Map.Height], Color.White);
         for (var x = 0; x < Map.Width; x++)
-        for (var y = 0; y < Map.Height; y++)
-            if (!world.Water.Points[x, y])
-                blankArea.Points[x, y] = true;
+            for (var y = 0; y < Map.Height; y++)
+                if (!world.Water.Points[x, y])
+                    blankArea.Points[x, y] = true;
         AddArea(baseDocument, blankArea, arr);
 
         var countries = new List<Document>();
@@ -51,7 +51,7 @@ public static class To3MfConverter
             countries.Add(country);
         }
 
-        return new ()
+        return new()
         {
             Id = world.Id,
             Base = baseDocument,
@@ -71,19 +71,36 @@ public static class To3MfConverter
 
     private static void CreateTriangle(Document document, int x, int y, int colorId, int[,] indices)
     {
+        if (y % 2 == 0)
+        {
+            if (x % 2 == 0)
+            {
+                document.Triangles.Add(new(
+                    Index(x - 1, y, indices),
+                    Index(x, y + 1, indices),
+                    Index(x + 1, y, indices), colorId));
+                return;
+            }
+
+            document.Triangles.Add(new(
+                Index(x - 1, y + 1, indices),
+                Index(x + 1, y + 1, indices),
+                Index(x, y, indices), colorId));
+            return;
+        }
         if (x % 2 == 0)
         {
             document.Triangles.Add(new(
-                Index(x - 1, y, indices),
-                Index(x, y + 1, indices),
-                Index(x + 1, y, indices), colorId));
+                Index(x - 1, y + 1, indices),
+                Index(x + 1, y + 1, indices),
+                Index(x, y, indices), colorId));
             return;
         }
 
         document.Triangles.Add(new(
-            Index(x - 1, y + 1, indices),
-            Index(x + 1, y + 1, indices), 
-            Index(x, y, indices), colorId));
+            Index(x - 1, y, indices),
+            Index(x, y + 1, indices),
+            Index(x + 1, y, indices), colorId));
     }
 
     private static int Index(int x, int y, int[,] indices)
@@ -92,9 +109,9 @@ public static class To3MfConverter
             y = 0;
         if (x < 0)
             x = Map.Width + x;
-        if(y >= Map.Height)
+        if (y >= Map.Height)
             y = Map.Height - 1;
-        if(x >= Map.Width)
+        if (x >= Map.Width)
             x -= Map.Width;
         return indices[x, y];
     }
