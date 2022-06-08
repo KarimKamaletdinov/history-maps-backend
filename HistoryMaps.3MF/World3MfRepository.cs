@@ -52,6 +52,8 @@ public class World3MfRepository : IWorld3MfRepository
             .Replace("<!--vertices-->", Xml.Convert(document.Vertices))
             .Replace("<!--triangles-->", Xml.Convert(document.Triangles));
         File.WriteAllText(tPath, data);
+        if(File.Exists(resultPath))
+            File.Delete(resultPath);
         ZipFile.CreateFromDirectory(tempFolderPath, resultPath);
         Directory.Delete(tempFolderPath, true);
     }
