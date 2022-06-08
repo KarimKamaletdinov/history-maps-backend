@@ -61,7 +61,7 @@ public struct Matrix
 
     public Vertex Multiply(Vertex vertex)
     {
-        return new Vertex(
+        return new(
             vertex.X * Values[0, 0] + vertex.Y * Values[0, 1] + vertex.Z * Values[0, 2],
             vertex.X * Values[1, 0] + vertex.Y * Values[1, 1] + vertex.Z * Values[1, 2],
             vertex.X * Values[2, 0] + vertex.Y * Values[2, 1] + vertex.Z * Values[2, 2]
@@ -70,7 +70,7 @@ public struct Matrix
     
     public static Matrix RotateX(float f)
     {
-        return new Matrix(new [,]
+        return new(new [,]
         {
             {1, 0, 0},
             {0, MathF.Cos(f), -MathF.Sin(f)},
@@ -80,7 +80,7 @@ public struct Matrix
 
     public static Matrix RotateY(float f)
     {
-        return new Matrix(new [,]
+        return new(new [,]
         {
             {MathF.Cos(f), 0, MathF.Sin(f)},
             {0, 1, 0},
@@ -92,7 +92,7 @@ public struct Matrix
 
     public static Matrix RotateZ(float f)
     {
-        return new Matrix(new [,]
+        return new(new [,]
         {
             {MathF.Cos(f), -MathF.Sin(f), 0},
             {MathF.Sin(f), MathF.Cos(f), 0},

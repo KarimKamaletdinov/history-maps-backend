@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HistoryMaps.3MF.Abstractions\HistoryMaps.3MF.Abstractions.csproj" />
+    <ProjectReference Include="..\HistoryMaps.3MF\HistoryMaps.3MF.csproj" />
     <ProjectReference Include="..\HistoryMaps.Bmp.Abstractions\HistoryMaps.Bmp.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Bmp\HistoryMaps.Bmp.csproj" />
     <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />

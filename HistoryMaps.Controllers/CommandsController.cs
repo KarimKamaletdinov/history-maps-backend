@@ -6,11 +6,11 @@ namespace HistoryMaps;
 [ApiController]
 public class CommandsController : ControllerBase
 {
-    private readonly ICommandHandler<GenerateWorlds> _generateWorlds;
+    private readonly ICommandHandler<LoadHistory> _loadHistory;
 
-    public CommandsController(ICommandHandler<GenerateWorlds> generateWorlds)
+    public CommandsController(ICommandHandler<LoadHistory> loadHistory)
     {
-        _generateWorlds = generateWorlds;
+        _loadHistory = loadHistory;
     }
 
     [HttpPost]
@@ -18,8 +18,8 @@ public class CommandsController : ControllerBase
     {
         switch (type)
         {
-            case CommandType.GenerateWorlds:
-                _generateWorlds.Execute(new GenerateWorlds());
+            case CommandType.LoadHistory:
+                _loadHistory.Execute(new());
                 return new CreatedResult("/world/", null);
             default:
                 return new BadRequestResult();

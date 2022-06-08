@@ -73,14 +73,14 @@ public static class To3MfConverter
     {
         if (x % 2 == 0)
         {
-            document.Triangles.Add(new Triangle(
+            document.Triangles.Add(new(
                 Index(x - 1, y, indices),
                 Index(x, y + 1, indices),
                 Index(x + 1, y, indices), colorId));
             return;
         }
 
-        document.Triangles.Add(new Triangle(
+        document.Triangles.Add(new(
             Index(x - 1, y + 1, indices),
             Index(x + 1, y + 1, indices), 
             Index(x, y, indices), colorId));
@@ -103,7 +103,7 @@ public static class To3MfConverter
     {
         var vertex = Matrix.RotateZ((x - 180) / 180 * MathF.PI)
             .Multiply(Matrix.RotateY((y - 90) / 180 * MathF.PI)
-                .Multiply(new Vertex(500, 0, 0)));
+                .Multiply(new(500, 0, 0)));
         return vertex;
     }
 

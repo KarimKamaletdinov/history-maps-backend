@@ -2,5 +2,5 @@
 
 public enum CommandType
 {
-    GenerateWorlds
+    LoadHistory
 }

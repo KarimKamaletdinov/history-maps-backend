@@ -45,5 +45,5 @@ void Configure(ContainerBuilder b)
     b.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
     b.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
     b.RegisterType<SynchronizeWorldCommandHandler>().AsImplementedInterfaces();
-    b.RegisterType<GenerateWorldsCommandHandler>().AsImplementedInterfaces();
+    b.RegisterType<LoadHistoryCommandHandler>().AsImplementedInterfaces();
 }

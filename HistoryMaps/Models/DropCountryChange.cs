@@ -16,6 +16,6 @@ public class DropCountryChange : IChange
 
     public ChangeDto ToDto()
     {
-        return new ChangeDto(ChangeType.DropCountry, DroppedCountryName, null, Guid.Empty);
+        return new(ChangeType.DropCountry, DroppedCountryName, null, Guid.Empty);
     }
 }

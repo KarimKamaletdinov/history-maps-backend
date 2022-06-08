@@ -1,7 +1,4 @@
-﻿using System.Resources;
-using System.Runtime.InteropServices.ComTypes;
-
-namespace HistoryMaps;
+﻿namespace HistoryMaps;
 
 public class Event
 {
@@ -46,28 +43,16 @@ public class Event
 
     public static IEnumerable<IChange> ParseChanges(World baseWorld, World changedWorld)
     {
-        var createChanges = new List<CreateCountryChange>();
         var conquestChanges = new List<ConquestChange>();
-        var dropChanges = new List<DropCountryChange>();
 
-        foreach (var country in changedWorld.Countries)
-        {
-            if (baseWorld.Countries.All(x => x != country))
-            {
-                var c = country.Copy();
-                for (var x = 0; x < Map.Width; x++)
-                    for (var y = 0; y < Map.Height; y++)
-                        c.Points[x, y] = false;
-                createChanges.Add(new (c));
-            }
-        }
-        foreach (var country in baseWorld.Countries)
-        {
-            if (changedWorld.Countries.All(x => x != country))
-            {
-                dropChanges.Add(new (country.Name));
-            }
-        }
+        var createChanges = changedWorld.Countries
+            .Where(country => baseWorld.Countries.All(x => x != country))
+            .Select(country => new CreateCountryChange(country.Name, country.Color)).ToList();
+
+        var dropChanges = baseWorld.Countries
+            .Where(country => changedWorld.Countries.All(x => x != country))
+            .Select(country => new DropCountryChange(country.Name)).ToList();
+
         for (var x = 0; x < Map.Width; x++)
             for (var y = 0; y < Map.Height; y++)
             {
@@ -76,47 +61,19 @@ public class Event
 
                 if (oldCountry != newCountry)
                 {
-                    if (oldCountry == null)
-                    {
-                        var createChange = createChanges.FirstOrDefault(c => c.NewCountry == newCountry);
-                        if (createChange != null)
-                        {
-                            createChange.NewCountry.Points[x, y] = true;
-                            continue;
-                        }
-                    }
-                    var conquestChange = conquestChanges.FirstOrDefault(c => c.ConqueredName == oldCountry?.Name &&
-                                                                             c.ConquerorName == newCountry?.Name);
+                    var conquestChange = conquestChanges.FirstOrDefault(c => c.ConquerorName == newCountry?.Name);
                     if (conquestChange != null)
                     {
-                        conquestChange.ConqueredArea!.Points[x, y] = true;
+                        conquestChange.ConqueredArea.Points[x, y] = true;
                         continue;
                     }
                     var points = new bool[Map.Width, Map.Height];
                     points[x, y] = true;
                         conquestChanges.Add(new (
                             newCountry?.Name,
-                            oldCountry == null ? null : oldCountry.Name,
                             new (points)));
                 }
             }
-
-        foreach (var change in conquestChanges)
-        {
-            if (change.ConqueredName != null)
-            {
-                var change1 = change;
-                var conquered = changedWorld.Countries.First(x => x.Name == change1.ConqueredName);
-                var allSame = true;
-                for (var x = 0; x < Map.Width; x++)
-                for (var y = 0; y < Map.Height; y++)
-                    if (conquered.Points[x, y] ^ change.ConqueredArea!.Points[x, y])
-                        allSame = false;
-
-                if (allSame) 
-                    change.ConqueredArea = null;
-            }
-        }
 
         var changes = createChanges.Cast<IChange>().ToList();
         changes.AddRange(conquestChanges);

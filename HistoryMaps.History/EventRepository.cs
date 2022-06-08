@@ -38,8 +38,6 @@ public class EventRepository : IEventRepository
             switch (change)
             {
                 case ConquestChange conquestChange:
-                    var country1Name = conquestChange.ConquerorName;
-                    var country2Name = conquestChange.ConqueredName;
                     Guid? areaId = conquestChange.ConqueredArea == null
                         ? null
                         : Guid.NewGuid();
@@ -47,8 +45,7 @@ public class EventRepository : IEventRepository
                     {
                         type = "conquest",
                         area_id = areaId,
-                        country1_name = country1Name,
-                        country2_name = country2Name,
+                        country_name = conquestChange.ConquerorName,
                         event_id = eventId,
                         event_year = e.Year,
                         id = id
@@ -65,32 +62,21 @@ public class EventRepository : IEventRepository
                                     });
                     break;
                 case CreateCountryChange createCountryChange:
-                    var area = Guid.NewGuid();
                     connection.Insert(new DbChange
                     {
-                        area_id = area,
-                        color = createCountryChange.NewCountry.Color.ToArgb()
+                        color = createCountryChange.NewCountryColor.ToArgb()
                             .ToString("x8"),
-                        country1_name = createCountryChange.NewCountry.Name,
+                        country_name = createCountryChange.NewCountryName,
                         event_id = eventId,
                         event_year = e.Year,
                         type = "new",
                         id = id
                     });
-                    for (var x = 0; x < Map.Width; x++)
-                        for (var y = 0; y < Map.Height; y++)
-                            if (createCountryChange.NewCountry.Points[x, y])
-                                connection.Insert(new DbPoint
-                                {
-                                    area_id = area,
-                                    x = (short)x,
-                                    y = (short)y
-                                });
                     break;
                 case DropCountryChange dropCountryChange:
                     connection.Insert(new DbChange
                     {
-                        country1_name = dropCountryChange.DroppedCountryName,
+                        country_name = dropCountryChange.DroppedCountryName,
                         type = "drop",
                         id = id,
                         event_id = eventId,
@@ -177,18 +163,15 @@ public class EventRepository : IEventRepository
         switch (change.type)
         {
             case "conquest":
-                var area = change.area_id == null ? null
-                : new Area(GetPoints((Guid)change.area_id));
+                var area = new Area(GetPoints((Guid)change.area_id!));
                 return new ConquestChange(
-                    change.country1_name,
-                    change.country2_name,
+                    change.country_name,
                     area);
             case "new":
-                return new CreateCountryChange(
-                    new Country(GetPoints((Guid)change.area_id!), change.country1_name!,
-                        Color.FromArgb(int.Parse(change.color!, NumberStyles.HexNumber))));
+                return new CreateCountryChange( change.country_name!,
+                        Color.FromArgb(int.Parse(change.color!, NumberStyles.HexNumber)));
             case "drop":
-                return new DropCountryChange(change.country1_name!);
+                return new DropCountryChange(change.country_name!);
             default:
                 throw new DomainException($"Invalid change type: {change.type}");
         }
@@ -235,8 +218,7 @@ public class EventRepository : IEventRepository
         [ExplicitKey]
         public int id { get; set; }
         public string type { get; set; } = "";
-        public string? country1_name { get; set; }
-        public string? country2_name { get; set; }
+        public string? country_name { get; set; }
         public Guid? area_id { get; set; }
         public string? color { get; set; }
     }

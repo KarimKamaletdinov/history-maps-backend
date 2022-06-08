@@ -36,6 +36,15 @@ public class World3MfRepository : IWorld3MfRepository
         }
     }
 
+    public void ClearAll()
+    {
+        foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds")))
+            if (file.EndsWith(".3mf"))
+                File.Delete(file);
+        foreach (var directory in Directory.GetDirectories(_rootFolder.GetPath("worlds")))
+            Directory.Delete(directory, true);
+    }
+
     private void Save3Mf(Document document, string resultPath)
     {
         var tempId = Guid.NewGuid().ToString();

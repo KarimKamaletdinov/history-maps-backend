@@ -72,7 +72,7 @@ while (true)
         case "create":
             //Console.WriteLine("Start creating a web app");
             Console.WriteLine("Creating a web app is not implemented yet");
-            new GenerateWorldsCommandHandler(bmpRepo, eventRepo,
+            new LoadHistoryCommandHandler(bmpRepo, eventRepo,
                 new SynchronizeWorldCommandHandler(new GetWorldQueryHandler(bmpRepo),
                     new Create3DWorldCommandHandler(new World3MfRepository(rootFolder)),
                     rootFolder)).Execute(new ());

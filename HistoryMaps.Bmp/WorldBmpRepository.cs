@@ -129,7 +129,7 @@ public class WorldBmpRepository : IWorldBmpRepository
             }
         }
 
-        return new World(Guid.Empty, water, countries);
+        return new(Guid.Empty, water, countries);
     }
 
     public World Get(Guid worldId)
@@ -170,7 +170,7 @@ public class WorldBmpRepository : IWorldBmpRepository
             }
         }
 
-        return new World(worldId, water, countries);
+        return new(worldId, water, countries);
     }
 
     private Dictionary<string, Color> GetColors(Guid worldId)

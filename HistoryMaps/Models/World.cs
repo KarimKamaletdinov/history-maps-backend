@@ -18,7 +18,7 @@ public class World
     public World(WorldDto dto)
     {
         Id = dto.Id;
-        Water = new MapArea(dto.Water);
+        Water = new(dto.Water);
         Countries = dto.Countries.Select(x => new Country(x)).ToList();
     }
 
@@ -49,6 +49,6 @@ public class World
 
     public World Copy(Guid newId)
     {
-        return new World(newId, Water.Copy(), Countries.Select(x => x.Copy()));
+        return new(newId, Water.Copy(), Countries.Select(x => x.Copy()));
     }
 }
