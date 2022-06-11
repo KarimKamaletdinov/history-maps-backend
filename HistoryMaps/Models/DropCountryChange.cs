@@ -14,8 +14,8 @@ public class DropCountryChange : IChange
         world.Countries.Remove(world.Countries.First(x => x.Name == DroppedCountryName));
     }
 
-    public ChangeDto ToDto()
+    public IEnumerable<string> GetChangedCountries(World baseWorld)
     {
-        return new(ChangeType.DropCountry, DroppedCountryName, null, Guid.Empty);
+        yield return DroppedCountryName;
     }
 }

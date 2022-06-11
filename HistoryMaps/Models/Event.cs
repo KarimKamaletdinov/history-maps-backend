@@ -81,8 +81,14 @@ public class Event
         return changes;
     }
 
-    public EventDto ToDto()
+    public EventChangesDto ToDto()
     {
-        return new (Year, Name, WorldId);
+        var countryNames = new HashSet<string>();
+
+        foreach (var change in Changes)
+        foreach (var country in change.GetChangedCountries(_baseWorld))
+            countryNames.Add(country);
+
+        return new (Year, Name, WorldId, countryNames.ToArray());
     }
 }

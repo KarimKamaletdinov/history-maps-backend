@@ -21,8 +21,14 @@ public class ConquestChange : IChange
                     world.SetPoint(x, y, conqueror);
     }
 
-    public ChangeDto ToDto()
+    public IEnumerable<string> GetChangedCountries(World baseWorld)
     {
-        throw new NotImplementedException();
+        if (ConquerorName != null)
+            yield return ConquerorName;
+        for (var x = 0; x < Map.Width; x++)
+        for (var y = 0; y < Map.Height; y++)
+            if (ConqueredArea.Points[x, y])
+                foreach (var country in baseWorld.Countries.Where(country => country.Points[x, y]))
+                    yield return country.Name;
     }
 }

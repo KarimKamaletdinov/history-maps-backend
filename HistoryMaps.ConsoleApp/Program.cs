@@ -51,6 +51,8 @@ builder.RegisterType<GitPushCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<LoadGitRepoCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<CopyDataToWebAppCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<SaveChangesToGitRepoCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<CreateWebAppCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<GetAllEventsQueryHandler>().AsImplementedInterfaces();
 
 // views
 builder.RegisterType<LoadHistoryView>().AsSelf();

@@ -18,8 +18,8 @@ public class CreateCountryChange : IChange
         world.Countries.Add(new(new bool[Map.Width, Map.Height], NewCountryName, NewCountryColor));
     }
 
-    public ChangeDto ToDto()
+    public IEnumerable<string> GetChangedCountries(World baseWorld)
     {
-        throw new NotImplementedException();
+        yield return NewCountryName;
     }
 }
