@@ -19,13 +19,13 @@ public class World3MfRepository : IWorld3MfRepository
     }
 
     public void InsertSeparately(WorldDto world)
-    {       
+    {
         Directory.CreateDirectory(_rootFolder.GetPath("worlds", world.Id.ToString()));
         File.WriteAllText(_rootFolder.GetPath("worlds", world.Id.ToString(), "countries.json"),
-            JsonConvert.SerializeObject(new JsonFileWorld
-            {
-                Countries = world.Countries.Select(x => x.Name)
-            }));
+            JsonConvert.SerializeObject(new JsonFileWorld(
+                world.Countries.Select(x => new JsonFileCountry(x.Name,
+                    new(x.Color.R, x.Color.G, x.Color.B)))
+            )));
 
         var data = To3MfConverter.ConvertSeparately(world);
         Save3Mf(data.Base, _rootFolder.GetPath("worlds", world.Id.ToString(), "base.3mf"));
@@ -49,9 +49,9 @@ public class World3MfRepository : IWorld3MfRepository
     {
         var tempId = Guid.NewGuid().ToString();
         var tempFolderPath = _rootFolder.GetPath("temp", tempId);
-        if(Directory.Exists(tempFolderPath))
+        if (Directory.Exists(tempFolderPath))
             Directory.Delete(tempFolderPath, true);
-        ZipFile.ExtractToDirectory(_rootFolder.GetPath("constants", "template.3mf"), 
+        ZipFile.ExtractToDirectory(_rootFolder.GetPath("constants", "template.3mf"),
             tempFolderPath);
         var tPath = _rootFolder.GetPath("temp", tempId, "3D", "3dmodel.model");
         var template = File.ReadAllText(tPath);
@@ -61,14 +61,15 @@ public class World3MfRepository : IWorld3MfRepository
             .Replace("<!--vertices-->", Xml.Convert(document.Vertices))
             .Replace("<!--triangles-->", Xml.Convert(document.Triangles));
         File.WriteAllText(tPath, data);
-        if(File.Exists(resultPath))
+        if (File.Exists(resultPath))
             File.Delete(resultPath);
         ZipFile.CreateFromDirectory(tempFolderPath, resultPath);
         Directory.Delete(tempFolderPath, true);
     }
 
-    private class JsonFileWorld
-    {
-        public IEnumerable<string> Countries { get; set; } = Array.Empty<string>();
-    }
+    private record JsonFileWorld(IEnumerable<JsonFileCountry> Countries);
+
+    private record JsonFileCountry(string Name, JsonFileColor Color);
+
+    private record JsonFileColor(int R, int G, int B);
 }
