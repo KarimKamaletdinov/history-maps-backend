@@ -34,16 +34,18 @@ public class CreateWebAppCommandHandler : ICommandHandler<CreateWebApp>
         var dtos = new List<EventChangesDto>();
         _logger.LogInformation("Start creating a web app...");
         _logger.LogInformation("Start loading history");
-        _bmpRepository.ClearAll();
-        _tMfRepository.ClearAll();
+        var generatedBmp = _bmpRepository.GetAllIds().ToArray();
+        var generated3Mf = _tMfRepository.GetAllIds().ToArray();
         _logger.LogInformation("Cleared");
         var events = _eventRepository.GetAllEvents();
         foreach (var e in events)
         {
-            _bmpRepository.Insert(e.World);
-            _synchronizer.Execute(new (e.World.Id));
-            _logger.LogInformation("Loaded {name}", e.Name);
+            if(!generatedBmp.Contains(e.WorldId))
+                _bmpRepository.Insert(e.World);
+            if(!generated3Mf.Contains(e.WorldId))
+                _synchronizer.Execute(new (e.WorldId));
             dtos.Add(e.ToDto());
+            _logger.LogInformation("Loaded {name}", e.Name);
         }
         _logger.LogInformation("History loaded");
         File.WriteAllText(_rootFolderProvider.GetPath("events.json"), 

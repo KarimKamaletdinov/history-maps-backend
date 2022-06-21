@@ -8,6 +8,7 @@ public interface IWorldBmpRepository
     void Update(World world);
     void Delete(Guid worldId);
     void ClearAll();
+    IEnumerable<Guid> GetAllIds();
     World GetBaseWorld();
     World Get(Guid worldId);
 }

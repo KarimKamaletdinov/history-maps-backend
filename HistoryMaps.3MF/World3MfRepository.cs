@@ -45,6 +45,13 @@ public class World3MfRepository : IWorld3MfRepository
             Directory.Delete(directory, true);
     }
 
+    public IEnumerable<Guid> GetAllIds()
+    {
+        foreach (var directory in Directory.GetDirectories(_rootFolder.GetPath("worlds")))
+            if (Guid.TryParse(directory.Split(Path.DirectorySeparatorChar).Last(), out var guid))
+                yield return guid;
+    }
+
     private void Save3Mf(Document document, string resultPath)
     {
         var tempId = Guid.NewGuid().ToString();

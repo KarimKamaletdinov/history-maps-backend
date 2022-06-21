@@ -83,11 +83,16 @@ public class WorldBmpRepository : IWorldBmpRepository
 
     public void ClearAll()
     {
-        var files = Directory.GetFiles(_rootFolder.GetPath("worlds"));
-        foreach (var file in files)
-        {
+        foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds"))) 
             File.Delete(file);
-        }
+    }
+
+    public IEnumerable<Guid> GetAllIds()
+    {
+        foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds")))
+            if(file.EndsWith(".bmp"))
+                if (Guid.TryParse(file.Split(Path.DirectorySeparatorChar).Last().Replace(".bmp", ""), out var guid))
+                    yield return guid;
     }
 
     public World GetBaseWorld()
