@@ -11,6 +11,6 @@ public class GitPullCommandHandler : ICommandHandler<GitPull>
 
     public void Execute(GitPull command)
     {
-        _execute.ExecuteGitCommand("pull", command.Directory);
+        _execute.ExecuteGitCommand("pull -q", command.Directory);
     }
 }
