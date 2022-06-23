@@ -32,7 +32,7 @@ public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
         {
             _bmpRepository.Insert(e.World);
             _synchronizer.Execute(new (e.World.Id));
-            _logger.LogInformation("Loaded " + e.Name);
+            _logger.LogInformation("Loaded {Name}", e.Name);
         }
         _logger.LogInformation("Finished");
     }

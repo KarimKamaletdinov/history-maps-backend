@@ -3,6 +3,7 @@
 public class Event
 {
     public int Year { get; set; }
+    public int? EndYear { get; set; }
     public string Name { get; set; }
     public IReadOnlyCollection<IChange> Changes { get; }
     public Guid WorldId { get; }
@@ -21,21 +22,23 @@ public class Event
         }
     }
 
-    public Event(int year, string name, IReadOnlyCollection<IChange> changes,
+    public Event(int year, int? endYear, string name, IReadOnlyCollection<IChange> changes,
         Event previous, Guid worldId)
     {
         Name = name;
         Year = year;
+        EndYear = endYear;
         Changes = changes;
         _baseWorld = previous.World;
         WorldId = worldId;
     }
 
-    public Event(int year, string name, IReadOnlyCollection<IChange> changes,
+    public Event(int year, int? endYear, string name, IReadOnlyCollection<IChange> changes,
         World baseWorld, Guid worldId)
     {
         Name = name;
         Year = year;
+        EndYear = endYear;
         Changes = changes;
         _baseWorld = baseWorld;
         WorldId = worldId;
@@ -89,6 +92,6 @@ public class Event
         foreach (var country in change.GetChangedCountries(_baseWorld))
             countryNames.Add(country);
 
-        return new (Year, Name, WorldId, countryNames.ToArray());
+        return new (Year, EndYear, Name, WorldId, countryNames.ToArray());
     }
 }

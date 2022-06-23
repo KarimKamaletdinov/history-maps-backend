@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Text;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HistoryMaps;
 
@@ -181,19 +180,19 @@ public class WorldBmpRepository : IWorldBmpRepository
     private Dictionary<string, Color> GetColors(Guid worldId)
         => GetColors(_rootFolder.GetPath("worlds", worldId + ".json"));
 
-    private Dictionary<string, Color> GetColors(string path)
+    private static Dictionary<string, Color> GetColors(string path)
     {
         var json = File.ReadAllText(path);
-        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Rgb>>(json) ?? 
+        var countryColors = JsonConvert.DeserializeObject<List<CountryColor>>(json) ?? 
                          throw new DomainException("Invalid colors format");
-        return new(dictionary.Select(x => 
-            new KeyValuePair<string, Color>(x.Key, Color.FromArgb(x.Value.R, x.Value.G, x.Value.B))));
+        return new(countryColors.Select(x => 
+            new KeyValuePair<string, Color>(x.Name,
+                Color.FromArgb(x.Color.R, x.Color.G, x.Color.B))));
     }
 
-    private Dictionary<string, Color> CreateColors(World world)
+    private static Dictionary<string, Color> CreateColors(World world)
     {
-        var result = new Dictionary<string, Color>();
-        result.Add("water", world.Water.Color);
+        var result = new Dictionary<string, Color> { { "water", world.Water.Color } };
         foreach (var country in world.Countries)
         {
             result.Add(country.Name, country.Color);
@@ -204,14 +203,18 @@ public class WorldBmpRepository : IWorldBmpRepository
     private void WriteColors(Guid worldId, Dictionary<string, Color> colors)
     {
         File.WriteAllText(_rootFolder.GetPath("worlds", worldId + ".json"),
-            JsonConvert.SerializeObject(new Dictionary<string, Rgb>(colors.Select(x => 
-                new KeyValuePair<string, Rgb>(x.Key, new (x.Value.R, x.Value.G, x.Value.B))))), Encoding.UTF8);
+            JsonConvert.SerializeObject(colors.Select(x => 
+                new CountryColor(x.Key, new (x.Value.R, x.Value.G, x.Value.B))), 
+                Formatting.Indented),
+            Encoding.UTF8);
     }
 
     private string GenPath(Guid worldId)
     {
         return _rootFolder.GetPath("worlds" + Path.DirectorySeparatorChar + worldId + ".bmp");
     }
-    
+
+    private record CountryColor(string Name, Rgb Color);
+
     private record Rgb(byte R, byte G, byte B);
 }

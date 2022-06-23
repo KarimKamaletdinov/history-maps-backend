@@ -23,12 +23,14 @@ public class ConquestChange : IChange
 
     public IEnumerable<string> GetChangedCountries(World baseWorld)
     {
+        var set = new HashSet<string>();
         if (ConquerorName != null)
-            yield return ConquerorName;
+            set.Add(ConquerorName);
         for (var x = 0; x < Map.Width; x++)
         for (var y = 0; y < Map.Height; y++)
             if (ConqueredArea.Points[x, y])
                 foreach (var country in baseWorld.Countries.Where(country => country.Points[x, y]))
-                    yield return country.Name;
+                    set.Add(country.Name);
+        return set.ToArray();
     }
 }

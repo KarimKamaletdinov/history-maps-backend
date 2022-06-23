@@ -30,7 +30,8 @@ public class EventRepository : IEventRepository
             id = eventId,
             name = e.Name,
             world_id = e.World.Id,
-            year = e.Year
+            year = e.Year,
+            end_year = e.EndYear
         });
         var id = 1;
         foreach (var change in e.Changes)
@@ -105,12 +106,12 @@ public class EventRepository : IEventRepository
             if (i == 0)
             {
                 var baseWorld = _worldBmpRepository.GetBaseWorld();
-                result.Add(new (e.year, e.name,
+                result.Add(new (e.year, e.end_year, e.name,
                     changes.Select(ParseChange).ToList(), baseWorld, e.world_id));
             }
             else
             {
-                result.Add(new (e.year, e.name,
+                result.Add(new (e.year, e.end_year, e.name,
                     changes.Select(ParseChange).ToList(), result[i - 1], e.world_id));
             }
             i++;
@@ -122,7 +123,7 @@ public class EventRepository : IEventRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         var events = connection.Query<DbEvent>($"SELECT * FROM {EventsTableName} ORDER BY year, id");
-        return events.Select(e => new EventDto(e.year, e.name, e.world_id)).ToList();
+        return events.Select(e => new EventDto(e.year, e.end_year, e.name, e.world_id)).ToList();
     }
 
     public EventDto? GetPrevious(int year, int? id)
@@ -132,7 +133,7 @@ public class EventRepository : IEventRepository
         if (connection.QueryFirst<DbCount>($"SELECT count(*) FROM events WHERE year = {year} AND id < {id}").count > 1)
         {
             var e = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {year} AND id = {id - 1}");
-            return new (e.year, e.name, e.world_id);
+            return new (e.year, e.end_year, e.name, e.world_id);
         }
 
         var prevYear = connection.QueryFirst<DbMax>($"SELECT max(year) FROM {EventsTableName} WHERE year < {year}")
@@ -143,7 +144,7 @@ public class EventRepository : IEventRepository
         if (lastId == null)
             throw new();
         var ev = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {prevYear} AND id = {lastId}");
-        return new (ev.year, ev.name, ev.world_id);
+        return new (ev.year, ev.end_year, ev.name, ev.world_id);
     }
 
     private bool[,] GetPoints(Guid areaId)
@@ -203,6 +204,7 @@ public class EventRepository : IEventRepository
         public int year { get; set; }
         [ExplicitKey]
         public int id { get; set; }
+        public int? end_year { get; set; }
         public string name { get; set; } = "";
         public Guid world_id { get; set; }
     }
