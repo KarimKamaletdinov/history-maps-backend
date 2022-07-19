@@ -8,17 +8,23 @@ public class Event
     public IReadOnlyCollection<IChange> Changes { get; }
     public Guid WorldId { get; }
     private readonly World _baseWorld;
+    private World? _world;
 
     public World World
     {
         get
         {
-            var world = _baseWorld.Copy(WorldId);
-            foreach (var change in Changes)
+            if (_world == null)
             {
-                change.Apply(world);
+                var world = _baseWorld.Copy(WorldId);
+                foreach (var change in Changes)
+                {
+                    change.Apply(world);
+                }
+
+                _world = world;
             }
-            return world;
+            return _world;
         }
     }
 
