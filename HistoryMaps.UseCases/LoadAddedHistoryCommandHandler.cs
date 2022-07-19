@@ -2,17 +2,17 @@
 
 namespace HistoryMaps;
 
-public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
+public class LoadAddedHistoryCommandHandler : ICommandHandler<LoadAddedHistory>
 {
     private readonly IWorldBmpRepository _bmpRepository;
     private readonly IEventRepository _eventRepository;
     private readonly IWorld3MfRepository _tMfRepository;
     private readonly ICommandHandler<SynchronizeWorld> _synchronizer;
-    private readonly ILogger<LoadHistoryCommandHandler> _logger;
+    private readonly ILogger<LoadAddedHistoryCommandHandler> _logger;
 
-    public LoadHistoryCommandHandler(IWorldBmpRepository bmpRepository, 
+    public LoadAddedHistoryCommandHandler(IWorldBmpRepository bmpRepository, 
         IEventRepository eventRepository, IWorld3MfRepository tMfRepository, ICommandHandler<SynchronizeWorld> synchronizer,
-        ILogger<LoadHistoryCommandHandler> logger)
+        ILogger<LoadAddedHistoryCommandHandler> logger)
     {
         _bmpRepository = bmpRepository;
         _eventRepository = eventRepository;
@@ -21,18 +21,20 @@ public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
         _logger = logger;
     }
 
-    public void Execute(LoadHistory command)
+    public void Execute(LoadAddedHistory command)
     {
         _logger.LogInformation("Start loading history");
-        _bmpRepository.ClearAll();
-        _tMfRepository.ClearAll();
+        var generatedBmp = _bmpRepository.GetAllIds().ToArray();
+        var generated3Mf = _tMfRepository.GetAllIds().ToArray();
         _logger.LogInformation("Cleared");
         var events = _eventRepository.GetAllEvents();
         foreach (var e in events)
         {
-            _bmpRepository.Insert(e.World);
-            _synchronizer.Execute(new (e.World.Id));
-            _logger.LogInformation("Loaded {Name}", e.Name);
+            if(!generatedBmp.Contains(e.WorldId))
+                _bmpRepository.Insert(e.World);
+            if(!generated3Mf.Contains(e.WorldId))
+                _synchronizer.Execute(new (e.WorldId));
+            _logger.LogInformation("Loaded {name}", e.Name);
         }
         _logger.LogInformation("Finished");
     }

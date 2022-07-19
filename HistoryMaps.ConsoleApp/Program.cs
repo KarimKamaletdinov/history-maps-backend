@@ -53,6 +53,7 @@ builder.RegisterType<CopyDataToWebAppCommandHandler>().AsImplementedInterfaces()
 builder.RegisterType<SaveChangesToGitRepoCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<CreateWebAppCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetAllEventsQueryHandler>().AsImplementedInterfaces();
+builder.RegisterType<LoadAddedHistoryCommandHandler>().AsImplementedInterfaces();
 
 // views
 builder.RegisterType<LoadHistoryView>().AsSelf();
@@ -60,6 +61,7 @@ builder.RegisterType<AddEventView>().AsSelf();
 builder.RegisterType<CreateAppView>().AsSelf();
 builder.RegisterType<HelpView>().AsSelf();
 builder.RegisterType<InvalidCommandView>().AsSelf();
+builder.RegisterType<LoadAddedHistoryView>().AsSelf();
 
 // app
 builder.RegisterType<Application>().AsSelf();
