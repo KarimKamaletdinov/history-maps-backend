@@ -31,7 +31,8 @@ public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
         foreach (var e in events)
         {
             _bmpRepository.Insert(e.World);
-            _synchronizer.Execute(new (e.World.Id));
+            if(command.Generate3Mf)
+                _synchronizer.Execute(new (e.World.Id));
             _logger.LogInformation("Loaded {Name}", e.Name);
         }
         _logger.LogInformation("Finished");

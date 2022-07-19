@@ -32,7 +32,7 @@ public class LoadAddedHistoryCommandHandler : ICommandHandler<LoadAddedHistory>
         {
             if(!generatedBmp.Contains(e.WorldId))
                 _bmpRepository.Insert(e.World);
-            if(!generated3Mf.Contains(e.WorldId))
+            if(!generated3Mf.Contains(e.WorldId) && command.Generate3Mf)
                 _synchronizer.Execute(new (e.WorldId));
             _logger.LogInformation("Loaded {name}", e.Name);
         }
