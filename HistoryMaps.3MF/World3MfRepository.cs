@@ -25,7 +25,7 @@ public class World3MfRepository : IWorld3MfRepository
             JsonConvert.SerializeObject(new JsonFileWorld(
                 world.Countries.Select(x => new JsonFileCountry(x.Name,
                     new(x.Color.R, x.Color.G, x.Color.B)))
-            )));
+            ), Formatting.Indented));
 
         var data = To3MfConverter.ConvertSeparately(world);
         Save3Mf(data.Base, _rootFolder.GetPath("worlds", world.Id.ToString(), "base.3mf"));

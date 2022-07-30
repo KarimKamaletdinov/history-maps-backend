@@ -62,6 +62,8 @@ builder.RegisterType<CreateAppView>().AsSelf();
 builder.RegisterType<HelpView>().AsSelf();
 builder.RegisterType<InvalidCommandView>().AsSelf();
 builder.RegisterType<LoadAddedHistoryView>().AsSelf();
+builder.RegisterType<ModifyEventView>().AsSelf();
+builder.RegisterType<ListView>().AsSelf();
 
 // app
 builder.RegisterType<Application>().AsSelf();

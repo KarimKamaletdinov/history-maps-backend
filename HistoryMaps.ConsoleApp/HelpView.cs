@@ -11,6 +11,8 @@ public class HelpView
         Console.WriteLine("l, load: Load history from database");
         Console.WriteLine("la, load added: Load added events from database");
         Console.WriteLine("a, add: Add new event to database");
-        Console.WriteLine("c, create: Create web application and upload to GitHub (NOT FULLY IMPLEMENTED YET)");
+        Console.WriteLine("c, create: Create web application and upload to GitHub");
+        Console.WriteLine("m, mod, modify: Modify existing event");
+        Console.WriteLine("li, list: List all events");
     }
 }

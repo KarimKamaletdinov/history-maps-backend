@@ -49,7 +49,7 @@ public class CreateWebAppCommandHandler : ICommandHandler<CreateWebApp>
         }
         _logger.LogInformation("History loaded");
         File.WriteAllText(_rootFolderProvider.GetPath("events.json"), 
-            JsonConvert.SerializeObject(dtos),
+            JsonConvert.SerializeObject(dtos, Formatting.Indented),
             Encoding.UTF8);
         _logger.LogInformation("Events metadata saved");
         _loadGitRepo.Execute(new ());

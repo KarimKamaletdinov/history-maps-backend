@@ -123,7 +123,7 @@ public class EventRepository : IEventRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         var events = connection.Query<DbEvent>($"SELECT * FROM {EventsTableName} ORDER BY year, id");
-        return events.Select(e => new EventDto(e.year, e.end_year, e.name, e.world_id)).ToList();
+        return events.Select(e => new EventDto(e.year, e.id, e.end_year, e.name, e.world_id)).ToList();
     }
 
     public EventDto? GetPrevious(int year, int? id)
@@ -133,7 +133,7 @@ public class EventRepository : IEventRepository
         if (connection.QueryFirst<DbCount>($"SELECT count(*) FROM events WHERE year = {year} AND id < {id}").count > 1)
         {
             var e = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {year} AND id = {id - 1}");
-            return new (e.year, e.end_year, e.name, e.world_id);
+            return new (e.year, e.id, e.end_year, e.name, e.world_id);
         }
 
         var prevYear = connection.QueryFirst<DbMax>($"SELECT max(year) FROM {EventsTableName} WHERE year < {year}")
@@ -144,7 +144,7 @@ public class EventRepository : IEventRepository
         if (lastId == null)
             throw new();
         var ev = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {prevYear} AND id = {lastId}");
-        return new (ev.year, ev.end_year, ev.name, ev.world_id);
+        return new (ev.year, ev.id, ev.end_year, ev.name, ev.world_id);
     }
 
     private bool[,] GetPoints(Guid areaId)
@@ -182,6 +182,20 @@ public class EventRepository : IEventRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         return connection.QueryFirst<DbMax>($"SELECT MAX(id) FROM {EventsTableName} WHERE year = {year}").max + 1 ?? 1;
+    }
+
+    public void Delete(int year, int id)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+        connection.Execute($"DELETE FROM {EventsTableName} WHERE year={year} AND id={id}");
+        connection.Execute($"DELETE FROM {ChangesTableName} WHERE event_year={year} AND event_id={id}");
+    }
+
+    public EventDto Get(int year, int id)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+        var e = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year={year} AND id={id}");
+        return new (e.year, e.id, e.end_year, e.name, e.world_id);
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]

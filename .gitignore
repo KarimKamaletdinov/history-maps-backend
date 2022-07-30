@@ -489,6 +489,8 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+HistoryMaps.BlazorApp/wwwroot/data/
+
 ### VisualStudio ###
 
 # User-specific files

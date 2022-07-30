@@ -1,0 +1,14 @@
+﻿@page "/world/{IdStr}"
+
+<img src="data/worlds/@(_id).bmp" style="width: 100%"/>
+
+@code {
+    [Parameter]
+    public string IdStr
+    {
+        get => _id.ToString();
+        set => _id = Guid.Parse(value);
+    }
+
+    private Guid _id;
+}
