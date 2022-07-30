@@ -42,6 +42,7 @@ app.Run();
 
 void ConfigureServices(ContainerBuilder b)
 {
+    // storage
     b.RegisterType<PostgresqlConnectionFactory>().WithParameter("connectionString", builder.Configuration["ConnectionString"])
         .AsImplementedInterfaces();
     b.RegisterType<RootFolderProvider>().WithParameter("rootFolder", builder.Configuration["RootFolder"])
@@ -49,12 +50,12 @@ void ConfigureServices(ContainerBuilder b)
     b.RegisterType<GitRemoteUrlProvider>().WithParameter("url", builder.Configuration["GitRemoteUrl"])
         .AsImplementedInterfaces();
 
-// repositories
+    // repositories
     b.RegisterType<WorldBmpRepository>().AsImplementedInterfaces();
     b.RegisterType<EventRepository>().AsImplementedInterfaces();
     b.RegisterType<World3MfRepository>().AsImplementedInterfaces();
 
-//services
+    // services
     b.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
     b.RegisterType<Create3DWorldSeparatelyCommandHandler>().AsImplementedInterfaces();
     b.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
