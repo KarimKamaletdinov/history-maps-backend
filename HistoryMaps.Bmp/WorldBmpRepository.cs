@@ -43,6 +43,21 @@ public class WorldBmpRepository : IWorldBmpRepository
         WriteColors(world.Id, CreateColors(world));
     }
 
+    public void InsertBitmap(Guid id, WorldBitmapDto world)
+    {
+        var path = GenPath(id);
+
+        if (File.Exists(path))
+            throw new AlreadyExistsException($"File \"{path}\" already exists!");
+        world.Bitmap.Save(path);
+        var colors = new Dictionary<string, Color>(world.Countries.Select(x =>
+            new KeyValuePair<string, Color>(x.Name, x.Color)))
+        {
+            { "water", Color.FromArgb(0, 162, 232) }
+        };
+        WriteColors(id, colors);
+    }
+
     public void Update(World world)
     {
         var path = GenPath(world.Id);
@@ -58,13 +73,8 @@ public class WorldBmpRepository : IWorldBmpRepository
                 if (world.Water.Points[x, y])
                     image.SetPixel(x, y, world.Water.Color);
                 else
-                {
-                    foreach (var country in world.Countries)
-                    {
-                        if (country.Points[x, y])
-                            image.SetPixel(x, y, country.Color);
-                    }
-                }
+                    foreach (var country in world.Countries.Where(country => country.Points[x, y]))
+                        image.SetPixel(x, y, country.Color);
             }
         }
 
@@ -175,6 +185,15 @@ public class WorldBmpRepository : IWorldBmpRepository
         }
 
         return new(worldId, water, countries);
+    }
+
+    public WorldBitmapDto GetBitmap(Guid id)
+    {
+        var colorDictionary = GetColors(id);
+        var path = GenPath(id);
+        if (!File.Exists(path))
+            throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
+        return new ((Bitmap)Image.FromFile(path), colorDictionary.Where(x => x.Key != "water").Select(x => new CountryColorDto(x.Key, x.Value)));
     }
 
     private Dictionary<string, Color> GetColors(Guid worldId)

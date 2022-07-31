@@ -31,6 +31,7 @@
             this._picture = new System.Windows.Forms.PictureBox();
             this._flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._back = new System.Windows.Forms.Button();
+            this._save = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._picture)).BeginInit();
             this._flowPanel.SuspendLayout();
             this.SuspendLayout();
@@ -58,6 +59,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this._flowPanel.BackColor = System.Drawing.Color.White;
             this._flowPanel.Controls.Add(this._back);
+            this._flowPanel.Controls.Add(this._save);
             this._flowPanel.Location = new System.Drawing.Point(0, 0);
             this._flowPanel.Name = "_flowPanel";
             this._flowPanel.Size = new System.Drawing.Size(150, 30);
@@ -72,6 +74,16 @@
             this._back.Text = "<";
             this._back.UseVisualStyleBackColor = true;
             this._back.Click += new System.EventHandler(this._back_Click);
+            // 
+            // _save
+            // 
+            this._save.Location = new System.Drawing.Point(35, 3);
+            this._save.Name = "_save";
+            this._save.Size = new System.Drawing.Size(26, 23);
+            this._save.TabIndex = 1;
+            this._save.Text = "|/";
+            this._save.UseVisualStyleBackColor = true;
+            this._save.Click += new System.EventHandler(this._save_Click);
             // 
             // ModifyEventControl
             // 
@@ -92,5 +104,6 @@
         private PictureBox _picture;
         private FlowLayoutPanel _flowPanel;
         private Button _back;
+        private Button _save;
     }
 }

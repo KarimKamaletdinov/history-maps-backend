@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0-preview.4.22229.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HistoryMaps.Common.Abstractions\HistoryMaps.Common.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Common\HistoryMaps.Common.csproj" />
   </ItemGroup>

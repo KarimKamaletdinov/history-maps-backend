@@ -2,7 +2,7 @@
 
 public interface IModifyEventView
 {
-    public WorldDto World { set; }
-    public event Action<Guid> Save;
+    public WorldBitmapDto World { set; }
+    public event Action<WorldBitmapDto> Save;
     public event Action Back;
 }
