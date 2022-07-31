@@ -35,25 +35,29 @@
             // 
             this._table.AutoSize = true;
             this._table.ColumnCount = 3;
-            this._table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this._table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this._table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this._table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this._table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this._table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this._table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this._table.Dock = System.Windows.Forms.DockStyle.Top;
             this._table.Location = new System.Drawing.Point(0, 0);
+            this._table.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this._table.Name = "_table";
             this._table.RowCount = 2;
             this._table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this._table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this._table.Size = new System.Drawing.Size(150, 0);
+            this._table.Size = new System.Drawing.Size(131, 0);
             this._table.TabIndex = 0;
             // 
-            // EventListControl
+            // EventsListControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this._table);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "EventsListControl";
+            this.Size = new System.Drawing.Size(131, 112);
             this.ResumeLayout(false);
             this.PerformLayout();
 

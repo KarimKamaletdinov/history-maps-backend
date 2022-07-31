@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace HistoryMaps
+﻿namespace HistoryMaps
 {
     public partial class CommonForm : Form, ICommonView
     {
@@ -20,7 +10,7 @@ namespace HistoryMaps
         public IEventsListView ShowEventsListView()
         {
             Controls.Clear();
-            var view = new EventsListControl();
+            var view = new EventsListControl { Dock = DockStyle.Fill };
             Controls.Add(view);
             return view;
         }
@@ -28,7 +18,7 @@ namespace HistoryMaps
         public IModifyEventView ShowModifyEventView()
         {
             Controls.Clear();
-            var view = new ModifyEventControl();
+            var view = new ModifyEventControl { Dock = DockStyle.Fill };
             Controls.Add(view);
             return view;
         }

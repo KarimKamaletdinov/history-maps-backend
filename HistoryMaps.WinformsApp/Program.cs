@@ -1,9 +1,14 @@
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using HistoryMaps;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Serilog;
 
+// initialize application
+ApplicationConfiguration.Initialize();
+
+// load config
 var config = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("appsettings.json"))
              ?? throw new NullReferenceException();
 
@@ -54,5 +59,17 @@ builder.RegisterType<CreateWebAppCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetAllEventsQueryHandler>().AsImplementedInterfaces();
 builder.RegisterType<LoadAddedHistoryCommandHandler>().AsImplementedInterfaces();
 
-ApplicationConfiguration.Initialize();
-Application.Run(new CommonForm());
+// presenters
+builder.RegisterType<EventsListPresenter>().AsSelf();
+builder.RegisterType<ModifyEventPresenter>().AsSelf();
+builder.RegisterType<CommonPresenter>().AsSelf();
+
+var container = builder.Build();
+
+// run presenter
+var presenter = container.Resolve<CommonPresenter>();
+var form = new CommonForm();
+presenter.Initialize(form);
+
+// run form
+Application.Run(form);

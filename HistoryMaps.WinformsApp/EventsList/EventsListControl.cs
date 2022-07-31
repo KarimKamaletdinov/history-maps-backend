@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace HistoryMaps
+﻿namespace HistoryMaps
 {
     public partial class EventsListControl : UserControl, IEventsListView
     {
@@ -16,24 +6,13 @@ namespace HistoryMaps
         {
             set
             {
+                _table.Controls.Clear();
                 foreach (var ev in value)
                 {
-                    _table.Controls.Add(new Label
-                    {
-                        Text = ev.Year.ToYearString() +
-                               (ev.EndYear != null ? " " + ev.EndYear?.ToYearString() : "")
-                    });
-                    _table.Controls.Add(new Label
-                    {
-                        Text = ev.Name
-                    });
-                    var idLabel = new Label
-                    {
-                        Text = ev.WorldId.ToString(),
-                        ForeColor = Color.Blue
-                    };
-                    idLabel.Click += (_, _) => ShowEvent(ev);
-                    _table.Controls.Add(idLabel);
+                    AddLabel(ev.Year.ToYearString() +
+                        (ev.EndYear != null ? " " + ev.EndYear?.ToYearString() : ""));
+                    AddLabel(ev.Name);
+                    AddLabel(ev.WorldId.ToString(), Color.Blue, () => ShowEvent(ev));
                 }
             }
         }
@@ -44,6 +23,24 @@ namespace HistoryMaps
         {
             InitializeComponent();
             ShowEvent += _ => { };
+            AddLabel("Загрузка");
+        }
+
+        private void AddLabel(string text, Color? foreColor = null, Action? onClick = null)
+        {
+            var label = new Label
+            {
+                Text = text,
+                Dock = DockStyle.Fill,
+                ForeColor = foreColor ?? SystemColors.ControlText,
+                BackColor = Color.White
+            };
+
+            _table.Controls.Add(label);
+
+            if (onClick != null)
+                label.Click += (_, _) => onClick();
+
         }
     }
 }

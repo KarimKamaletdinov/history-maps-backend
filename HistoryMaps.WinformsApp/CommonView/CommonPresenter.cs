@@ -14,6 +14,7 @@ public class CommonPresenter
     public void Initialize(ICommonView view)
     {
         _eventsListPresenter.ShowEvent += e => _modifyEventPresenter.Initialize(view.ShowModifyEventView(), e);
+        _modifyEventPresenter.ShowEventsListView += () => _eventsListPresenter.Initialize(view.ShowEventsListView());
         _eventsListPresenter.Initialize(view.ShowEventsListView());
     }
 }
