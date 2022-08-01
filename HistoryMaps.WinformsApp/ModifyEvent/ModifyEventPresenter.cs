@@ -28,7 +28,7 @@ public class ModifyEventPresenter
     private void Save(WorldBitmapDto world)
     {
         var previous = _eventRepository.GetPrevious(_event!.Year, _event!.Id);
-        var pw = previous == null ? _worldBmpRepository.GetBaseWorld() : 
+        var pw = previous == null ? _worldBmpRepository.GetBaseWorld() :
             _worldBmpRepository.Get(previous.WorldId);
         var worldId = Guid.NewGuid();
         _worldBmpRepository.InsertBitmap(worldId, world);

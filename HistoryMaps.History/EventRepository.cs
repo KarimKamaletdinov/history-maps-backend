@@ -178,7 +178,7 @@ public class EventRepository : IEventRepository
         }
     }
 
-    private int GenerateId(int year)
+    public int GenerateId(int year)
     {
         using var connection = _connectionFactory.CreateConnection();
         return connection.QueryFirst<DbMax>($"SELECT MAX(id) FROM {EventsTableName} WHERE year = {year}").max + 1 ?? 1;

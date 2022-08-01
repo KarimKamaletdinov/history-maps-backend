@@ -22,5 +22,12 @@
             Controls.Add(view);
             return view;
         }
+
+        public IAddEventView ShowAddEventView()
+        {
+            var view = new AddEventDialog();
+            view.Show(this);
+            return view;
+        }
     }
 }

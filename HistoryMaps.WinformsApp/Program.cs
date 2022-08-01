@@ -62,6 +62,7 @@ builder.RegisterType<LoadAddedHistoryCommandHandler>().AsImplementedInterfaces()
 // presenters
 builder.RegisterType<EventsListPresenter>().AsSelf();
 builder.RegisterType<ModifyEventPresenter>().AsSelf();
+builder.RegisterType<AddEventPresenter>().AsSelf();
 builder.RegisterType<CommonPresenter>().AsSelf();
 
 var container = builder.Build();

@@ -10,7 +10,7 @@
                 foreach (var ev in value)
                 {
                     AddLabel(ev.Year.ToYearString() +
-                        (ev.EndYear != null ? " " + ev.EndYear?.ToYearString() : ""));
+                        (ev.EndYear != null ? " - " + ev.EndYear?.ToYearString() : ""));
                     AddLabel(ev.Name);
                     AddLabel(ev.WorldId.ToString(), Color.Blue, () => ShowEvent(ev));
                 }
@@ -18,11 +18,13 @@
         }
 
         public event Action<EventDto> ShowEvent;
+        public event Action AddEvent;
 
         public EventsListControl()
         {
             InitializeComponent();
             ShowEvent += _ => { };
+            AddEvent += () => { };
             AddLabel("Загрузка");
         }
 
@@ -41,6 +43,11 @@
             if (onClick != null)
                 label.Click += (_, _) => onClick();
 
+        }
+
+        private void _add_Click(object sender, EventArgs e)
+        {
+            AddEvent();
         }
     }
 }

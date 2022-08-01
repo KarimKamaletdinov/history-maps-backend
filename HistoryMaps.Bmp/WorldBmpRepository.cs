@@ -53,7 +53,7 @@ public class WorldBmpRepository : IWorldBmpRepository
         var colors = new Dictionary<string, Color>(world.Countries.Select(x =>
             new KeyValuePair<string, Color>(x.Name, x.Color)))
         {
-            { "water", Color.FromArgb(0, 162, 232) }
+            { "water", Map.WaterColor }
         };
         WriteColors(id, colors);
     }
