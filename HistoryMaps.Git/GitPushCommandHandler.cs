@@ -9,8 +9,8 @@ public class GitPushCommandHandler : ICommandHandler<GitPush>
         _execute = execute;
     }
 
-    public void Execute(GitPush command)
+    public Task Execute(GitPush command)
     {
-        _execute.ExecuteGitCommand("push -q", command.Directory);
+        return _execute.ExecuteGitCommand("push -q", command.Directory);
     }
 }

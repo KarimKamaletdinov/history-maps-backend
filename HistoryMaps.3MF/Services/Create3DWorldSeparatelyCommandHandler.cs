@@ -9,8 +9,8 @@ public class Create3DWorldSeparatelyCommandHandler : ICommandHandler<Create3DWor
         _repository = repository;
     }
 
-    public void Execute(Create3DWorldSeparately command)
+    public Task Execute(Create3DWorldSeparately command)
     {
-        _repository.InsertSeparately(command.World);
+        return _repository.InsertSeparately(command.World);
     }
 }

@@ -131,7 +131,6 @@
             this.Name = "AddEventDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Добавление события";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddEventDialog_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this._year)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._endYear)).EndInit();
             this.ResumeLayout(false);

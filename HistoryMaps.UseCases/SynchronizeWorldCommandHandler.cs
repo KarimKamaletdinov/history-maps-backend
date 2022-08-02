@@ -14,13 +14,13 @@ public class SynchronizeWorldCommandHandler : ICommandHandler<SynchronizeWorld>
         _rootFolder = rootFolder;
     }
 
-    public void Execute(SynchronizeWorld command)
+    public async Task Execute(SynchronizeWorld command)
     {
         if (File.Exists(_rootFolder.GetPath("worlds",
                 command.WorldId + ".3mf")))
             File.Delete(_rootFolder.GetPath("worlds",
                 command.WorldId + ".3mf"));
-        var world = _getWorld.Execute(new (command.WorldId));
-        _create3DWorld.Execute(new (world));
+        var world = await _getWorld.Execute(new (command.WorldId));
+        await _create3DWorld.Execute(new (world));
     }
 }

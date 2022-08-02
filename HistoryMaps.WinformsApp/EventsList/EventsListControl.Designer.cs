@@ -32,6 +32,8 @@
             this._table = new System.Windows.Forms.TableLayoutPanel();
             this._add = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this._loadAdded = new System.Windows.Forms.Button();
+            this._load = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +50,7 @@
             this._table.Name = "_table";
             this._table.RowCount = 1;
             this._table.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this._table.Size = new System.Drawing.Size(131, 0);
+            this._table.Size = new System.Drawing.Size(218, 0);
             this._table.TabIndex = 0;
             // 
             // _add
@@ -56,7 +58,7 @@
             this._add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this._add.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_add.BackgroundImage")));
             this._add.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this._add.Location = new System.Drawing.Point(72, 56);
+            this._add.Location = new System.Drawing.Point(159, 56);
             this._add.Name = "_add";
             this._add.Size = new System.Drawing.Size(40, 40);
             this._add.TabIndex = 1;
@@ -70,19 +72,45 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(131, 112);
+            this.panel1.Size = new System.Drawing.Size(218, 112);
             this.panel1.TabIndex = 2;
+            // 
+            // _loadAdded
+            // 
+            this._loadAdded.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._loadAdded.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_loadAdded.BackgroundImage")));
+            this._loadAdded.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._loadAdded.Location = new System.Drawing.Point(44, 56);
+            this._loadAdded.Name = "_loadAdded";
+            this._loadAdded.Size = new System.Drawing.Size(40, 40);
+            this._loadAdded.TabIndex = 3;
+            this._loadAdded.UseVisualStyleBackColor = true;
+            this._loadAdded.Click += new System.EventHandler(this._loadAdded_Click);
+            // 
+            // _load
+            // 
+            this._load.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._load.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_load.BackgroundImage")));
+            this._load.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._load.Location = new System.Drawing.Point(102, 56);
+            this._load.Name = "_load";
+            this._load.Size = new System.Drawing.Size(40, 40);
+            this._load.TabIndex = 2;
+            this._load.UseVisualStyleBackColor = true;
+            this._load.Click += new System.EventHandler(this._load_Click);
             // 
             // EventsListControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this._loadAdded);
             this.Controls.Add(this._add);
+            this.Controls.Add(this._load);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "EventsListControl";
-            this.Size = new System.Drawing.Size(131, 112);
+            this.Size = new System.Drawing.Size(218, 112);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -94,5 +122,7 @@
         private TableLayoutPanel _table;
         private Button _add;
         private Panel panel1;
+        private Button _load;
+        private Button _loadAdded;
     }
 }

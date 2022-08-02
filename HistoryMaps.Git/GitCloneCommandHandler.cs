@@ -9,8 +9,8 @@ public class GitCloneCommandHandler : ICommandHandler<GitClone>
         _execute = execute;
     }
 
-    public void Execute(GitClone command)
+    public Task Execute(GitClone command)
     {
-        _execute.ExecuteGitCommand($"clone {command.Repository} {command.Directory} -q");
+        return _execute.ExecuteGitCommand($"clone {command.Repository} {command.Directory} -q");
     }
 }

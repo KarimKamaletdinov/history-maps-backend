@@ -12,13 +12,7 @@ public class World3MfRepository : IWorld3MfRepository
         _rootFolder = rootFolder;
     }
 
-    public void Insert(WorldDto world)
-    {
-        var (doc, id) = To3MfConverter.Convert(world);
-        Save3Mf(doc, _rootFolder.GetPath("worlds", id + ".3mf"));
-    }
-
-    public void InsertSeparately(WorldDto world)
+    public Task InsertSeparately(WorldDto world) => Task.Run(() =>
     {
         Directory.CreateDirectory(_rootFolder.GetPath("worlds", world.Id.ToString()));
         File.WriteAllText(_rootFolder.GetPath("worlds", world.Id.ToString(), "countries.json"),
@@ -34,23 +28,25 @@ public class World3MfRepository : IWorld3MfRepository
         {
             Save3Mf(country, _rootFolder.GetPath("worlds", world.Id.ToString(), country.Metadata + ".3mf"));
         }
-    }
+    });
 
-    public void ClearAll()
+    public Task ClearAll() => Task.Run(() =>
     {
         foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds")))
             if (file.EndsWith(".3mf"))
                 File.Delete(file);
         foreach (var directory in Directory.GetDirectories(_rootFolder.GetPath("worlds")))
             Directory.Delete(directory, true);
-    }
+    });
 
-    public IEnumerable<Guid> GetAllIds()
+    public Task<IEnumerable<Guid>> GetAllIds() => Task.Run(() =>
     {
+        var result = new List<Guid>();
         foreach (var directory in Directory.GetDirectories(_rootFolder.GetPath("worlds")))
             if (Guid.TryParse(directory.Split(Path.DirectorySeparatorChar).Last(), out var guid))
-                yield return guid;
-    }
+                result.Add(guid);
+        return (IEnumerable<Guid>)result;
+    });
 
     private void Save3Mf(Document document, string resultPath)
     {

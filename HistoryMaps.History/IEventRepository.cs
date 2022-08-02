@@ -2,11 +2,11 @@
 
 public interface IEventRepository
 {
-    void Insert(Event e);
-    IReadOnlyCollection<Event> GetAllEvents();
-    IReadOnlyCollection<EventDto> GetAllEventDtos();
-    EventDto? GetPrevious(int year, int? id);
-    void Delete(int year, int id);
-    EventDto Get(int year, int id);
-    int GenerateId(int year);
+    Task Insert(Event e);
+    Task<IReadOnlyCollection<Event>> GetAllEvents();
+    Task<IReadOnlyCollection<EventDto>> GetAllEventDtos();
+    Task<EventDto?> GetPrevious(int year, int? id);
+    Task Delete(int year, int id);
+    Task<EventDto> Get(int year, int id);
+    Task<int> GenerateId(int year);
 }

@@ -13,7 +13,7 @@ public class WorldBmpRepository : IWorldBmpRepository
         _rootFolder = rootFolder;
     }
 
-    public void Insert(World world)
+    public Task Insert(World world) => Task.Run(() =>
     {
         var path = GenPath(world.Id);
 
@@ -21,51 +21,7 @@ public class WorldBmpRepository : IWorldBmpRepository
             throw new AlreadyExistsException($"File \"{path}\" already exists!");
 
         using var image = new Bitmap(Map.Width, Map.Height);
-        
-        for (var x = 0; x < Map.Width; x++)
-        {
-            for (var y = 0; y < Map.Height; y++)
-            {
-                if (world.Water.Points[x, y])
-                    image.SetPixel(x, y, world.Water.Color);
-                else
-                {
-                    foreach (var country in world.Countries)
-                    {
-                        if (country.Points[x, y])
-                            image.SetPixel(x, y, country.Color);
-                    }
-                }
-            }
-        }
 
-        image.Save(path);
-        WriteColors(world.Id, CreateColors(world));
-    }
-
-    public void InsertBitmap(Guid id, WorldBitmapDto world)
-    {
-        var path = GenPath(id);
-
-        if (File.Exists(path))
-            throw new AlreadyExistsException($"File \"{path}\" already exists!");
-        world.Bitmap.Save(path);
-        var colors = new Dictionary<string, Color>(world.Countries.Select(x =>
-            new KeyValuePair<string, Color>(x.Name, x.Color)))
-        {
-            { "water", Map.WaterColor }
-        };
-        WriteColors(id, colors);
-    }
-
-    public void Update(World world)
-    {
-        var path = GenPath(world.Id);
-        if (!File.Exists(path))
-            throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
-
-        using var image = new Bitmap(Map.Width, Map.Height);
-        
         for (var x = 0; x < Map.Width; x++)
         {
             for (var y = 0; y < Map.Height; y++)
@@ -80,40 +36,49 @@ public class WorldBmpRepository : IWorldBmpRepository
 
         image.Save(path);
         WriteColors(world.Id, CreateColors(world));
-    }
+    });
 
-    public void Delete(Guid worldId)
+    public Task InsertBitmap(Guid id, WorldBitmapDto world) => Task.Run(() =>
     {
-        var path = GenPath(worldId);
-        if (!File.Exists(path))
-            throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
-        File.Delete(path);
-    }
+        var path = GenPath(id);
 
-    public void ClearAll()
-    {
-        foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds"))) 
-            File.Delete(file);
-    }
+        if (File.Exists(path))
+            throw new AlreadyExistsException($"File \"{path}\" already exists!");
+        world.Bitmap.Save(path);
+        var colors = new Dictionary<string, Color>(world.Countries.Select(x =>
+            new KeyValuePair<string, Color>(x.Name, x.Color)))
+        {
+            { "water", Map.WaterColor }
+        };
+        WriteColors(id, colors);
+    });
 
-    public IEnumerable<Guid> GetAllIds()
+    public Task ClearAll() => Task.Run(() =>
     {
         foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds")))
-            if(file.EndsWith(".bmp"))
-                if (Guid.TryParse(file.Split(Path.DirectorySeparatorChar).Last().Replace(".bmp", ""), out var guid))
-                    yield return guid;
-    }
+            File.Delete(file);
+    });
 
-    public World GetBaseWorld()
+    public Task<IEnumerable<Guid>> GetAllIds() => Task.Run(() =>
+    {
+        var result = new List<Guid>();
+        foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds")))
+            if (file.EndsWith(".bmp"))
+                if (Guid.TryParse(file.Split(Path.DirectorySeparatorChar).Last().Replace(".bmp", ""), out var guid))
+                    result.Add(guid);
+        return (IEnumerable<Guid>)result;
+    });
+
+    public Task<World> GetBaseWorld() => Task.Run(() =>
     {
         var colorDictionary = GetColors(
             _rootFolder.GetPath("constants", "base_world.json"));
         var path = _rootFolder.GetPath("constants", "base_world.bmp");
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
-        
+
         using var image = (Bitmap)Image.FromFile(path);
-        
+
         var water = new MapArea(new bool[Map.Width, Map.Height], colorDictionary["water"]);
         var countries = new List<Country>();
         for (var x = 0; x < Map.Width; x++)
@@ -143,18 +108,18 @@ public class WorldBmpRepository : IWorldBmpRepository
             }
         }
 
-        return new(Guid.Empty, water, countries);
-    }
+        return new World(Guid.Empty, water, countries);
+    });
 
-    public World Get(Guid worldId)
+    public Task<World> Get(Guid worldId) => Task.Run(() =>
     {
         var colorDictionary = GetColors(worldId);
         var path = GenPath(worldId);
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
-        
+
         using var image = (Bitmap)Image.FromFile(path);
-        
+
         var water = new MapArea(new bool[Map.Width, Map.Height], colorDictionary["water"]);
         var countries = new List<Country>();
         for (var x = 0; x < Map.Width; x++)
@@ -184,17 +149,18 @@ public class WorldBmpRepository : IWorldBmpRepository
             }
         }
 
-        return new(worldId, water, countries);
-    }
+        return new World(worldId, water, countries);
+    });
 
-    public WorldBitmapDto GetBitmap(Guid id)
+    public Task<WorldBitmapDto> GetBitmap(Guid id) => Task.Run(() =>
     {
         var colorDictionary = GetColors(id);
         var path = GenPath(id);
         if (!File.Exists(path))
             throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
-        return new ((Bitmap)Image.FromFile(path), colorDictionary.Where(x => x.Key != "water").Select(x => new CountryColorDto(x.Key, x.Value)));
-    }
+        return new WorldBitmapDto((Bitmap)Image.FromFile(path),
+            colorDictionary.Where(x => x.Key != "water").Select(x => new CountryColorDto(x.Key, x.Value)));
+    });
 
     private Dictionary<string, Color> GetColors(Guid worldId)
         => GetColors(_rootFolder.GetPath("worlds", worldId + ".json"));

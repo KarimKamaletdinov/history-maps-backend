@@ -90,7 +90,7 @@ public class Event
         return changes;
     }
 
-    public EventChangesDto ToDto()
+    public EventChangesDto ToDtoWithChanges()
     {
         var countryNames = new HashSet<string>();
 

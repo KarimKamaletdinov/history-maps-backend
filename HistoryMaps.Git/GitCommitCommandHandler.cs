@@ -9,9 +9,9 @@ public class GitCommitCommandHandler : ICommandHandler<GitCommit>
         _execute = execute;
     }
 
-    public void Execute(GitCommit command)
+    public async Task Execute(GitCommit command)
     {
-        _execute.ExecuteGitCommand("add *", command.Directory);
-        _execute.ExecuteGitCommand($"commit -m \"{command.Name}\" -q", command.Directory);
+        await _execute.ExecuteGitCommand("add *", command.Directory);
+        await _execute.ExecuteGitCommand($"commit -m \"{command.Name}\" -q", command.Directory);
     }
 }

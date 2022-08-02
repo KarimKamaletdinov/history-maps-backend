@@ -4,7 +4,7 @@ namespace HistoryMaps;
 
 public class ExecuteGitCommandService
 {
-    public void ExecuteGitCommand(string gitCommand, string? workingDirectory = null)
+    public async Task ExecuteGitCommand(string gitCommand, string? workingDirectory = null)
     {
         using var process = new Process();
         process.StartInfo.FileName = "git";
@@ -12,6 +12,6 @@ public class ExecuteGitCommandService
         if(workingDirectory != null)
             process.StartInfo.WorkingDirectory = workingDirectory;
         process.Start();
-        process.WaitForExit();
+        await process.WaitForExitAsync();
     }
 }

@@ -21,11 +21,11 @@ public class EventRepository : IEventRepository
         _worldBmpRepository = worldBmpRepository;
     }
 
-    public void Insert(Event e)
+    public async Task Insert(Event e)
     {
         using var connection = _connectionFactory.CreateConnection();
-        var eventId = GenerateId(e.Year);
-        connection.Insert(new DbEvent
+        var eventId = await GenerateId(e.Year);
+        await connection.InsertAsync(new DbEvent
         {
             id = eventId,
             name = e.Name,
@@ -42,7 +42,7 @@ public class EventRepository : IEventRepository
                     Guid? areaId = conquestChange.ConqueredArea == null
                         ? null
                         : Guid.NewGuid();
-                    connection.Insert(new DbChange
+                    await connection.InsertAsync(new DbChange
                     {
                         type = "conquest",
                         area_id = areaId,
@@ -55,7 +55,7 @@ public class EventRepository : IEventRepository
                         for (var x = 0; x < Map.Width; x++)
                             for (var y = 0; y < Map.Height; y++)
                                 if (conquestChange.ConqueredArea.Points[x, y])
-                                    connection.Insert(new DbPoint
+                                    await connection.InsertAsync(new DbPoint
                                     {
                                         area_id = areaId ?? throw new NullReferenceException(),
                                         x = (short)x,
@@ -63,7 +63,7 @@ public class EventRepository : IEventRepository
                                     });
                     break;
                 case CreateCountryChange createCountryChange:
-                    connection.Insert(new DbChange
+                    await connection.InsertAsync(new DbChange
                     {
                         color = createCountryChange.NewCountryColor.ToArgb()
                             .ToString("x8"),
@@ -75,7 +75,7 @@ public class EventRepository : IEventRepository
                     });
                     break;
                 case DropCountryChange dropCountryChange:
-                    connection.Insert(new DbChange
+                    await connection.InsertAsync(new DbChange
                     {
                         country_name = dropCountryChange.DroppedCountryName,
                         type = "drop",
@@ -85,73 +85,75 @@ public class EventRepository : IEventRepository
                     });
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(change));
+                    throw new Exception(nameof(change) + " is not a known change type");
             }
 
             id++;
         }
     }
 
-    public IReadOnlyCollection<Event> GetAllEvents()
+    public async Task<IReadOnlyCollection<Event>> GetAllEvents()
     {
         using var connection = _connectionFactory.CreateConnection();
-        var events = connection.Query<DbEvent>($"SELECT * FROM {EventsTableName} ORDER BY year, id");
+        var events = await connection.QueryAsync<DbEvent>($"SELECT * FROM {EventsTableName} ORDER BY year, id");
         var result = new List<Event>();
         var i = 0;
         foreach (var e in events)
         {
-            var changes = connection.Query<DbChange>(
+            var changes = await connection.QueryAsync<DbChange>(
                 $"SELECT * FROM {ChangesTableName} WHERE event_year={e.year} AND event_id={e.id}" +
                 "ORDER BY id");
             if (i == 0)
             {
                 var baseWorld = _worldBmpRepository.GetBaseWorld();
                 result.Add(new (e.year, e.end_year, e.name,
-                    changes.Select(ParseChange).ToList(), baseWorld, e.world_id));
+                    changes.Select(async c => await ParseChange(c)).Select(c => c.Result).ToList(), baseWorld, e.world_id));
             }
             else
             {
                 result.Add(new (e.year, e.end_year, e.name,
-                    changes.Select(ParseChange).ToList(), result[i - 1], e.world_id));
+                    changes.Select(async c => await ParseChange(c)).Select(c => c.Result).ToList(), result[i - 1], e.world_id));
             }
             i++;
         }
         return result;
     }
 
-    public IReadOnlyCollection<EventDto> GetAllEventDtos()
+    public async Task<IReadOnlyCollection<EventDto>> GetAllEventDtos()
     {
         using var connection = _connectionFactory.CreateConnection();
-        var events = connection.Query<DbEvent>($"SELECT * FROM {EventsTableName} ORDER BY year, id");
+        var events = await connection.QueryAsync<DbEvent>($"SELECT * FROM {EventsTableName} ORDER BY year, id");
         return events.Select(e => new EventDto(e.year, e.id, e.end_year, e.name, e.world_id)).ToList();
     }
 
-    public EventDto? GetPrevious(int year, int? id)
+    public async Task<EventDto?> GetPrevious(int year, int? id)
     {
-        id ??= GenerateId(year);
+        id ??= await GenerateId(year);
         using var connection = _connectionFactory.CreateConnection();
-        if (connection.QueryFirst<DbCount>($"SELECT count(*) FROM events WHERE year = {year} AND id < {id}").count > 1)
+        if ((await connection.QueryFirstAsync<DbCount>(
+                $"SELECT count(*) FROM events WHERE year = {year} AND id < {id}")).count > 1)
         {
-            var e = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {year} AND id = {id - 1}");
+            var e = await connection.QueryFirstAsync<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {year} AND id = {id - 1}");
             return new (e.year, e.id, e.end_year, e.name, e.world_id);
         }
 
-        var prevYear = connection.QueryFirst<DbMax>($"SELECT max(year) FROM {EventsTableName} WHERE year < {year}")
-            .max;
+        var prevYear = (await connection.QueryFirstAsync<DbMax>(
+            "SELECT max(year) FROM {EventsTableName} WHERE year < {year}")).max;
         if(prevYear == null)
             return null;
-        var lastId = connection.QueryFirst<DbMax>($"SELECT max(id) FROM {EventsTableName} WHERE year = {prevYear}").max;
+        var lastId = (await connection.QueryFirstAsync<DbMax>(
+            $"SELECT max(id) FROM {EventsTableName} WHERE year = {prevYear}")).max;
         if (lastId == null)
             throw new();
-        var ev = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {prevYear} AND id = {lastId}");
+        var ev = await connection.QueryFirstAsync<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year = {prevYear} AND id = {lastId}");
         return new (ev.year, ev.id, ev.end_year, ev.name, ev.world_id);
     }
 
-    private bool[,] GetPoints(Guid areaId)
+    private async Task<bool[,]> GetPoints(Guid areaId)
     {
         using var connection = _connectionFactory.CreateConnection();
         var result = new bool[Map.Width, Map.Height];
-        foreach (var point in connection.Query<DbPoint>(
+        foreach (var point in await connection.QueryAsync<DbPoint>(
                      $"SELECT * FROM {PointsTableName} WHERE area_id = '{areaId}'"))
         {
             result[point.x, point.y] = true;
@@ -159,12 +161,12 @@ public class EventRepository : IEventRepository
         return result;
     }
 
-    private IChange ParseChange(DbChange change)
+    private async Task<IChange> ParseChange(DbChange change)
     {
         switch (change.type)
         {
             case "conquest":
-                var area = new Area(GetPoints((Guid)change.area_id!));
+                var area = new Area(await GetPoints((Guid)change.area_id!));
                 return new ConquestChange(
                     change.country_name,
                     area);
@@ -178,23 +180,24 @@ public class EventRepository : IEventRepository
         }
     }
 
-    public int GenerateId(int year)
+    public async Task<int> GenerateId(int year)
     {
         using var connection = _connectionFactory.CreateConnection();
-        return connection.QueryFirst<DbMax>($"SELECT MAX(id) FROM {EventsTableName} WHERE year = {year}").max + 1 ?? 1;
+        return (await connection.QueryFirstAsync<DbMax>(
+            $"SELECT MAX(id) FROM {EventsTableName} WHERE year = {year}")).max + 1 ?? 1;
     }
 
-    public void Delete(int year, int id)
+    public async Task Delete(int year, int id)
     {
         using var connection = _connectionFactory.CreateConnection();
-        connection.Execute($"DELETE FROM {EventsTableName} WHERE year={year} AND id={id}");
-        connection.Execute($"DELETE FROM {ChangesTableName} WHERE event_year={year} AND event_id={id}");
+        await connection.ExecuteAsync($"DELETE FROM {EventsTableName} WHERE year={year} AND id={id}");
+        await connection.ExecuteAsync($"DELETE FROM {ChangesTableName} WHERE event_year={year} AND event_id={id}");
     }
 
-    public EventDto Get(int year, int id)
+    public async Task<EventDto> Get(int year, int id)
     {
         using var connection = _connectionFactory.CreateConnection();
-        var e = connection.QueryFirst<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year={year} AND id={id}");
+        var e = await connection.QueryFirstAsync<DbEvent>($"SELECT * FROM {EventsTableName} WHERE year={year} AND id={id}");
         return new (e.year, e.id, e.end_year, e.name, e.world_id);
     }
 

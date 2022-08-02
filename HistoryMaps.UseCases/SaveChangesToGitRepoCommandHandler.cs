@@ -16,9 +16,9 @@ public class SaveChangesToGitRepoCommandHandler : ICommandHandler<SaveChangesToG
         _gitPush = gitPush;
     }
 
-    public void Execute(SaveChangesToGitRepo command)
+    public async Task Execute(SaveChangesToGitRepo command)
     {
-        _gitCommit.Execute(new (_rootFolderProvider.GetPath("app"), $"Commit by HistoryMaps at {DateTime.Now:G}"));
-        _gitPush.Execute(new (_rootFolderProvider.GetPath("app")));
+        await _gitCommit.Execute(new (_rootFolderProvider.GetPath("app"), $"Commit by HistoryMaps at {DateTime.Now:G}"));
+        await _gitPush.Execute(new (_rootFolderProvider.GetPath("app")));
     }
 }

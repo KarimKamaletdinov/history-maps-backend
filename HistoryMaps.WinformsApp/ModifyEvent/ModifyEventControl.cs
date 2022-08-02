@@ -1,6 +1,8 @@
-﻿namespace HistoryMaps
+﻿using System.Windows.Forms.VisualStyles;
+
+namespace HistoryMaps
 {
-    public partial class ModifyEventControl : UserControl, IModifyEventView
+    public partial class ModifyEventControl : UserControl
     {
         public WorldBitmapDto World
         {
@@ -25,7 +27,9 @@
         }
 
         public event Action<WorldBitmapDto> Save;
+        public event Action Delete;
         public event Action Back;
+        public event Action<string> SetMessage;
 
         private IEnumerable<CountryColorDto> _countries = Array.Empty<CountryColorDto>();
         private CountryColorDto? _selectedCountry;
@@ -34,7 +38,9 @@
         {
             InitializeComponent();
             Save += _ => { };
+            Delete += () => { };
             Back += () => { };
+            SetMessage += _ => { };
         }
 
         private void SetPixel(int x, int y)
@@ -60,11 +66,28 @@
 
         private void _back_Click(object _, EventArgs __) => Back();
 
-        private void _save_Click(object _, EventArgs __) => Save(new((Bitmap)_picture.Image, _countries));
+        private void _save_Click(object _, EventArgs __)
+        {
+            SetMessage("Сохранение");
+            Save(new((Bitmap)_picture.Image, _countries));
+            SetMessage("Сохранено");
+        }
 
         private void _selectCountry_SelectedIndexChanged(object sender, EventArgs e)
         {
             _selectedCountry = _countries.FirstOrDefault(x => x.Name == _selectCountry.SelectedItem.ToString());
+        }
+
+        private void _delete_Click(object sender, EventArgs e)
+        {
+            var dialog = new TextDialog("Удалить событие?");
+            dialog.ShowDialog(this);
+            if (dialog.DialogResult == DialogResult.OK)
+            {
+                SetMessage("Удаление");
+                Delete();
+                SetMessage("Удалено");
+            }
         }
     }
 }

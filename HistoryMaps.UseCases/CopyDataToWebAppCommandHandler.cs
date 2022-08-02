@@ -9,16 +9,16 @@ public class CopyDataToWebAppCommandHandler : ICommandHandler<CopyDataToWebApp>
         _rootFolderProvider = rootFolderProvider;
     }
 
-    public void Execute(CopyDataToWebApp command)
+    public Task Execute(CopyDataToWebApp command) => Task.Run(() =>
     {
-        if(Directory.Exists(_rootFolderProvider.GetPath("app", "data")))
+        if (Directory.Exists(_rootFolderProvider.GetPath("app", "data")))
             Directory.Delete(_rootFolderProvider.GetPath("app", "data"), true);
         Directory.CreateDirectory(_rootFolderProvider.GetPath("app", "data"));
-        File.Copy(_rootFolderProvider.GetPath("events.json"), 
+        File.Copy(_rootFolderProvider.GetPath("events.json"),
             _rootFolderProvider.GetPath("app", "data", "events.json"));
         CopyDirectory(_rootFolderProvider.GetPath("worlds"),
             _rootFolderProvider.GetPath("app", "data", "worlds"));
-    }
+    });
 
     private static void CopyDirectory(string from, string to)
     {

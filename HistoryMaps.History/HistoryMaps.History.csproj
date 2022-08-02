@@ -19,8 +19,4 @@
     <ProjectReference Include="..\HistoryMaps\HistoryMaps.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="QueryHandlers\" />
-  </ItemGroup>
-
 </Project>

@@ -42,7 +42,6 @@ builder.RegisterType<EventRepository>().AsImplementedInterfaces();
 builder.RegisterType<World3MfRepository>().AsImplementedInterfaces();
 
 //services
-builder.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<Create3DWorldSeparatelyCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
 builder.RegisterType<SynchronizeWorldCommandHandler>().AsImplementedInterfaces();
@@ -56,21 +55,13 @@ builder.RegisterType<LoadGitRepoCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<CopyDataToWebAppCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<SaveChangesToGitRepoCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<CreateWebAppCommandHandler>().AsImplementedInterfaces();
-builder.RegisterType<GetAllEventsQueryHandler>().AsImplementedInterfaces();
+builder.RegisterType<GetAllEventsWithChangesHandler>().AsImplementedInterfaces();
 builder.RegisterType<LoadAddedHistoryCommandHandler>().AsImplementedInterfaces();
-
-// presenters
-builder.RegisterType<EventsListPresenter>().AsSelf();
-builder.RegisterType<ModifyEventPresenter>().AsSelf();
-builder.RegisterType<AddEventPresenter>().AsSelf();
-builder.RegisterType<CommonPresenter>().AsSelf();
 
 var container = builder.Build();
 
 // run presenter
-var presenter = container.Resolve<CommonPresenter>();
 var form = new CommonForm();
-presenter.Initialize(form);
 
 // run form
 Application.Run(form);

@@ -21,19 +21,19 @@ public class LoadAddedHistoryCommandHandler : ICommandHandler<LoadAddedHistory>
         _logger = logger;
     }
 
-    public void Execute(LoadAddedHistory command)
+    public async Task Execute(LoadAddedHistory command)
     {
         _logger.LogInformation("Start loading history");
-        var generatedBmp = _bmpRepository.GetAllIds().ToArray();
-        var generated3Mf = _tMfRepository.GetAllIds().ToArray();
+        var generatedBmp = (await _bmpRepository.GetAllIds()).ToArray();
+        var generated3Mf = (await _tMfRepository.GetAllIds()).ToArray();
         _logger.LogInformation("Cleared");
-        var events = _eventRepository.GetAllEvents();
+        var events = await _eventRepository.GetAllEvents();
         foreach (var e in events)
         {
             if(!generatedBmp.Contains(e.WorldId))
-                _bmpRepository.Insert(e.World);
+                await _bmpRepository.Insert(e.World);
             if(!generated3Mf.Contains(e.WorldId) && command.Generate3Mf)
-                _synchronizer.Execute(new (e.WorldId));
+                await _synchronizer.Execute(new (e.WorldId));
             _logger.LogInformation("Loaded {name}", e.Name);
         }
         _logger.LogInformation("Finished");

@@ -16,11 +16,10 @@ public class LoadGitRepoCommandHandler : ICommandHandler<LoadGitRepo>
         _gitPull = gitPull;
     }
 
-    public void Execute(LoadGitRepo command)
+    public Task Execute(LoadGitRepo command)
     {
-        if(Directory.Exists(_rootFolderProvider.GetPath("app")))
-            _gitPull.Execute(new (_rootFolderProvider.GetPath("app")));
-        else
-            _gitClone.Execute(new (_remoteUrlProvider.GetGitRemoteUrl(), _rootFolderProvider.GetPath("app")));
+        return Directory.Exists(_rootFolderProvider.GetPath("app")) 
+            ? _gitPull.Execute(new (_rootFolderProvider.GetPath("app"))) 
+            : _gitClone.Execute(new (_remoteUrlProvider.GetGitRemoteUrl(), _rootFolderProvider.GetPath("app")));
     }
 }

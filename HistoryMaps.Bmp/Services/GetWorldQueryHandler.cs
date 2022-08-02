@@ -9,8 +9,8 @@ public class GetWorldQueryHandler : IQueryHandler<GetWorld, WorldDto>
         _repository = repository;
     }
 
-    public WorldDto Execute(GetWorld query)
+    public async Task<WorldDto> Execute(GetWorld query)
     {
-        return _repository.Get(query.WorldId).ToDto();
+        return (await _repository.Get(query.WorldId)).ToDto();
     }
 }

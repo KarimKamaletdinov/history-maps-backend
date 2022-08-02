@@ -25,23 +25,23 @@ public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
         _rootFolderProvider = rootFolderProvider;
     }
 
-    public void Execute(LoadHistory command)
+    public async Task Execute(LoadHistory command)
     {
         var dtos = new List<EventChangesDto>();
         _logger.LogInformation("Start loading history");
-        _bmpRepository.ClearAll();
-        _tMfRepository.ClearAll();
+        await _bmpRepository.ClearAll();
+        await _tMfRepository.ClearAll();
         _logger.LogInformation("Cleared");
-        var events = _eventRepository.GetAllEvents();
+        var events = await _eventRepository.GetAllEvents();
         foreach (var e in events)
         {
-            _bmpRepository.Insert(e.World);
+            await _bmpRepository.Insert(e.World);
             if(command.Generate3Mf)
-                _synchronizer.Execute(new (e.World.Id));
+                await _synchronizer.Execute(new (e.World.Id));
             _logger.LogInformation("Loaded {Name}", e.Name);
-            dtos.Add(e.ToDto());
+            dtos.Add(e.ToDtoWithChanges());
         }
-        File.WriteAllText(_rootFolderProvider.GetPath("events.json"), 
+        await File.WriteAllTextAsync(_rootFolderProvider.GetPath("events.json"), 
             JsonConvert.SerializeObject(dtos, Formatting.Indented),
             Encoding.UTF8);
         _logger.LogInformation("Finished");

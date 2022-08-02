@@ -1,9 +1,10 @@
 ﻿namespace HistoryMaps;
 
-public partial class AddEventDialog : Form, IAddEventView
+public partial class AddEventDialog : Form
 {
     public event Action<int, int?, string> Save;
     public event Action Cancel;
+    public event Action? SetMessage;
 
     public AddEventDialog()
     {
@@ -17,15 +18,12 @@ public partial class AddEventDialog : Form, IAddEventView
     private void _ok_Click(object sender, EventArgs e)
     {
         Save((int)_year.Value, _hasEndYear.Checked ? (int)_endYear.Value : null, _name.Text);
+        Close();
     }
 
     private void _cancel_Click(object sender, EventArgs e)
     {
         Close();
-    }
-
-    private void AddEventDialog_FormClosing(object sender, FormClosingEventArgs e)
-    {
         Cancel();
     }
 }

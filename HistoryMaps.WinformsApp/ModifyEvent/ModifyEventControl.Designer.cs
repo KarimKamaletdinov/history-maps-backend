@@ -34,6 +34,7 @@
             this._back = new System.Windows.Forms.Button();
             this._save = new System.Windows.Forms.Button();
             this._selectCountry = new System.Windows.Forms.ComboBox();
+            this._delete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._picture)).BeginInit();
             this._flowPanel.SuspendLayout();
             this.SuspendLayout();
@@ -63,6 +64,7 @@
             this._flowPanel.Controls.Add(this._back);
             this._flowPanel.Controls.Add(this._save);
             this._flowPanel.Controls.Add(this._selectCountry);
+            this._flowPanel.Controls.Add(this._delete);
             this._flowPanel.Location = new System.Drawing.Point(0, 0);
             this._flowPanel.Name = "_flowPanel";
             this._flowPanel.Size = new System.Drawing.Size(557, 30);
@@ -100,6 +102,17 @@
             this._selectCountry.TabIndex = 2;
             this._selectCountry.SelectedIndexChanged += new System.EventHandler(this._selectCountry_SelectedIndexChanged);
             // 
+            // _delete
+            // 
+            this._delete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_delete.BackgroundImage")));
+            this._delete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._delete.Location = new System.Drawing.Point(194, 3);
+            this._delete.Name = "_delete";
+            this._delete.Size = new System.Drawing.Size(26, 23);
+            this._delete.TabIndex = 3;
+            this._delete.UseVisualStyleBackColor = true;
+            this._delete.Click += new System.EventHandler(this._delete_Click);
+            // 
             // ModifyEventControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -122,5 +135,6 @@
         private Button _back;
         private Button _save;
         private ComboBox _selectCountry;
+        private Button _delete;
     }
 }
