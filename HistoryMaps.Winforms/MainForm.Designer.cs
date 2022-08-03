@@ -1,6 +1,6 @@
-﻿namespace HistoryMaps
+﻿namespace HistoryMaps.Winforms
 {
-    partial class CommonForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,18 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // CommonForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "CommonForm";
-            this.Text = "Админка Исторических карт";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.ResumeLayout(false);
-
+            this.Text = "MainForm";
         }
 
         #endregion
