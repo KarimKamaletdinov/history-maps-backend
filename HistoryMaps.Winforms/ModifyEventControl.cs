@@ -1,4 +1,7 @@
-﻿namespace HistoryMaps;
+﻿using System.Security.Cryptography.X509Certificates;
+using Point = System.Drawing.Point;
+
+namespace HistoryMaps;
 
 public partial class ModifyEventControl : UserControl
 {
@@ -33,6 +36,7 @@ public partial class ModifyEventControl : UserControl
     private int _zoom = 1;
     private Point? _lastMouse;
     private Point? _lastAddedPoint;
+    private bool _isFill;
 
     public ModifyEventControl()
     {
@@ -45,8 +49,7 @@ public partial class ModifyEventControl : UserControl
         var wy = (int)((float)y / _picture.Height * Map.Height + 0.5f);
         if (((Bitmap)_picture.Image).GetPixel(wx, wy) != Map.WaterColor)
         {
-            ((Bitmap)_picture.Image).SetPixel(wx, wy,
-                _selectedCountry?.Color ?? Color.White);
+            ((Bitmap)_picture.Image).SetPixel(wx, wy, SelectedCountryColor());
         }
         _picture.Invalidate();
     }
@@ -69,6 +72,41 @@ public partial class ModifyEventControl : UserControl
                 SetPixel(x, y);
             }
         }
+    }
+
+    private void Fill(int startX, int startY)
+    {
+        var wx = (int)((float)startX / _picture.Width * Map.Width + 0.5f);
+        var wy = (int)((float)startY / _picture.Height * Map.Height + 0.5f);
+        var oldColor = ((Bitmap)_picture.Image).GetPixel(wx, wy);
+        var toFill = new List<Point> { new(wx, wy) };
+
+        void Add(Point p, Color old)
+        {
+            if(p.X < 0 || p.Y < 0 || p.X >= _picture.Image.Width || p.Y >= _picture.Image.Height) return;
+            var color = ((Bitmap)_picture.Image).GetPixel(p.X, p.Y);
+            if (color == old && !toFill.Contains(p))
+                toFill.Add(p);
+        }
+
+        while (toFill.Count > 0)
+        {
+            var x = toFill[0].X;
+            var y = toFill[0].Y;
+            toFill.RemoveAt(0);
+            ((Bitmap)_picture.Image).SetPixel(x, y, SelectedCountryColor());
+
+            Add(new(x, y + 1), oldColor);
+            Add(new(x, y - 1), oldColor);
+            Add(new(x + 1, y), oldColor);
+            Add(new(x - 1, y), oldColor);
+        }
+        _picture.Invalidate();
+    }
+
+    private Color SelectedCountryColor()
+    {
+        return _selectedCountry?.Color ?? Color.White;
     }
 
     private void _picture_MouseMove(object _, MouseEventArgs e)
@@ -102,7 +140,10 @@ public partial class ModifyEventControl : UserControl
         if (e.Button == MouseButtons.Left)
         {
             _lastAddedPoint = e.Location;
-            SetPixel(e.X, e.Y);
+            if(_isFill)
+                Fill(e.X, e.Y);
+            else
+                SetPixel(e.X, e.Y);
         }
     }
 
@@ -151,5 +192,19 @@ public partial class ModifyEventControl : UserControl
     private void _picture_MouseUp(object sender, MouseEventArgs e)
     {
         _lastAddedPoint = null;
+    }
+
+    private void _pencil_Click(object sender, EventArgs e)
+    {
+        _pencil.Enabled = false;
+        _fill.Enabled = true;
+        _isFill = false;
+    }
+
+    private void _fill_Click(object sender, EventArgs e)
+    {
+        _pencil.Enabled = true;
+        _fill.Enabled = false;
+        _isFill = true;
     }
 }

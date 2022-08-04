@@ -37,6 +37,8 @@
             this._delete = new System.Windows.Forms.Button();
             this._plus = new System.Windows.Forms.Button();
             this._minus = new System.Windows.Forms.Button();
+            this._pencil = new System.Windows.Forms.Button();
+            this._fill = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._picture)).BeginInit();
             this._flowPanel.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +72,8 @@
             this._flowPanel.Controls.Add(this._delete);
             this._flowPanel.Controls.Add(this._plus);
             this._flowPanel.Controls.Add(this._minus);
+            this._flowPanel.Controls.Add(this._pencil);
+            this._flowPanel.Controls.Add(this._fill);
             this._flowPanel.Location = new System.Drawing.Point(0, 0);
             this._flowPanel.Name = "_flowPanel";
             this._flowPanel.Size = new System.Drawing.Size(557, 30);
@@ -140,6 +144,29 @@
             this._minus.UseVisualStyleBackColor = true;
             this._minus.Click += new System.EventHandler(this._minus_Click);
             // 
+            // _pencil
+            // 
+            this._pencil.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_pencil.BackgroundImage")));
+            this._pencil.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._pencil.Enabled = false;
+            this._pencil.Location = new System.Drawing.Point(286, 3);
+            this._pencil.Name = "_pencil";
+            this._pencil.Size = new System.Drawing.Size(24, 23);
+            this._pencil.TabIndex = 6;
+            this._pencil.UseVisualStyleBackColor = true;
+            this._pencil.Click += new System.EventHandler(this._pencil_Click);
+            // 
+            // _fill
+            // 
+            this._fill.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_fill.BackgroundImage")));
+            this._fill.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._fill.Location = new System.Drawing.Point(316, 3);
+            this._fill.Name = "_fill";
+            this._fill.Size = new System.Drawing.Size(24, 23);
+            this._fill.TabIndex = 7;
+            this._fill.UseVisualStyleBackColor = true;
+            this._fill.Click += new System.EventHandler(this._fill_Click);
+            // 
             // ModifyEventControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -165,5 +192,7 @@
         private Button _plus;
         private Button _minus;
         private Button _delete;
+        private Button _pencil;
+        private Button _fill;
     }
 }
