@@ -10,6 +10,7 @@ public partial class ModifyEventControl : UserControl
         set
         {
             _picture.Image = value.Bitmap;
+            AddVersion();
             Countries = value.Countries;
         }
     }
@@ -37,10 +38,22 @@ public partial class ModifyEventControl : UserControl
     private Point? _lastMouse;
     private Point? _lastAddedPoint;
     private bool _isFill;
+    private readonly List<Image> _versions = new();
+    private int _versionIndex;
 
     public ModifyEventControl()
     {
         InitializeComponent();
+    }
+
+    private void AddVersion()
+    {
+        if (_versions.Count > _versionIndex + 1)
+            for (var i = _versionIndex + 1; i < _versions.Count; i++)
+                _versions.RemoveAt(i);
+
+        _versions.Add((Image)_picture.Image.Clone());
+        _versionIndex = _versions.Count - 1;
     }
 
     private void SetPixel(int x, int y)
@@ -118,6 +131,7 @@ public partial class ModifyEventControl : UserControl
                     SetPixel(e.X, e.Y);
                 else
                     DrawLine(_lastAddedPoint.Value.X, _lastAddedPoint.Value.Y, e.X, e.Y);
+                AddVersion();
                 _lastAddedPoint = e.Location;
                 break;
             case MouseButtons.Right:
@@ -144,6 +158,7 @@ public partial class ModifyEventControl : UserControl
                 Fill(e.X, e.Y);
             else
                 SetPixel(e.X, e.Y);
+            AddVersion();
         }
     }
 
@@ -206,5 +221,19 @@ public partial class ModifyEventControl : UserControl
         _pencil.Enabled = true;
         _fill.Enabled = false;
         _isFill = true;
+    }
+
+    private void _undo_Click(object sender, EventArgs e)
+    {
+        if (_versionIndex <= 0) return;
+        _versionIndex--;
+        _picture.Image = (Image)_versions[_versionIndex].Clone();
+    }
+
+    private void _redo_Click(object sender, EventArgs e)
+    {
+        if (_versionIndex >= _versions.Count - 1) return;
+        _versionIndex++;
+        _picture.Image = (Image)_versions[_versionIndex].Clone();
     }
 }

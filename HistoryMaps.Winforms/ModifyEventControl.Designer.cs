@@ -39,6 +39,8 @@
             this._minus = new System.Windows.Forms.Button();
             this._pencil = new System.Windows.Forms.Button();
             this._fill = new System.Windows.Forms.Button();
+            this._undo = new System.Windows.Forms.Button();
+            this._redo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._picture)).BeginInit();
             this._flowPanel.SuspendLayout();
             this.SuspendLayout();
@@ -74,6 +76,8 @@
             this._flowPanel.Controls.Add(this._minus);
             this._flowPanel.Controls.Add(this._pencil);
             this._flowPanel.Controls.Add(this._fill);
+            this._flowPanel.Controls.Add(this._undo);
+            this._flowPanel.Controls.Add(this._redo);
             this._flowPanel.Location = new System.Drawing.Point(0, 0);
             this._flowPanel.Name = "_flowPanel";
             this._flowPanel.Size = new System.Drawing.Size(557, 30);
@@ -167,6 +171,28 @@
             this._fill.UseVisualStyleBackColor = true;
             this._fill.Click += new System.EventHandler(this._fill_Click);
             // 
+            // _undo
+            // 
+            this._undo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_undo.BackgroundImage")));
+            this._undo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._undo.Location = new System.Drawing.Point(346, 3);
+            this._undo.Name = "_undo";
+            this._undo.Size = new System.Drawing.Size(24, 23);
+            this._undo.TabIndex = 8;
+            this._undo.UseVisualStyleBackColor = true;
+            this._undo.Click += new System.EventHandler(this._undo_Click);
+            // 
+            // _redo
+            // 
+            this._redo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_redo.BackgroundImage")));
+            this._redo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._redo.Location = new System.Drawing.Point(376, 3);
+            this._redo.Name = "_redo";
+            this._redo.Size = new System.Drawing.Size(24, 23);
+            this._redo.TabIndex = 9;
+            this._redo.UseVisualStyleBackColor = true;
+            this._redo.Click += new System.EventHandler(this._redo_Click);
+            // 
             // ModifyEventControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -194,5 +220,7 @@
         private Button _delete;
         private Button _pencil;
         private Button _fill;
+        private Button _undo;
+        private Button _redo;
     }
 }
