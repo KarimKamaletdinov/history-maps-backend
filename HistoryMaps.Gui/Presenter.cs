@@ -9,6 +9,7 @@ public class Presenter
     private readonly ICommandHandler<DeleteEvent> _deleteEventHandler;
     private readonly ICommandHandler<LoadHistory> _loadHistoryHandler;
     private readonly ICommandHandler<LoadAddedHistory> _loadAddedHistoryHandler;
+    private IView? _view;
 
     public Presenter(IQueryHandler<GetAllEvents, IEnumerable<EventDto>> getAllEventsHandler, 
         ICommandHandler<ModifyEvent> modifyEventHandler, IQueryHandler<GetWorldBitmap, WorldBitmapDto> getWorldBitmapHandler,
@@ -24,14 +25,15 @@ public class Presenter
         _loadAddedHistoryHandler = loadAddedHistoryHandler;
     }
 
-    public async Task Initialize(IView view)
+    public void Initialize(IView view)
     {
-        view.Events = await _getAllEventsHandler.Execute(new());
-        view.EventSelected += async e => view.CurrentEvent = new(e, await _getWorldBitmapHandler.Execute(new(e.WorldId)));
-        view.CreateEvent += async e => await _createEventHandler.Execute(new(e));
-        view.UpdateEvent += async e => await _modifyEventHandler.Execute(new(e));
-        view.DeleteEvent += async e => await _deleteEventHandler.Execute(new(e));
-        view.ReloadHistory += async () => await _loadHistoryHandler.Execute(new());
-        view.LoadAddedHistory += async () => await _loadAddedHistoryHandler.Execute(new());
+        view.Events = _getAllEventsHandler.Execute(new());
+        view.UpdateEvents += () => view.Events = _getAllEventsHandler.Execute(new());
+        view.EventSelected += e => view.CurrentEvent = new(e, _getWorldBitmapHandler.Execute(new(e.WorldId)));
+        view.CreateEvent += e => _createEventHandler.Execute(new(e));
+        view.UpdateEvent += e => _modifyEventHandler.Execute(new(e));
+        view.DeleteEvent += e => _deleteEventHandler.Execute(new(e));
+        view.ReloadHistory += () => _loadHistoryHandler.Execute(new());
+        view.LoadAddedHistory += () => _loadAddedHistoryHandler.Execute(new());
     }
 }

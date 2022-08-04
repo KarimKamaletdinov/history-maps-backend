@@ -1,6 +1,6 @@
 ﻿namespace HistoryMaps;
 
-public class GetAllEventsQueryHandler : IQueryHandler<GetAllEvents, IEnumerable<EventChangesDto>>
+public class GetAllEventsQueryHandler : IQueryHandler<GetAllEvents, IEnumerable<EventDto>>
 {
     private readonly IEventRepository _repository;
 
@@ -9,8 +9,8 @@ public class GetAllEventsQueryHandler : IQueryHandler<GetAllEvents, IEnumerable<
         _repository = repository;
     }
 
-    public IEnumerable<EventChangesDto> Execute(GetAllEvents query)
+    public IEnumerable<EventDto> Execute(GetAllEvents query)
     {
-        return _repository.GetAllEvents().Select(x => x.ToDto());
+        return _repository.GetAllEventDtos();
     }
 }

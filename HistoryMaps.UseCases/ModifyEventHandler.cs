@@ -11,18 +11,17 @@ public class ModifyEventHandler : ICommandHandler<ModifyEvent>
         _worldBmpRepository = worldBmpRepository;
     }
 
-    public async Task Execute(ModifyEvent c)
+    public void Execute(ModifyEvent c)
     {
-        var previous = await _eventRepository.GetPrevious(c.EventBitmap.Event.Year);
+        var previous = _eventRepository.GetPrevious(c.EventBitmap.Event.Year, c.EventBitmap.Event.Id);
         var pw = previous == null 
-            ? await _worldBmpRepository.GetBaseWorld() 
-            : await _worldBmpRepository.Get(previous.WorldId);
-        var worldId = Guid.NewGuid();
-        await _worldBmpRepository.InsertBitmap(worldId, c.EventBitmap.World);
-        var nw = await _worldBmpRepository.Get(c.EventBitmap.Event.WorldId);
+            ? _worldBmpRepository.GetBaseWorld() 
+            : _worldBmpRepository.Get(previous.WorldId);
+        _worldBmpRepository.InsertBitmap(c.EventBitmap.Event.WorldId, c.EventBitmap.World);
+        var nw = _worldBmpRepository.Get(c.EventBitmap.Event.WorldId);
         var changes = Event.ParseChanges(pw, nw);
         var e = new Event(c.EventBitmap.Event.Year, c.EventBitmap.Event.EndYear, c.EventBitmap.Event.Name, changes.ToArray(), pw, nw.Id);
-        await _eventRepository.Delete(c.EventBitmap.Event.Year);
-        await _eventRepository.Insert(e);
+        _eventRepository.Delete(c.EventBitmap.Event.Year, c.EventBitmap.Event.Id);
+        _eventRepository.Insert(e);
     }
 }

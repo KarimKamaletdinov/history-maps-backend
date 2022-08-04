@@ -1,3 +1,3 @@
 ﻿namespace HistoryMaps;
 
-public record CreateEvent(EventDto Event) : Command;
+public record CreateEvent(CreateEventDto Event) : Command;

@@ -7,18 +7,24 @@ namespace HistoryMaps;
 
 public partial class MainForm : Form, IView
 {
-    public event Action<EventDto>? CreateEvent;
+    public event Action? UpdateEvents;
+    public event Action<CreateEventDto>? CreateEvent;
     public event Action<EventBitmapDto>? UpdateEvent;
     public event Action<EventDto>? DeleteEvent;
     public event Action<EventDto>? EventSelected;
     public event Action? ReloadHistory;
     public event Action? LoadAddedHistory;
+    private IEnumerable<EventDto>? _events;
 
     public new IEnumerable<EventDto> Events
     {
-        set => _eventsListControl.Events = value;
+        set
+        {
+            _events = value;
+            _eventsListControl.Events = value;
+        }
     }
-    
+
     public EventBitmapDto? CurrentEvent
     {
         set
@@ -31,8 +37,13 @@ public partial class MainForm : Form, IView
                     Dock = DockStyle.Fill,
                     World = value.World
                 };
-                modify.Save += w => UpdateEvent?.Invoke(value with { World = w });
+                modify.Save += w => UpdateEvent?.Invoke(new(value.Event with {WorldId = Guid.NewGuid()}, w));
                 modify.Delete += () => Delete(value.Event);
+                modify.Back += () => { 
+                    Controls.Remove(modify);
+                    UpdateEvents?.Invoke();
+                    _eventsListControl.Visible = true;
+                };
                 Controls.Add(modify);
             }
         }
@@ -50,8 +61,9 @@ public partial class MainForm : Form, IView
     {
         InitializeComponent();
         _eventsListControl.AddEvent += AddEvent;
-        _eventsListControl.ReloadHistory += ReloadHistory;
-        _eventsListControl.LoadAddedHistory += LoadAddedHistory;
+        _eventsListControl.ReloadHistory += () => ReloadHistory?.Invoke();
+        _eventsListControl.LoadAddedHistory += () => LoadAddedHistory?.Invoke();
+        _eventsListControl.EventSelected += e => EventSelected?.Invoke(e);
     }
 
     private void AddEvent()
@@ -60,9 +72,14 @@ public partial class MainForm : Form, IView
         var result = dialog.ShowDialog(this);
         if (result == DialogResult.OK)
         {
-            var e = new EventDto(dialog.EventYear, dialog.EventEndYear, dialog.EventName, Guid.NewGuid());
+            var e = new CreateEventDto(dialog.EventYear, dialog.EventEndYear, dialog.EventName, Guid.NewGuid());
             CreateEvent?.Invoke(e);
-            EventSelected?.Invoke(e);
+            EventSelected?.Invoke(new(e.Year, GenerateId(e.Year), e.EndYear, e.Name, e.WorldId));
         }
+    }
+
+    private int GenerateId(int year)
+    {
+        return _events!.OrderBy(x => x.Year).ThenBy(x => x.Id).Last(x => x.Year <= year).Id + 1;
     }
 }

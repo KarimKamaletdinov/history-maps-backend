@@ -9,7 +9,7 @@ public class GetWorldBitmapHandler : IQueryHandler<GetWorldBitmap, WorldBitmapDt
         _repository = repository;
     }
 
-    public Task<WorldBitmapDto> Execute(GetWorldBitmap query)
+    public WorldBitmapDto Execute(GetWorldBitmap query)
     {
         return _repository.GetBitmap(query.WorldId);
     }

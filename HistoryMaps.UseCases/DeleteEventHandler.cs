@@ -9,8 +9,8 @@ public class DeleteEventHandler : ICommandHandler<DeleteEvent>
         _eventRepository = eventRepository;
     }
 
-    public Task Execute(DeleteEvent command)
+    public void Execute(DeleteEvent command)
     {
-        return _eventRepository.Delete(command.Event.Year);
+        _eventRepository.Delete(command.Event.Year, command.Event.Id);
     }
 }

@@ -66,5 +66,5 @@ builder.RegisterType<Presenter>().AsSelf();
 var container = builder.Build();
 var presenter = container.Resolve<Presenter>();
 var form = new MainForm();
-await presenter.Initialize(form);
+presenter.Initialize(form);
 Application.Run(form);

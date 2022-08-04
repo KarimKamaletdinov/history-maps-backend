@@ -13,7 +13,7 @@ public partial class EventsListControl : UserControl
                          (ev.EndYear != null ? " - " + ev.EndYear?.ToYearString() : ""), 
                     SystemColors.ControlText, () =>
                     {
-                        EventSelected?.Invoke(ev);
+                        EventSelected!.Invoke(ev);
                     });
                 AddLabel(ev.Name, SystemColors.ControlText, () => EventSelected?.Invoke(ev));
                 AddLabel(ev.WorldId.ToString(), Color.Blue, () => EventSelected?.Invoke(ev));
