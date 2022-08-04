@@ -32,6 +32,7 @@ public partial class ModifyEventControl : UserControl
     private CountryColorDto? _selectedCountry;
     private int _zoom = 1;
     private Point? _lastMouse;
+    private Point? _lastAddedPoint;
 
     public ModifyEventControl()
     {
@@ -47,25 +48,51 @@ public partial class ModifyEventControl : UserControl
             ((Bitmap)_picture.Image).SetPixel(wx, wy,
                 _selectedCountry?.Color ?? Color.White);
         }
-
         _picture.Invalidate();
+    }
+
+    private void DrawLine(int x1, int y1, int x2, int y2)
+    {
+        if (x2 - x1 > y2 - y1)
+        {
+            for (var x = x1; x <= x2; x++)
+            {
+                var y = y1 + (y2 - y1) / (x2 - x + 1);
+                SetPixel(x, y);
+            }
+        }
+        else
+        {
+            for (var y = y1; y <= y2; y++)
+            {
+                var x = x1 + (x2 - x1) / (y2 - y + 1);
+                SetPixel(x, y);
+            }
+        }
     }
 
     private void _picture_MouseMove(object _, MouseEventArgs e)
     {
-        if (e.Button == MouseButtons.Left)
-            SetPixel(e.X, e.Y);
-        else if(e.Button == MouseButtons.Right)
+        switch (e.Button)
         {
-            if (_lastMouse != null)
-            {
-                var x = _picture.Location.X - _lastMouse.Value.X + e.X;
-                var y = _picture.Location.Y - _lastMouse.Value.Y + e.Y;
-                if(x + _picture.Width >= Width && y + _picture.Height >= Height - _flowPanel.Height
-                   && x <= 0 && y <= _flowPanel.Height)
-                    _picture.Location = new Point(x, y);
-            }
-            
+            case MouseButtons.Left:
+                if(_lastAddedPoint == null)
+                    SetPixel(e.X, e.Y);
+                else
+                    DrawLine(_lastAddedPoint.Value.X, _lastAddedPoint.Value.Y, e.X, e.Y);
+                _lastAddedPoint = e.Location;
+                break;
+            case MouseButtons.Right:
+                if (_lastMouse != null)
+                {
+                    var x = _picture.Location.X - _lastMouse.Value.X + e.X;
+                    var y = _picture.Location.Y - _lastMouse.Value.Y + e.Y;
+                    if(x + _picture.Width >= Width && y + _picture.Height >= Height - _flowPanel.Height
+                                                   && x <= 0 && y <= _flowPanel.Height)
+                        _picture.Location = new Point(x, y);
+                }
+
+                break;
         }
     }
 
@@ -73,7 +100,10 @@ public partial class ModifyEventControl : UserControl
     {
         _lastMouse = e.Location;
         if (e.Button == MouseButtons.Left)
+        {
+            _lastAddedPoint = e.Location;
             SetPixel(e.X, e.Y);
+        }
     }
 
     private void _back_Click(object _, EventArgs __) => Back?.Invoke();
@@ -116,5 +146,10 @@ public partial class ModifyEventControl : UserControl
             _picture.Size /= 2;
             _picture.Location += _picture.Size / 2;
         }
+    }
+
+    private void _picture_MouseUp(object sender, MouseEventArgs e)
+    {
+        _lastAddedPoint = null;
     }
 }

@@ -57,6 +57,7 @@
             this._picture.TabStop = false;
             this._picture.MouseDown += new System.Windows.Forms.MouseEventHandler(this._picture_MouseDown);
             this._picture.MouseMove += new System.Windows.Forms.MouseEventHandler(this._picture_MouseMove);
+            this._picture.MouseUp += new System.Windows.Forms.MouseEventHandler(this._picture_MouseUp);
             // 
             // _flowPanel
             // 
