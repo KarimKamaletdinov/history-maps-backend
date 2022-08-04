@@ -16,7 +16,17 @@ public class CopyDataToWebAppCommandHandler : ICommandHandler<CopyDataToWebApp>
         Directory.CreateDirectory(_rootFolderProvider.GetPath("app", "data"));
         File.Copy(_rootFolderProvider.GetPath("events.json"), 
             _rootFolderProvider.GetPath("app", "data", "events.json"));
-        Directory.Move(_rootFolderProvider.GetPath("worlds"),
+        CopyDirectory(_rootFolderProvider.GetPath("worlds"),
             _rootFolderProvider.GetPath("app", "data", "worlds"));
+    }
+
+    private static void CopyDirectory(string from, string to)
+    {
+        Directory.CreateDirectory(to);
+        foreach (var file in Directory.GetFiles(from)) 
+            File.Copy(file, to + file.Replace(from, ""), true);
+
+        foreach (var directory in Directory.GetDirectories(from))
+            CopyDirectory(directory, to + directory.Replace(from, ""));
     }
 }

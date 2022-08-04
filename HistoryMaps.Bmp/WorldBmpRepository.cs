@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Text;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HistoryMaps;
 
@@ -44,6 +43,21 @@ public class WorldBmpRepository : IWorldBmpRepository
         WriteColors(world.Id, CreateColors(world));
     }
 
+    public void InsertBitmap(Guid id, WorldBitmapDto world)
+    {
+        var path = GenPath(id);
+
+        if (File.Exists(path))
+            throw new AlreadyExistsException($"File \"{path}\" already exists!");
+        world.Bitmap.Save(path);
+        var colors = new Dictionary<string, Color>(world.Countries.Select(x =>
+            new KeyValuePair<string, Color>(x.Name, x.Color)))
+        {
+            { "water", Map.WaterColor }
+        };
+        WriteColors(id, colors);
+    }
+
     public void Update(World world)
     {
         var path = GenPath(world.Id);
@@ -59,13 +73,8 @@ public class WorldBmpRepository : IWorldBmpRepository
                 if (world.Water.Points[x, y])
                     image.SetPixel(x, y, world.Water.Color);
                 else
-                {
-                    foreach (var country in world.Countries)
-                    {
-                        if (country.Points[x, y])
-                            image.SetPixel(x, y, country.Color);
-                    }
-                }
+                    foreach (var country in world.Countries.Where(country => country.Points[x, y]))
+                        image.SetPixel(x, y, country.Color);
             }
         }
 
@@ -83,11 +92,16 @@ public class WorldBmpRepository : IWorldBmpRepository
 
     public void ClearAll()
     {
-        var files = Directory.GetFiles(_rootFolder.GetPath("worlds"));
-        foreach (var file in files)
-        {
+        foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds"))) 
             File.Delete(file);
-        }
+    }
+
+    public IEnumerable<Guid> GetAllIds()
+    {
+        foreach (var file in Directory.GetFiles(_rootFolder.GetPath("worlds")))
+            if(file.EndsWith(".bmp"))
+                if (Guid.TryParse(file.Split(Path.DirectorySeparatorChar).Last().Replace(".bmp", ""), out var guid))
+                    yield return guid;
     }
 
     public World GetBaseWorld()
@@ -129,7 +143,7 @@ public class WorldBmpRepository : IWorldBmpRepository
             }
         }
 
-        return new World(Guid.Empty, water, countries);
+        return new(Guid.Empty, water, countries);
     }
 
     public World Get(Guid worldId)
@@ -170,25 +184,34 @@ public class WorldBmpRepository : IWorldBmpRepository
             }
         }
 
-        return new World(worldId, water, countries);
+        return new(worldId, water, countries);
+    }
+
+    public WorldBitmapDto GetBitmap(Guid id)
+    {
+        var colorDictionary = GetColors(id);
+        var path = GenPath(id);
+        if (!File.Exists(path))
+            throw new DoesNotExistException($"File \"{path}\" doesn't exist!");
+        return new ((Bitmap)Image.FromFile(path), colorDictionary.Where(x => x.Key != "water").Select(x => new CountryColorDto(x.Key, x.Value)));
     }
 
     private Dictionary<string, Color> GetColors(Guid worldId)
         => GetColors(_rootFolder.GetPath("worlds", worldId + ".json"));
 
-    private Dictionary<string, Color> GetColors(string path)
+    private static Dictionary<string, Color> GetColors(string path)
     {
         var json = File.ReadAllText(path);
-        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Rgb>>(json) ?? 
+        var countryColors = JsonConvert.DeserializeObject<List<CountryColor>>(json) ?? 
                          throw new DomainException("Invalid colors format");
-        return new(dictionary.Select(x => 
-            new KeyValuePair<string, Color>(x.Key, Color.FromArgb(x.Value.R, x.Value.G, x.Value.B))));
+        return new(countryColors.Select(x => 
+            new KeyValuePair<string, Color>(x.Name,
+                Color.FromArgb(x.Color.R, x.Color.G, x.Color.B))));
     }
 
-    private Dictionary<string, Color> CreateColors(World world)
+    private static Dictionary<string, Color> CreateColors(World world)
     {
-        var result = new Dictionary<string, Color>();
-        result.Add("water", world.Water.Color);
+        var result = new Dictionary<string, Color> { { "water", world.Water.Color } };
         foreach (var country in world.Countries)
         {
             result.Add(country.Name, country.Color);
@@ -199,14 +222,18 @@ public class WorldBmpRepository : IWorldBmpRepository
     private void WriteColors(Guid worldId, Dictionary<string, Color> colors)
     {
         File.WriteAllText(_rootFolder.GetPath("worlds", worldId + ".json"),
-            JsonConvert.SerializeObject(new Dictionary<string, Rgb>(colors.Select(x => 
-                new KeyValuePair<string, Rgb>(x.Key, new (x.Value.R, x.Value.G, x.Value.B))))), Encoding.UTF8);
+            JsonConvert.SerializeObject(colors.Select(x => 
+                new CountryColor(x.Key, new (x.Value.R, x.Value.G, x.Value.B))), 
+                Formatting.Indented),
+            Encoding.UTF8);
     }
 
     private string GenPath(Guid worldId)
     {
         return _rootFolder.GetPath("worlds" + Path.DirectorySeparatorChar + worldId + ".bmp");
     }
-    
+
+    private record CountryColor(string Name, Rgb Color);
+
     private record Rgb(byte R, byte G, byte B);
 }

@@ -11,6 +11,6 @@ public class GetAllEventsQueryHandler : IQueryHandler<GetAllEvents, IEnumerable<
 
     public IEnumerable<EventDto> Execute(GetAllEvents query)
     {
-        return _repository.GetAllEvents().Select(x => x.ToDto());
+        return _repository.GetAllEventDtos();
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace HistoryMaps;
+﻿namespace HistoryMaps;
 
 public class GitCloneCommandHandler : ICommandHandler<GitClone>
 {
@@ -13,6 +11,6 @@ public class GitCloneCommandHandler : ICommandHandler<GitClone>
 
     public void Execute(GitClone command)
     {
-        _execute.ExecuteGitCommand($"clone {command.Repository} {command.Directory}");
+        _execute.ExecuteGitCommand($"clone {command.Repository} {command.Directory} -q");
     }
 }

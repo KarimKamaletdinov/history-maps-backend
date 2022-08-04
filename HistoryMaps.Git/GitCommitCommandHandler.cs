@@ -12,6 +12,6 @@ public class GitCommitCommandHandler : ICommandHandler<GitCommit>
     public void Execute(GitCommit command)
     {
         _execute.ExecuteGitCommand("add *", command.Directory);
-        _execute.ExecuteGitCommand($"commit -m \"{command.Name}\"", command.Directory);
+        _execute.ExecuteGitCommand($"commit -m \"{command.Name}\" -q", command.Directory);
     }
 }
