@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms.VisualStyles;
-
-namespace HistoryMaps;
+﻿namespace HistoryMaps;
 
 public partial class ModifyEventControl : UserControl
 {
@@ -32,6 +30,8 @@ public partial class ModifyEventControl : UserControl
 
     private IEnumerable<CountryColorDto> _countries = Array.Empty<CountryColorDto>();
     private CountryColorDto? _selectedCountry;
+    private int _zoom = 1;
+    private Point? _lastMouse;
 
     public ModifyEventControl()
     {
@@ -40,8 +40,8 @@ public partial class ModifyEventControl : UserControl
 
     private void SetPixel(int x, int y)
     {
-        var wx = (int)((float)x / _picture.Width * Map.Width);
-        var wy = (int)((float)y / _picture.Height * Map.Height);
+        var wx = (int)((float)x / _picture.Width * Map.Width + 0.5f);
+        var wy = (int)((float)y / _picture.Height * Map.Height + 0.5f);
         if (((Bitmap)_picture.Image).GetPixel(wx, wy) != Map.WaterColor)
         {
             ((Bitmap)_picture.Image).SetPixel(wx, wy,
@@ -53,11 +53,28 @@ public partial class ModifyEventControl : UserControl
 
     private void _picture_MouseMove(object _, MouseEventArgs e)
     {
-        if (e.Button != MouseButtons.None)
+        if (e.Button == MouseButtons.Left)
             SetPixel(e.X, e.Y);
+        else if(e.Button == MouseButtons.Right)
+        {
+            if (_lastMouse != null)
+            {
+                var x = _picture.Location.X - _lastMouse.Value.X + e.X;
+                var y = _picture.Location.Y - _lastMouse.Value.Y + e.Y;
+                if(x + _picture.Width >= Width && y + _picture.Height >= Height - _flowPanel.Height
+                   && x <= 0 && y <= _flowPanel.Height)
+                    _picture.Location = new Point(x, y);
+            }
+            
+        }
     }
 
-    private void _picture_MouseDown(object _, MouseEventArgs e) => SetPixel(e.X, e.Y);
+    private void _picture_MouseDown(object _, MouseEventArgs e)
+    {
+        _lastMouse = e.Location;
+        if (e.Button == MouseButtons.Left)
+            SetPixel(e.X, e.Y);
+    }
 
     private void _back_Click(object _, EventArgs __) => Back?.Invoke();
 
@@ -78,6 +95,26 @@ public partial class ModifyEventControl : UserControl
         if (dialog.DialogResult == DialogResult.OK)
         {
             Delete?.Invoke();
+        }
+    }
+
+    private void _plus_Click(object sender, EventArgs e)
+    {
+        if (_zoom < 3)
+        {
+            _zoom ++;
+            _picture.Size *= 2;
+            _picture.Location -= _picture.Size / 4;
+        }
+    }
+
+    private void _minus_Click(object sender, EventArgs e)
+    {
+        if (_zoom > 1)
+        {
+            _zoom --;
+            _picture.Size /= 2;
+            _picture.Location += _picture.Size / 2;
         }
     }
 }

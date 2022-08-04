@@ -48,7 +48,8 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this._eventsListControl);
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "Админка исторических карт";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
 
         }
