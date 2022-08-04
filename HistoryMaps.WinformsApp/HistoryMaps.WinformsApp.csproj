@@ -23,9 +23,11 @@
     <ProjectReference Include="..\HistoryMaps.Abstractions\HistoryMaps.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Bmp.Abstractions\HistoryMaps.Bmp.Abstractions.csproj" />
     <ProjectReference Include="..\HistoryMaps.Git\HistoryMaps.Git.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Gui\HistoryMaps.Gui.csproj" />
     <ProjectReference Include="..\HistoryMaps.History\HistoryMaps.History.csproj" />
     <ProjectReference Include="..\HistoryMaps.Storage\HistoryMaps.Storage.csproj" />
     <ProjectReference Include="..\HistoryMaps.UseCases\HistoryMaps.UseCases.csproj" />
+    <ProjectReference Include="..\HistoryMaps.Winforms\HistoryMaps.Winforms.csproj" />
     <ProjectReference Include="..\HistoryMaps\HistoryMaps.csproj" />
   </ItemGroup>
 
@@ -42,6 +44,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

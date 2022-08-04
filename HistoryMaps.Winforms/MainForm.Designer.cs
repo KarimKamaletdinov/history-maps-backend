@@ -1,4 +1,4 @@
-﻿namespace HistoryMaps.Winforms
+﻿namespace HistoryMaps
 {
     partial class MainForm
     {
@@ -28,12 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this._eventsListControl = new HistoryMaps.EventsListControl();
+            this.SuspendLayout();
+            // 
+            // _eventsListControl
+            // 
+            this._eventsListControl.BackColor = System.Drawing.Color.White;
+            this._eventsListControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._eventsListControl.Location = new System.Drawing.Point(0, 0);
+            this._eventsListControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._eventsListControl.Name = "_eventsListControl";
+            this._eventsListControl.Size = new System.Drawing.Size(800, 450);
+            this._eventsListControl.TabIndex = 0;
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this._eventsListControl);
+            this.Name = "MainForm";
             this.Text = "MainForm";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private EventsListControl _eventsListControl;
     }
 }
