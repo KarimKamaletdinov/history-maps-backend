@@ -18,47 +18,14 @@ public class VolumeWorldRepository : IVolumeWorldRepository
     public void Insert(WorldDto world)
     {
         Directory.CreateDirectory(_rootFolder.GetPath("worlds", world.Id.ToString()));
-        //var data = Mapper.Convert(world);
-        var (document, _) = To3MfConverter.Convert(world);
 
-        var points = new List<float>();
-        var colors = new List<float>();
-        var countries =
-            new List<JsonFileCountry>(world.Countries.Select(x =>
-                new JsonFileCountry(x.Name, new(x.Color.R, x.Color.G, x.Color.B))))
-            {
-                new JsonFileCountry("water", new(world.Water.Color.R, world.Water.Color.G, world.Water.Color.B))
-            };
+        var data = Mapper.Convert(world);
 
-        foreach (var triangle in document.Triangles)
-        {
-            points.Add(document.Vertices[triangle.V1].X);
-            points.Add(document.Vertices[triangle.V1].Y);
-            points.Add(document.Vertices[triangle.V1].Z);
-            colors.Add(document.Colors[triangle.Color].R / 255f);
-            colors.Add(document.Colors[triangle.Color].G / 255f);
-            colors.Add(document.Colors[triangle.Color].B / 255f);
-
-            points.Add(document.Vertices[triangle.V2].X);
-            points.Add(document.Vertices[triangle.V2].Y);
-            points.Add(document.Vertices[triangle.V2].Z);
-            colors.Add(document.Colors[triangle.Color].R / 255f);
-            colors.Add(document.Colors[triangle.Color].G / 255f);
-            colors.Add(document.Colors[triangle.Color].B / 255f);
-
-            points.Add(document.Vertices[triangle.V3].X);
-            points.Add(document.Vertices[triangle.V3].Y);
-            points.Add(document.Vertices[triangle.V3].Z);
-            colors.Add(document.Colors[triangle.Color].R / 255f);
-            colors.Add(document.Colors[triangle.Color].G / 255f);
-            colors.Add(document.Colors[triangle.Color].B / 255f);
-        }
-
-        File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "points.bin"), ListToBytes(points).ToArray());
-        File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "colors.bin"), ListToBytes(colors).ToArray());
-
-        File.WriteAllText(_rootFolder.GetPath("worlds", world.Id.ToString(), "countries.json"), 
-            JsonConvert.SerializeObject(countries));
+        File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "points.bin"), ListToBytes(data.Points).ToArray());
+        File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "colors.bin"), ListToBytes(data.Colors).ToArray());
+        
+        File.WriteAllText(_rootFolder.GetPath("worlds", world.Id.ToString(), "countries.json"),
+            JsonConvert.SerializeObject(data.Countries));
     }
 
     public void ClearAll()
@@ -92,125 +59,41 @@ public class VolumeWorldRepository : IVolumeWorldRepository
     {
         public static WorldData Convert(WorldDto world)
         {
-            var countries = new List<JsonFileCountry>(world.Countries.Select(x => new JsonFileCountry(x.Name, new(x.Color.R, x.Color.G, x.Color.B))))
-            {
-                new("water", new(world.Water.Color.R, world.Water.Color.G, world.Water.Color.B))
-            };
+            var data = ToVolumeConverter.Convert(world);
 
-            return new(countries, CreatePoints(), CreateColors(world));
-        }
-
-        private static IEnumerable<float> CreatePoints()
-        {
-            for (var x = 0; x < Map.Width; x++)
-            {
-                for (var y = 0; y < Map.Height; y++)
+            var points = new List<float>();
+            var colors = new List<float>();
+            var countries =
+                new List<JsonFileCountry>(world.Countries.Select(x =>
+                    new JsonFileCountry(x.Name, new(x.Color.R, x.Color.G, x.Color.B))))
                 {
-                    var triangle = CreateTriangle(x, y);
-                    yield return triangle.Item1.X;
-                    yield return triangle.Item1.Y;
-                    yield return triangle.Item1.Z;
+                    new JsonFileCountry("water", new(world.Water.Color.R, world.Water.Color.G, world.Water.Color.B))
+                };
 
-                    yield return triangle.Item2.X;
-                    yield return triangle.Item2.Y;
-                    yield return triangle.Item2.Z;
-
-                    yield return triangle.Item3.X;
-                    yield return triangle.Item3.Y;
-                    yield return triangle.Item3.Z;
-                }
-            }
-        }
-
-        private static IEnumerable<float> CreateColors(WorldDto world)
-        {
-            for (var x = 0; x < Map.Width; x++)
+            foreach (var triangle in data.Triangles)
             {
-                for (var y = 0; y < Map.Height; y++)
-                {
-                    var country = world.Countries.FirstOrDefault(c => c.Points[x, y]);
-                    if (country != null)
-                    {
-                        yield return (float)country.Color.R / 255;
-                        yield return (float)country.Color.G / 255;
-                        yield return (float)country.Color.B / 255;
-                        
-                        yield return (float)country.Color.R / 255;
-                        yield return (float)country.Color.G / 255;
-                        yield return (float)country.Color.B / 255;
-                        
-                        yield return (float)country.Color.R / 255;
-                        yield return (float)country.Color.G / 255;
-                        yield return (float)country.Color.B / 255;
-                    }
-                    else if (world.Water.Points[x, y])
-                    {
-                        yield return (float)world.Water.Color.R / 255;
-                        yield return (float)world.Water.Color.G / 255;
-                        yield return (float)world.Water.Color.B / 255;
-                        
-                        yield return (float)world.Water.Color.R / 255;
-                        yield return (float)world.Water.Color.G / 255;
-                        yield return (float)world.Water.Color.B / 255;
-                        
-                        yield return (float)world.Water.Color.R / 255;
-                        yield return (float)world.Water.Color.G / 255;
-                        yield return (float)world.Water.Color.B / 255;
-                    }
-                    else
-                    {
-                        yield return 1;
-                        yield return 1;
-                        yield return 1;
-                        
-                        yield return 1;
-                        yield return 1;
-                        yield return 1;
-                        
-                        yield return 1;
-                        yield return 1;
-                        yield return 1;
-                    }
-                }
+                points.Add(triangle.V1.X);
+                points.Add(triangle.V1.Y);
+                points.Add(triangle.V1.Z);
+                colors.Add(triangle.Color.R / 255f);
+                colors.Add(triangle.Color.G / 255f);
+                colors.Add(triangle.Color.B / 255f);
+            
+                points.Add(triangle.V2.X);
+                points.Add(triangle.V2.Y);
+                points.Add(triangle.V2.Z);
+                colors.Add(triangle.Color.R / 255f);
+                colors.Add(triangle.Color.G / 255f);
+                colors.Add(triangle.Color.B / 255f);
+            
+                points.Add(triangle.V3.X);
+                points.Add(triangle.V3.Y);
+                points.Add(triangle.V3.Z);
+                colors.Add(triangle.Color.R / 255f);
+                colors.Add(triangle.Color.G / 255f);
+                colors.Add(triangle.Color.B / 255f);
             }
-        }
-
-        private static (Vertex, Vertex, Vertex) CreateTriangle(int x, int y)
-        {
-            if (y % 2 == 0)
-            {
-                if (x % 2 == 0)
-                {
-                    return (
-                        CreateVertex(x - 1, y),
-                        CreateVertex(x, y + 1),
-                        CreateVertex(x + 1, y));
-                }
-                return (
-                    CreateVertex(x - 1, y + 1),
-                    CreateVertex(x + 1, y + 1),
-                    CreateVertex(x, y));
-            }
-            if (x % 2 == 0)
-            {
-                return (
-                    CreateVertex(x - 1, y + 1),
-                    CreateVertex(x + 1, y + 1),
-                    CreateVertex(x, y));
-            }
-
-            return (
-                CreateVertex(x - 1, y),
-                CreateVertex(x, y + 1),
-                CreateVertex(x + 1, y));
-        }
-
-        private static Vertex CreateVertex(float y, float x)
-        {
-            var vertex = Matrix.RotateZ((x - 180) / 180 * MathF.PI)
-                .Multiply(Matrix.RotateY((y - 90) / 180 * MathF.PI)
-                    .Multiply(new(500, 0, 0)));
-            return vertex;
+            return new(countries, points, colors);
         }
     }
 }
