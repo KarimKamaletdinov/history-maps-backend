@@ -3,11 +3,11 @@
 public class SynchronizeWorldCommandHandler : ICommandHandler<SynchronizeWorld>
 {
     private readonly IQueryHandler<GetWorld, WorldDto> _getWorld;
-    private readonly ICommandHandler<Create3DWorldSeparately> _create3DWorld;
+    private readonly ICommandHandler<Create3DWorld> _create3DWorld;
     private readonly IRootFolderProvider _rootFolder;
 
     public SynchronizeWorldCommandHandler(IQueryHandler<GetWorld, WorldDto> getWorld,
-        ICommandHandler<Create3DWorldSeparately> create3DWorld, IRootFolderProvider rootFolder)
+        ICommandHandler<Create3DWorld> create3DWorld, IRootFolderProvider rootFolder)
     {
         _getWorld = getWorld;
         _create3DWorld = create3DWorld;

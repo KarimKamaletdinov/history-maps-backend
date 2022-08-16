@@ -25,6 +25,7 @@ public partial class EventsListControl : UserControl
     public event Action? AddEvent;
     public event Action? ReloadHistory;
     public event Action? LoadAddedHistory;
+    public event Action? CreateWebApp;
 
     public EventsListControl()
     {
@@ -54,13 +55,18 @@ public partial class EventsListControl : UserControl
         AddEvent?.Invoke();
     }
 
-    private void _load_Click(object sender, EventArgs e)
+    private void _loadAdded_Click(object sender, EventArgs e)
+    {
+        LoadAddedHistory?.Invoke();
+    }
+
+    private void _reload_Click(object sender, EventArgs e)
     {
         ReloadHistory?.Invoke();
     }
 
-    private void _loadAdded_Click(object sender, EventArgs e)
+    private void _createApp_Click(object sender, EventArgs e)
     {
-        LoadAddedHistory?.Invoke();
+        CreateWebApp?.Invoke();
     }
 }

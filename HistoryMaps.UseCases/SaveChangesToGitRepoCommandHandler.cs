@@ -18,7 +18,7 @@ public class SaveChangesToGitRepoCommandHandler : ICommandHandler<SaveChangesToG
 
     public void Execute(SaveChangesToGitRepo command)
     {
-        _gitCommit.Execute(new (_rootFolderProvider.GetPath("app"), $"Commit by HistoryMaps at {DateTime.Now:G}"));
-        _gitPush.Execute(new (_rootFolderProvider.GetPath("app")));
+        _gitCommit.Execute(new (_rootFolderProvider.GetPath("worlds"), $"Commit by HistoryMaps at {DateTime.Now:G}"));
+        _gitPush.Execute(new (_rootFolderProvider.GetPath("worlds")));
     }
 }

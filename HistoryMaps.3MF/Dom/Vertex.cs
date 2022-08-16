@@ -15,39 +15,15 @@ public struct Vertex
         Z = z;
     }
 
-    public Vertex RotateX(float angle)
-    {
-        var vertex = this;
-        //vertex.Y *= MathF.Cos(angle);
-        //vertex.Z *= MathF.Sin(angle);
-        return vertex;
-    }
+    //public static bool operator ==(Vertex left, Vertex right)
+    //{
+    //    return left.X == right.X && left.Y == right.Y && left.Z == right.Z;
+    //}
 
-    public Vertex RotateY(float angle)
-    {
-        var vertex = this;
-        vertex.Z = vertex.Z * MathF.Cos(angle) - vertex.X * MathF.Sin(angle);
-        vertex.X = vertex.Z * MathF.Sin(angle) + vertex.X * MathF.Cos(angle);
-        return vertex;
-    }
-
-    public Vertex RotateZ(float angle)
-    {
-        var vertex = this;
-        vertex.X = vertex.X * MathF.Cos(angle) - vertex.Y * MathF.Sin(angle);
-        vertex.Y = vertex.X * MathF.Sin(angle) + vertex.Y * MathF.Cos(angle);
-        return vertex;
-    }
-
-    public static bool operator ==(Vertex left, Vertex right)
-    {
-        return left.X == right.X && left.Y == right.Y && left.Z == right.Z;
-    }
-
-    public static bool operator !=(Vertex left, Vertex right)
-    {
-        return !(left == right);
-    }
+    //public static bool operator !=(Vertex left, Vertex right)
+    //{
+    //    return !(left == right);
+    //}
 }
 
 public struct Matrix

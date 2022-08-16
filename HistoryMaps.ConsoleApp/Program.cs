@@ -35,7 +35,7 @@ builder.RegisterType<GitRemoteUrlProvider>().WithParameter("url", config["GitRem
 // repositories
 builder.RegisterType<WorldBmpRepository>().AsImplementedInterfaces();
 builder.RegisterType<EventRepository>().AsImplementedInterfaces();
-builder.RegisterType<World3MfRepository>().AsImplementedInterfaces();
+builder.RegisterType<VolumeWorldRepository>().AsImplementedInterfaces();
 
 //services
 builder.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
@@ -69,5 +69,6 @@ builder.RegisterType<ListView>().AsSelf();
 builder.RegisterType<Application>().AsSelf();
 
 var container = builder.Build();
+
 var app = container.Resolve<Application>();
 app.Run();

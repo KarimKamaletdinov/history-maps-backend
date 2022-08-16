@@ -37,11 +37,11 @@ builder.RegisterType<GitRemoteUrlProvider>().WithParameter("url", config["GitRem
 // repositories
 builder.RegisterType<WorldBmpRepository>().AsImplementedInterfaces();
 builder.RegisterType<EventRepository>().AsImplementedInterfaces();
-builder.RegisterType<World3MfRepository>().AsImplementedInterfaces();
+builder.RegisterType<VolumeWorldRepository>().AsImplementedInterfaces();
 
 //services
-builder.RegisterType<Create3DWorldSeparatelyCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
+builder.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<SynchronizeWorldCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<LoadHistoryCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<ExecuteGitCommandService>().AsSelf();
@@ -64,6 +64,12 @@ builder.RegisterType<GetWorldBitmapHandler>().AsImplementedInterfaces();
 builder.RegisterType<Presenter>().AsSelf();
 
 var container = builder.Build();
+
+//var bmp = container.Resolve<IWorldBmpRepository>();
+//var tmf = container.Resolve<IVolumeWorldRepository>();
+
+//tmf.InsertSeparately(bmp.Get(Guid.Parse("041e3d5d-8905-4638-9114-fe63f3cefde9")).ToDto());
+
 var presenter = container.Resolve<Presenter>();
 var form = new MainForm();
 presenter.Initialize(form);

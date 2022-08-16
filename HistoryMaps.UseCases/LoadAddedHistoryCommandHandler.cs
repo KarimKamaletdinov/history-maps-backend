@@ -6,12 +6,12 @@ public class LoadAddedHistoryCommandHandler : ICommandHandler<LoadAddedHistory>
 {
     private readonly IWorldBmpRepository _bmpRepository;
     private readonly IEventRepository _eventRepository;
-    private readonly IWorld3MfRepository _tMfRepository;
+    private readonly IVolumeWorldRepository _tMfRepository;
     private readonly ICommandHandler<SynchronizeWorld> _synchronizer;
     private readonly ILogger<LoadAddedHistoryCommandHandler> _logger;
 
     public LoadAddedHistoryCommandHandler(IWorldBmpRepository bmpRepository, 
-        IEventRepository eventRepository, IWorld3MfRepository tMfRepository, ICommandHandler<SynchronizeWorld> synchronizer,
+        IEventRepository eventRepository, IVolumeWorldRepository tMfRepository, ICommandHandler<SynchronizeWorld> synchronizer,
         ILogger<LoadAddedHistoryCommandHandler> logger)
     {
         _bmpRepository = bmpRepository;
