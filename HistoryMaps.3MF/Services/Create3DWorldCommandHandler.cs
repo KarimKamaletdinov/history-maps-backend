@@ -2,9 +2,9 @@
 
 public class Create3DWorldCommandHandler : ICommandHandler<Create3DWorld>
 {
-    private readonly IWorld3MfRepository _repository;
+    private readonly IVolumeWorldRepository _repository;
 
-    public Create3DWorldCommandHandler(IWorld3MfRepository repository)
+    public Create3DWorldCommandHandler(IVolumeWorldRepository repository)
     {
         _repository = repository;
     }

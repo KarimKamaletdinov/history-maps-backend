@@ -14,6 +14,7 @@ public partial class MainForm : Form, IView
     public event Action<EventDto>? EventSelected;
     public event Action? ReloadHistory;
     public event Action? LoadAddedHistory;
+    public event Action? CreateWebApp;
     private IEnumerable<EventDto>? _events;
 
     public new IEnumerable<EventDto> Events
@@ -63,6 +64,7 @@ public partial class MainForm : Form, IView
         _eventsListControl.AddEvent += AddEvent;
         _eventsListControl.ReloadHistory += () => ReloadHistory?.Invoke();
         _eventsListControl.LoadAddedHistory += () => LoadAddedHistory?.Invoke();
+        _eventsListControl.CreateWebApp += () => CreateWebApp?.Invoke();
         _eventsListControl.EventSelected += e => EventSelected?.Invoke(e);
     }
 

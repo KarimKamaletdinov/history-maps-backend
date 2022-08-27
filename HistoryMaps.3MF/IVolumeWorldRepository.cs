@@ -1,9 +1,8 @@
 ﻿namespace HistoryMaps;
 
-public interface IWorld3MfRepository
+public interface IVolumeWorldRepository
 {
     void Insert(WorldDto world);
-    void InsertSeparately(WorldDto world);
     void ClearAll();
     IEnumerable<Guid> GetAllIds();
 }

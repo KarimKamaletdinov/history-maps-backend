@@ -9,12 +9,13 @@ public class Presenter
     private readonly ICommandHandler<DeleteEvent> _deleteEventHandler;
     private readonly ICommandHandler<LoadHistory> _loadHistoryHandler;
     private readonly ICommandHandler<LoadAddedHistory> _loadAddedHistoryHandler;
-    private IView? _view;
+    private readonly ICommandHandler<CreateWebApp> _createWebAppHandler;
 
     public Presenter(IQueryHandler<GetAllEvents, IEnumerable<EventDto>> getAllEventsHandler, 
         ICommandHandler<ModifyEvent> modifyEventHandler, IQueryHandler<GetWorldBitmap, WorldBitmapDto> getWorldBitmapHandler,
         ICommandHandler<CreateEvent> createEventHandler, ICommandHandler<DeleteEvent> deleteEventHandler,
-        ICommandHandler<LoadHistory> loadHistoryHandler, ICommandHandler<LoadAddedHistory> loadAddedHistoryHandler)
+        ICommandHandler<LoadHistory> loadHistoryHandler, ICommandHandler<LoadAddedHistory> loadAddedHistoryHandler,
+        ICommandHandler<CreateWebApp> createWebAppHandler)
     {
         _getAllEventsHandler = getAllEventsHandler;
         _modifyEventHandler = modifyEventHandler;
@@ -23,6 +24,7 @@ public class Presenter
         _deleteEventHandler = deleteEventHandler;
         _loadHistoryHandler = loadHistoryHandler;
         _loadAddedHistoryHandler = loadAddedHistoryHandler;
+        _createWebAppHandler = createWebAppHandler;
     }
 
     public void Initialize(IView view)
@@ -35,5 +37,6 @@ public class Presenter
         view.DeleteEvent += e => _deleteEventHandler.Execute(new(e));
         view.ReloadHistory += () => _loadHistoryHandler.Execute(new());
         view.LoadAddedHistory += () => _loadAddedHistoryHandler.Execute(new());
+        view.CreateWebApp += () => _createWebAppHandler.Execute(new());
     }
 }

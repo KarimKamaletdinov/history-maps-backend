@@ -9,6 +9,7 @@ public interface IView
     event Action<EventDto> EventSelected;
     event Action ReloadHistory;
     event Action LoadAddedHistory;
+    event Action CreateWebApp;
 
     IEnumerable<EventDto> Events { set; }
     EventBitmapDto? CurrentEvent { set; }

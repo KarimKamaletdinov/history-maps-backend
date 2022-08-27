@@ -2,13 +2,13 @@
 
 namespace HistoryMaps;
 
-public static class To3MfConverter
+public static class ToVolumeConverter
 {
-    public static (Document, Guid) Convert(WorldDto world)
+    public static Document Convert(WorldDto world)
     {
         var doc = new Document();
-        var arr = new int[Map.Width, Map.Height];
-        AddAllVertices(doc, arr);
+        var arr = new Vertex[Map.Width, Map.Height];
+        AddAllVertices(arr);
         AddArea(doc, world.Water, arr);
         foreach (var country in world.Countries)
         {
@@ -22,54 +22,19 @@ public static class To3MfConverter
                 if (!world.Water.Points[x, y] && !world.Countries.Any(c => c.Points[x, y]))
                     blankArea.Points[x, y] = true;
         AddArea(doc, blankArea, arr);
-        return (doc, world.Id);
+        return doc;
     }
 
-    public static WorldData ConvertSeparately(WorldDto world)
+    private static void AddArea(Document doc, MapAreaDto mapArea, Vertex[,] indices)
     {
-        var baseDocument = new Document();
-        var arr = new int[Map.Width, Map.Height];
-        AddAllVertices(baseDocument, arr);
-        AddArea(baseDocument, world.Water, arr);
-
-        var blankArea = new MapAreaDto(new bool[Map.Width, Map.Height], Color.White);
-        for (var x = 0; x < Map.Width; x++)
-            for (var y = 0; y < Map.Height; y++)
-                if (!world.Water.Points[x, y])
-                    blankArea.Points[x, y] = true;
-        AddArea(baseDocument, blankArea, arr);
-
-        var countries = new List<Document>();
-
-        foreach (var c in world.Countries)
-        {
-            var country = new Document();
-            var a = new int[Map.Width, Map.Height];
-            AddAllVertices(country, a);
-            AddArea(country, c, a);
-            country.Metadata = c.Name;
-            countries.Add(country);
-        }
-
-        return new()
-        {
-            Id = world.Id,
-            Base = baseDocument,
-            Countries = countries
-        };
-    }
-
-    private static void AddArea(Document doc, MapAreaDto mapArea, int[,] indices)
-    {
-        var colorId = doc.AddColor(mapArea.Color);
         for (var x = 0; x < Map.Width; x++)
             for (var y = 0; y < Map.Height; y++)
                 if (mapArea.Points[x, y])
-                    CreateTriangle(doc, x, y, colorId, indices);
+                    CreateTriangle(doc, x, y, mapArea.Color, indices);
 
     }
 
-    private static void CreateTriangle(Document document, int x, int y, int colorId, int[,] indices)
+    private static void CreateTriangle(Document document, int x, int y, Color colorId, Vertex[,] indices)
     {
         if (y % 2 == 0)
         {
@@ -103,7 +68,7 @@ public static class To3MfConverter
             Index(x + 1, y, indices), colorId));
     }
 
-    private static int Index(int x, int y, int[,] indices)
+    private static Vertex Index(int x, int y, Vertex[,] indices)
     {
         if (y < 0)
             y = 0;
@@ -124,15 +89,14 @@ public static class To3MfConverter
         return vertex;
     }
 
-    private static void AddAllVertices(Document doc, int[,] arr)
+    private static void AddAllVertices(Vertex[,] arr)
     {
-        var i = 0;
         for (var x = 0; x < Map.Width; x++)
+        {
             for (var y = 0; y < Map.Height; y++)
             {
-                arr[x, y] = i;
-                doc.Vertices.Add(CreateVertex(y / 3f, x / 3f));
-                i++;
+                arr[x, y] = CreateVertex(y / 3f, x / 3f);
             }
+        }
     }
 }

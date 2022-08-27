@@ -8,13 +8,13 @@ public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
 {
     private readonly IWorldBmpRepository _bmpRepository;
     private readonly IEventRepository _eventRepository;
-    private readonly IWorld3MfRepository _tMfRepository;
+    private readonly IVolumeWorldRepository _tMfRepository;
     private readonly ICommandHandler<SynchronizeWorld> _synchronizer;
     private readonly ILogger<LoadHistoryCommandHandler> _logger;
     private readonly IRootFolderProvider _rootFolderProvider;
 
     public LoadHistoryCommandHandler(IWorldBmpRepository bmpRepository, 
-        IEventRepository eventRepository, IWorld3MfRepository tMfRepository, ICommandHandler<SynchronizeWorld> synchronizer,
+        IEventRepository eventRepository, IVolumeWorldRepository tMfRepository, ICommandHandler<SynchronizeWorld> synchronizer,
         ILogger<LoadHistoryCommandHandler> logger, IRootFolderProvider rootFolderProvider)
     {
         _bmpRepository = bmpRepository;
@@ -41,9 +41,6 @@ public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
             _logger.LogInformation("Loaded {Name}", e.Name);
             dtos.Add(e.ToDto());
         }
-        File.WriteAllText(_rootFolderProvider.GetPath("events.json"), 
-            JsonConvert.SerializeObject(dtos, Formatting.Indented),
-            Encoding.UTF8);
         _logger.LogInformation("Finished");
     }
 }
