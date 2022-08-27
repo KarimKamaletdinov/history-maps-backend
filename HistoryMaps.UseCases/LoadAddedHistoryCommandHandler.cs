@@ -36,6 +36,7 @@ public class LoadAddedHistoryCommandHandler : ICommandHandler<LoadAddedHistory>
                 _synchronizer.Execute(new (e.WorldId));
             _logger.LogInformation("Loaded {name}", e.Name);
         }
+
         _logger.LogInformation("Finished");
     }
 }

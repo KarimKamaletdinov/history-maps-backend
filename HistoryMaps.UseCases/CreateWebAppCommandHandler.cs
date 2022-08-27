@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace HistoryMaps;
 
@@ -48,8 +49,11 @@ public class CreateWebAppCommandHandler : ICommandHandler<CreateWebApp>
             _logger.LogInformation("Loaded {name}", e.Name);
         }
         _logger.LogInformation("History loaded");
-        File.WriteAllText(_rootFolderProvider.GetPath("events.json"), 
-            JsonConvert.SerializeObject(dtos, Formatting.Indented),
+        File.WriteAllText(_rootFolderProvider.GetPath("worlds", "events.json"), 
+            JsonConvert.SerializeObject(dtos, new JsonSerializerSettings{Formatting = Formatting.Indented,ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            }}),
             Encoding.UTF8);
         _logger.LogInformation("Events metadata saved");
         _saveChangesToGitRepo.Execute(new ());

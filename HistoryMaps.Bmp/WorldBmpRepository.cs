@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace HistoryMaps;
 
@@ -223,8 +224,11 @@ public class WorldBmpRepository : IWorldBmpRepository
     {
         File.WriteAllText(_rootFolder.GetPath("worlds", worldId + ".json"),
             JsonConvert.SerializeObject(colors.Select(x => 
-                new CountryColor(x.Key, new (x.Value.R, x.Value.G, x.Value.B))), 
-                Formatting.Indented),
+                new CountryColor(x.Key, new (x.Value.R, x.Value.G, x.Value.B))),
+                new JsonSerializerSettings{Formatting = Formatting.Indented,ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }}),
             Encoding.UTF8);
     }
 

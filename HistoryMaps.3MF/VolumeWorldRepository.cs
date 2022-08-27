@@ -23,9 +23,6 @@ public class VolumeWorldRepository : IVolumeWorldRepository
 
         File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "points.bin"), ListToBytes(data.Points).ToArray());
         File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "colors.bin"), ListToBytes(data.Colors).ToArray());
-        
-        File.WriteAllText(_rootFolder.GetPath("worlds", world.Id.ToString(), "countries.json"),
-            JsonConvert.SerializeObject(data.Countries));
     }
 
     public void ClearAll()
@@ -49,7 +46,7 @@ public class VolumeWorldRepository : IVolumeWorldRepository
         return list.SelectMany(BitConverter.GetBytes);
     }
 
-    private record WorldData(IEnumerable<JsonFileCountry> Countries, IEnumerable<float> Points, IEnumerable<float> Colors);
+    private record WorldData(IEnumerable<float> Points, IEnumerable<float> Colors);
 
     private record JsonFileCountry(string Name, JsonFileColor Color);
 
@@ -63,12 +60,6 @@ public class VolumeWorldRepository : IVolumeWorldRepository
 
             var points = new List<float>();
             var colors = new List<float>();
-            var countries =
-                new List<JsonFileCountry>(world.Countries.Select(x =>
-                    new JsonFileCountry(x.Name, new(x.Color.R, x.Color.G, x.Color.B))))
-                {
-                    new JsonFileCountry("water", new(world.Water.Color.R, world.Water.Color.G, world.Water.Color.B))
-                };
 
             foreach (var triangle in data.Triangles)
             {
@@ -93,7 +84,7 @@ public class VolumeWorldRepository : IVolumeWorldRepository
                 colors.Add(triangle.Color.G / 255f);
                 colors.Add(triangle.Color.B / 255f);
             }
-            return new(countries, points, colors);
+            return new(points, colors);
         }
     }
 }

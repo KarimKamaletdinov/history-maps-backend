@@ -41,9 +41,6 @@ public class LoadHistoryCommandHandler : ICommandHandler<LoadHistory>
             _logger.LogInformation("Loaded {Name}", e.Name);
             dtos.Add(e.ToDto());
         }
-        File.WriteAllText(_rootFolderProvider.GetPath("events.json"), 
-            JsonConvert.SerializeObject(dtos, Formatting.Indented),
-            Encoding.UTF8);
         _logger.LogInformation("Finished");
     }
 }
