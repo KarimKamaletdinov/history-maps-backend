@@ -65,10 +65,10 @@ builder.RegisterType<Presenter>().AsSelf();
 
 var container = builder.Build();
 
-//var bmp = container.Resolve<IWorldBmpRepository>();
-//var tmf = container.Resolve<IVolumeWorldRepository>();
+var bmp = container.Resolve<IWorldBmpRepository>();
+var tmf = container.Resolve<IVolumeWorldRepository>();
 
-//tmf.InsertSeparately(bmp.Get(Guid.Parse("041e3d5d-8905-4638-9114-fe63f3cefde9")).ToDto());
+tmf.Insert(bmp.Get(Guid.Parse("041e3d5d-8905-4638-9114-fe63f3cefde9")).ToDto());
 
 var presenter = container.Resolve<Presenter>();
 var form = new MainForm();

@@ -1,8 +1,4 @@
 ﻿using System.Drawing;
-using System.Globalization;
-using System.IO.Compression;
-using System.Security.Cryptography;
-using Newtonsoft.Json;
 
 namespace HistoryMaps;
 
@@ -20,7 +16,7 @@ public class VolumeWorldRepository : IVolumeWorldRepository
         Directory.CreateDirectory(_rootFolder.GetPath("worlds", world.Id.ToString()));
 
         var data = Mapper.Convert(world);
-
+        
         File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "points.bin"), ListToBytes(data.Points).ToArray());
         File.WriteAllBytes(_rootFolder.GetPath("worlds", world.Id.ToString(), "colors.bin"), ListToBytes(data.Colors).ToArray());
     }
@@ -48,41 +44,60 @@ public class VolumeWorldRepository : IVolumeWorldRepository
 
     private record WorldData(IEnumerable<float> Points, IEnumerable<float> Colors);
 
-    private record JsonFileCountry(string Name, JsonFileColor Color);
-
-    private record JsonFileColor(int R, int G, int B);
-
     private static class Mapper
     {
         public static WorldData Convert(WorldDto world)
         {
-            var data = ToVolumeConverter.Convert(world);
-
             var points = new List<float>();
             var colors = new List<float>();
 
-            foreach (var triangle in data.Triangles)
+            var worldColors = new List<Color>();
+            worldColors.AddRange(world.Countries.Select(x => x.Color));
+            worldColors.Add(world.Water.Color);
+            worldColors.Add(Color.White);
+            
+            for (var x = 0; x < Map.Width; x++)
             {
-                points.Add(triangle.V1.X);
-                points.Add(triangle.V1.Y);
-                points.Add(triangle.V1.Z);
-                colors.Add(triangle.Color.R / 255f);
-                colors.Add(triangle.Color.G / 255f);
-                colors.Add(triangle.Color.B / 255f);
-            
-                points.Add(triangle.V2.X);
-                points.Add(triangle.V2.Y);
-                points.Add(triangle.V2.Z);
-                colors.Add(triangle.Color.R / 255f);
-                colors.Add(triangle.Color.G / 255f);
-                colors.Add(triangle.Color.B / 255f);
-            
-                points.Add(triangle.V3.X);
-                points.Add(triangle.V3.Y);
-                points.Add(triangle.V3.Z);
-                colors.Add(triangle.Color.R / 255f);
-                colors.Add(triangle.Color.G / 255f);
-                colors.Add(triangle.Color.B / 255f);
+                for (var y = 0; y < Map.Height; y++)
+                {
+                    var country = world.Countries.FirstOrDefault(c => c.Points[x, y]);
+                    if (country != null)
+                        AddPoint(x, y, country.Color);
+                    else if (world.Water.Points[x, y])
+                        AddPoint(x, y, world.Water.Color);
+                    else
+                        AddPoint(x, y, Color.White);
+                }
+            }
+
+            void AddPoint(int x, int y, Color color)
+            {
+                if (y % 2 == 0 ^ x % 2 == 0)
+                {
+                    AddVertex(x - 1, y + 1);
+                    AddVertex(x + 1, y + 1);
+                    AddVertex(x, y);
+                }
+                else
+                {
+                    AddVertex(x - 1, y);
+                    AddVertex(x, y + 1);
+                    AddVertex(x + 1, y);
+                }
+
+                void AddVertex(int vx, int vy)
+                {
+                    var colorId = worldColors.IndexOf(color);
+                    var vertex = Matrix.RotateZ(((float)vx - 180) / 180 * MathF.PI)
+                        .Multiply(Matrix.RotateY(((float)vy - 90) / 180 * MathF.PI)
+                            .Multiply(new(500 + worldColors.Count - colorId, 0, 0, color)));
+                    points.Add(vertex.X);
+                    points.Add(vertex.Y);
+                    points.Add(vertex.Z);
+                    colors.Add(vertex.Color.R);
+                    colors.Add(vertex.Color.G);
+                    colors.Add(vertex.Color.B);
+                }
             }
             return new(points, colors);
         }

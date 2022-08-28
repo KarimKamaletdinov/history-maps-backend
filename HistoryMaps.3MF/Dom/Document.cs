@@ -5,8 +5,8 @@ namespace HistoryMaps;
 
 public struct Document
 {
-    public string Metadata { get; set; } = "";
     public List<Triangle> Triangles = new ();
+    public List<Vertex> Vertices = new ();
 
     public Document()
     {
