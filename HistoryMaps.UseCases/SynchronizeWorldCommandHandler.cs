@@ -16,10 +16,10 @@ public class SynchronizeWorldCommandHandler : ICommandHandler<SynchronizeWorld>
 
     public void Execute(SynchronizeWorld command)
     {
-        if (File.Exists(_rootFolder.GetPath("worlds",
-                command.WorldId + ".3mf")))
-            File.Delete(_rootFolder.GetPath("worlds",
-                command.WorldId + ".3mf"));
+        if (Directory.Exists(_rootFolder.GetPath("worlds",
+                command.WorldId.ToString())))
+            Directory.Delete(_rootFolder.GetPath("worlds",
+                command.WorldId.ToString()), true);
         var world = _getWorld.Execute(new (command.WorldId));
         _create3DWorld.Execute(new (world));
     }

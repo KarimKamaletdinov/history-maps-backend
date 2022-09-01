@@ -59,16 +59,19 @@ builder.RegisterType<DeleteEventHandler>().AsImplementedInterfaces();
 builder.RegisterType<ModifyEventHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetAllEventsHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetWorldBitmapHandler>().AsImplementedInterfaces();
+builder.RegisterType<GetBaseWorldHandler>().AsImplementedInterfaces();
+builder.RegisterType<Create3DBaseWorldCommandHandler>().AsImplementedInterfaces();
+builder.RegisterType<SynchronyzeBaseWorldHandler>().AsImplementedInterfaces();
 
 //presenter
 builder.RegisterType<Presenter>().AsSelf();
 
 var container = builder.Build();
 
-var bmp = container.Resolve<IWorldBmpRepository>();
-var tmf = container.Resolve<IVolumeWorldRepository>();
-
-tmf.Insert(bmp.Get(Guid.Parse("041e3d5d-8905-4638-9114-fe63f3cefde9")).ToDto());
+// var bmp = container.Resolve<IWorldBmpRepository>();
+// var tmf = container.Resolve<IVolumeWorldRepository>();
+//
+// tmf.Insert(bmp.Get(Guid.Parse("041e3d5d-8905-4638-9114-fe63f3cefde9")).ToDto());
 
 var presenter = container.Resolve<Presenter>();
 var form = new MainForm();
