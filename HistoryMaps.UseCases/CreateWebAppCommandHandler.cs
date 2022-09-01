@@ -7,17 +7,19 @@ namespace HistoryMaps;
 
 public class CreateWebAppCommandHandler : ICommandHandler<CreateWebApp>
 {
-    private readonly ILogger<Create3DWorldCommandHandler> _logger;
+    private readonly ILogger<CreateWebAppCommandHandler> _logger;
     private readonly IWorldBmpRepository _bmpRepository;
     private readonly IEventRepository _eventRepository;
     private readonly IVolumeWorldRepository _tMfRepository;
     private readonly ICommandHandler<SynchronizeWorld> _synchronizer;
+    private readonly ICommandHandler<SynchronizeBaseWorld> _bwSynchronizer;
     private readonly IRootFolderProvider _rootFolderProvider;
-    private readonly ICommandHandler<LoadGitRepo> _loadGitRepo;
-    private readonly ICommandHandler<CopyDataToWebApp> _copyDataToWebApp;
     private readonly ICommandHandler<SaveChangesToGitRepo> _saveChangesToGitRepo;
 
-    public CreateWebAppCommandHandler(ILogger<Create3DWorldCommandHandler> logger, IWorldBmpRepository bmpRepository, IEventRepository eventRepository, IVolumeWorldRepository tMfRepository, ICommandHandler<SynchronizeWorld> synchronizer, IRootFolderProvider rootFolderProvider, ICommandHandler<LoadGitRepo> loadGitRepo, ICommandHandler<CopyDataToWebApp> copyDataToWebApp, ICommandHandler<SaveChangesToGitRepo> saveChangesToGitRepo)
+    public CreateWebAppCommandHandler(ILogger<CreateWebAppCommandHandler> logger, IWorldBmpRepository bmpRepository,
+        IEventRepository eventRepository, IVolumeWorldRepository tMfRepository,
+        ICommandHandler<SynchronizeWorld> synchronizer, IRootFolderProvider rootFolderProvider,
+        ICommandHandler<SaveChangesToGitRepo> saveChangesToGitRepo, ICommandHandler<SynchronizeBaseWorld> bwSynchronizer)
     {
         _logger = logger;
         _bmpRepository = bmpRepository;
@@ -25,9 +27,8 @@ public class CreateWebAppCommandHandler : ICommandHandler<CreateWebApp>
         _tMfRepository = tMfRepository;
         _synchronizer = synchronizer;
         _rootFolderProvider = rootFolderProvider;
-        _loadGitRepo = loadGitRepo;
-        _copyDataToWebApp = copyDataToWebApp;
         _saveChangesToGitRepo = saveChangesToGitRepo;
+        _bwSynchronizer = bwSynchronizer;
     }
 
     public void Execute(CreateWebApp command)
@@ -39,6 +40,18 @@ public class CreateWebAppCommandHandler : ICommandHandler<CreateWebApp>
         var generated3Mf = _tMfRepository.GetAllIds().ToArray();
         _logger.LogInformation("Cleared");
         var events = _eventRepository.GetAllEvents();
+        
+        if(!File.Exists(_rootFolderProvider.GetPath("worlds", "baseworld.bmp")))
+            File.Copy(_rootFolderProvider.GetPath("constants", "base_world.bmp"), 
+                _rootFolderProvider.GetPath("worlds", "baseworld.bmp"));
+        
+        if(!File.Exists(_rootFolderProvider.GetPath("worlds", "baseworld.json")))
+            File.Copy(_rootFolderProvider.GetPath("constants", "base_world.json"), 
+                _rootFolderProvider.GetPath("worlds", "baseworld.json"));
+
+        if(!_tMfRepository.BaseWorldExists())
+            _bwSynchronizer.Execute(new());
+        
         foreach (var e in events)
         {
             if(!generatedBmp.Contains(e.WorldId))
@@ -46,7 +59,7 @@ public class CreateWebAppCommandHandler : ICommandHandler<CreateWebApp>
             if(!generated3Mf.Contains(e.WorldId))
                 _synchronizer.Execute(new (e.WorldId));
             dtos.Add(e.ToDto());
-            _logger.LogInformation("Loaded {name}", e.Name);
+            _logger.LogInformation("Loaded {Name}", e.Name);
         }
         _logger.LogInformation("History loaded");
         File.WriteAllText(_rootFolderProvider.GetPath("worlds", "events.json"), 

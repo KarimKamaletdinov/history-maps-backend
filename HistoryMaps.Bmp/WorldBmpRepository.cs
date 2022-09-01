@@ -175,8 +175,13 @@ public class WorldBmpRepository : IWorldBmpRepository
                                 countries.Find(c => c.Color == color)!.Points[x, y] = true;
                             else
                             {
-                                var country = new Country(new bool[Map.Width, Map.Height], name, color);
-                                country.Points[x, y] = true;
+                                var country = new Country(new bool[Map.Width, Map.Height], name, color)
+                                {
+                                    Points =
+                                    {
+                                        [x, y] = true
+                                    }
+                                };
                                 countries.Add(country);
                             }
                         }

@@ -39,7 +39,6 @@ builder.RegisterType<VolumeWorldRepository>().AsImplementedInterfaces();
 
 //services
 builder.RegisterType<Create3DWorldCommandHandler>().AsImplementedInterfaces();
-builder.RegisterType<Create3DWorldSeparatelyCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<GetWorldQueryHandler>().AsImplementedInterfaces();
 builder.RegisterType<SynchronizeWorldCommandHandler>().AsImplementedInterfaces();
 builder.RegisterType<LoadHistoryCommandHandler>().AsImplementedInterfaces();

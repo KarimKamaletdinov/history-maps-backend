@@ -25,11 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Bmp.Abstraction
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Bmp", "HistoryMaps.Bmp\HistoryMaps.Bmp.csproj", "{757A9E94-0451-48D7-B53C-C92946203C02}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3MF", "3MF", "{8E765016-BCDD-4943-84CD-13C3D7FA1138}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Volume", "Volume", "{8E765016-BCDD-4943-84CD-13C3D7FA1138}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.3MF", "HistoryMaps.3MF\HistoryMaps.3MF.csproj", "{7723079C-51E6-4555-96C2-BDBE880A237F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Volume", "HistoryMaps.Volume\HistoryMaps.Volume.csproj", "{7723079C-51E6-4555-96C2-BDBE880A237F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.3MF.Abstractions", "HistoryMaps.3MF.Abstractions\HistoryMaps.3MF.Abstractions.csproj", "{53C14472-745F-438A-828C-AC14CE754A48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HistoryMaps.Volume.Abstractions", "HistoryMaps.Volume.Abstractions\HistoryMaps.Volume.Abstractions.csproj", "{53C14472-745F-438A-828C-AC14CE754A48}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Common", ".Common", "{55B28FAF-C521-479D-88D4-7147E3B78527}"
 EndProject

@@ -1,40 +1,26 @@
-﻿using System.Drawing;
-
-namespace HistoryMaps;
+﻿namespace HistoryMaps;
 
 public static class ToVolumeConverter
 {
-    public static Document Convert(WorldDto world)
+    public static Document Convert(AreaDto area)
     {
         var doc = new Document();
         var arr = new Vertex[Map.Width, Map.Height];
         AddAllVertices(arr);
-        AddArea(doc, world.Water, arr);
-        foreach (var country in world.Countries)
-        {
-            doc.Metadata += $"{country.Name}: {country.Color}";
-            AddArea(doc, country, arr);
-        }
-
-        var blankArea = new MapAreaDto(new bool[Map.Width, Map.Height], Color.White);
-        for (var x = 0; x < Map.Width; x++)
-            for (var y = 0; y < Map.Height; y++)
-                if (!world.Water.Points[x, y] && !world.Countries.Any(c => c.Points[x, y]))
-                    blankArea.Points[x, y] = true;
-        AddArea(doc, blankArea, arr);
+        AddArea(doc, area, arr);
         return doc;
     }
 
-    private static void AddArea(Document doc, MapAreaDto mapArea, Vertex[,] indices)
+    private static void AddArea(Document doc, AreaDto mapArea, Vertex[,] indices)
     {
         for (var x = 0; x < Map.Width; x++)
             for (var y = 0; y < Map.Height; y++)
                 if (mapArea.Points[x, y])
-                    CreateTriangle(doc, x, y, mapArea.Color, indices);
+                    CreateTriangle(doc, x, y, indices);
 
     }
 
-    private static void CreateTriangle(Document document, int x, int y, Color colorId, Vertex[,] indices)
+    private static void CreateTriangle(Document document, int x, int y, Vertex[,] indices)
     {
         if (y % 2 == 0)
         {
@@ -43,14 +29,14 @@ public static class ToVolumeConverter
                 document.Triangles.Add(new(
                     Index(x - 1, y, indices),
                     Index(x, y + 1, indices),
-                    Index(x + 1, y, indices), colorId));
+                    Index(x + 1, y, indices)));
                 return;
             }
 
             document.Triangles.Add(new(
                 Index(x - 1, y + 1, indices),
                 Index(x + 1, y + 1, indices),
-                Index(x, y, indices), colorId));
+                Index(x, y, indices)));
             return;
         }
         if (x % 2 == 0)
@@ -58,14 +44,14 @@ public static class ToVolumeConverter
             document.Triangles.Add(new(
                 Index(x - 1, y + 1, indices),
                 Index(x + 1, y + 1, indices),
-                Index(x, y, indices), colorId));
+                Index(x, y, indices)));
             return;
         }
 
         document.Triangles.Add(new(
             Index(x - 1, y, indices),
             Index(x, y + 1, indices),
-            Index(x + 1, y, indices), colorId));
+            Index(x + 1, y, indices)));
     }
 
     private static Vertex Index(int x, int y, Vertex[,] indices)
