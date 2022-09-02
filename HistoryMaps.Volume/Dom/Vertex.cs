@@ -2,4 +2,4 @@
 
 namespace HistoryMaps;
 
-public record struct Vertex(float X, float Y, float Z, Color Color);
+public record struct Vertex(float X, float Y, float Z);

@@ -22,34 +22,13 @@ public static class ToVolumeConverter
 
     private static void CreateTriangle(Document document, int x, int y, Vertex[,] indices)
     {
-        if (y % 2 == 0)
-        {
-            if (x % 2 == 0)
-            {
-                document.Triangles.Add(new(
-                    Index(x - 1, y, indices),
-                    Index(x, y + 1, indices),
-                    Index(x + 1, y, indices)));
-                return;
-            }
-
-            document.Triangles.Add(new(
-                Index(x - 1, y + 1, indices),
-                Index(x + 1, y + 1, indices),
-                Index(x, y, indices)));
-            return;
-        }
-        if (x % 2 == 0)
-        {
-            document.Triangles.Add(new(
-                Index(x - 1, y + 1, indices),
-                Index(x + 1, y + 1, indices),
-                Index(x, y, indices)));
-            return;
-        }
+        document.Triangles.Add(new(
+            Index(x, y, indices),
+            Index(x, y + 1, indices),
+            Index(x + 1, y, indices)));
 
         document.Triangles.Add(new(
-            Index(x - 1, y, indices),
+            Index(x + 1, y + 1, indices),
             Index(x, y + 1, indices),
             Index(x + 1, y, indices)));
     }
