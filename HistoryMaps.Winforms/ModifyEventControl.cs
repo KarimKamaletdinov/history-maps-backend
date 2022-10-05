@@ -236,4 +236,20 @@ public partial class ModifyEventControl : UserControl
         _versionIndex++;
         _picture.Image = (Image)_versions[_versionIndex].Clone();
     }
+
+    private void _createCountry_Click(object sender, EventArgs e)
+    {
+        var countries = Countries.ToList();
+
+        var dialog = new QuestionDialog { Question = "Название страны" };
+        if (dialog.ShowDialog(this) != DialogResult.OK)
+            return;
+
+        var colorDialog = new ColorDialog();
+        if (colorDialog.ShowDialog(this) != DialogResult.OK)
+            return;
+
+        countries.Add(new CountryColorDto(dialog.Answer, colorDialog.Color));
+        Countries = countries;
+    }
 }

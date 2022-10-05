@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-namespace HistoryMaps;
+﻿namespace HistoryMaps;
 
 public partial class MainForm : Form, IView
 {
@@ -82,6 +77,6 @@ public partial class MainForm : Form, IView
 
     private int GenerateId(int year)
     {
-        return _events!.OrderBy(x => x.Year).ThenBy(x => x.Id).Last(x => x.Year <= year).Id + 1;
+        return _events!.Where(x => x.Year == year).MaxBy(x => x.Id)?.Id ?? 0 + 1;
     }
 }

@@ -41,6 +41,7 @@
             this._fill = new System.Windows.Forms.Button();
             this._undo = new System.Windows.Forms.Button();
             this._redo = new System.Windows.Forms.Button();
+            this._createCountry = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._picture)).BeginInit();
             this._flowPanel.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +72,7 @@
             this._flowPanel.Controls.Add(this._back);
             this._flowPanel.Controls.Add(this._save);
             this._flowPanel.Controls.Add(this._selectCountry);
+            this._flowPanel.Controls.Add(this._createCountry);
             this._flowPanel.Controls.Add(this._delete);
             this._flowPanel.Controls.Add(this._plus);
             this._flowPanel.Controls.Add(this._minus);
@@ -119,7 +121,7 @@
             // 
             this._delete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_delete.BackgroundImage")));
             this._delete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this._delete.Location = new System.Drawing.Point(194, 3);
+            this._delete.Location = new System.Drawing.Point(226, 3);
             this._delete.Name = "_delete";
             this._delete.Size = new System.Drawing.Size(26, 23);
             this._delete.TabIndex = 5;
@@ -130,7 +132,7 @@
             // 
             this._plus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_plus.BackgroundImage")));
             this._plus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this._plus.Location = new System.Drawing.Point(226, 3);
+            this._plus.Location = new System.Drawing.Point(258, 3);
             this._plus.Name = "_plus";
             this._plus.Size = new System.Drawing.Size(24, 23);
             this._plus.TabIndex = 3;
@@ -141,7 +143,7 @@
             // 
             this._minus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_minus.BackgroundImage")));
             this._minus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this._minus.Location = new System.Drawing.Point(256, 3);
+            this._minus.Location = new System.Drawing.Point(288, 3);
             this._minus.Name = "_minus";
             this._minus.Size = new System.Drawing.Size(24, 23);
             this._minus.TabIndex = 4;
@@ -153,7 +155,7 @@
             this._pencil.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_pencil.BackgroundImage")));
             this._pencil.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this._pencil.Enabled = false;
-            this._pencil.Location = new System.Drawing.Point(286, 3);
+            this._pencil.Location = new System.Drawing.Point(318, 3);
             this._pencil.Name = "_pencil";
             this._pencil.Size = new System.Drawing.Size(24, 23);
             this._pencil.TabIndex = 6;
@@ -164,7 +166,7 @@
             // 
             this._fill.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_fill.BackgroundImage")));
             this._fill.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this._fill.Location = new System.Drawing.Point(316, 3);
+            this._fill.Location = new System.Drawing.Point(348, 3);
             this._fill.Name = "_fill";
             this._fill.Size = new System.Drawing.Size(24, 23);
             this._fill.TabIndex = 7;
@@ -175,7 +177,7 @@
             // 
             this._undo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_undo.BackgroundImage")));
             this._undo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this._undo.Location = new System.Drawing.Point(346, 3);
+            this._undo.Location = new System.Drawing.Point(378, 3);
             this._undo.Name = "_undo";
             this._undo.Size = new System.Drawing.Size(24, 23);
             this._undo.TabIndex = 8;
@@ -186,12 +188,23 @@
             // 
             this._redo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_redo.BackgroundImage")));
             this._redo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this._redo.Location = new System.Drawing.Point(376, 3);
+            this._redo.Location = new System.Drawing.Point(408, 3);
             this._redo.Name = "_redo";
             this._redo.Size = new System.Drawing.Size(24, 23);
             this._redo.TabIndex = 9;
             this._redo.UseVisualStyleBackColor = true;
             this._redo.Click += new System.EventHandler(this._redo_Click);
+            // 
+            // _createCountry
+            // 
+            this._createCountry.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_createCountry.BackgroundImage")));
+            this._createCountry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this._createCountry.Location = new System.Drawing.Point(194, 3);
+            this._createCountry.Name = "_createCountry";
+            this._createCountry.Size = new System.Drawing.Size(26, 23);
+            this._createCountry.TabIndex = 10;
+            this._createCountry.UseVisualStyleBackColor = true;
+            this._createCountry.Click += new System.EventHandler(this._createCountry_Click);
             // 
             // ModifyEventControl
             // 
@@ -222,5 +235,6 @@
         private Button _fill;
         private Button _undo;
         private Button _redo;
+        private Button _createCountry;
     }
 }

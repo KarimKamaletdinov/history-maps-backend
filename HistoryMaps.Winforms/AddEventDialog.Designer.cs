@@ -53,6 +53,7 @@
             this._year.Name = "_year";
             this._year.Size = new System.Drawing.Size(404, 23);
             this._year.TabIndex = 1;
+            this._year.Minimum = -100500;
             // 
             // _endYear
             // 
@@ -61,6 +62,7 @@
             this._endYear.Name = "_endYear";
             this._endYear.Size = new System.Drawing.Size(403, 23);
             this._endYear.TabIndex = 2;
+            this._endYear.Minimum = -100500;
             // 
             // _hasEndYear
             // 
